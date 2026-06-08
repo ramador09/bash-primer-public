@@ -1,0 +1,167 @@
+/* Introduction to the Bash Shell — Jupyter Book site theme.
+
+   Visual identity VENDORED from Elementary Computational Physics (ecp/style.py
+   + _static/ecp.css) so the two courses read as one portfolio: same ink-navy +
+   warm-amber palette on parchment, same Fraunces / Source Serif 4 / JetBrains
+   Mono fonts. This file carries the tokens and the reusable component classes
+   (header/footer banner, command card, "watch out" callout) so each notebook's
+   static HTML stays lean and the look lives in ONE place.
+
+   Light AND dark mode: we never hard-code body text colour — the theme picks a
+   readable colour per mode. We only set fonts, brand the headings, colour links
+   amber, style the course components, and hide stripped solution-cell inputs. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Source+Serif+4:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bp-ink: #16213e;            /* near-navy, primary text (light mode) */
+  --bp-ink-soft: #46506b;       /* secondary text / metadata */
+  --bp-accent: #c0851a;         /* warm amber rule + numerals */
+  --bp-accent-bright: #e0a93f;  /* amber for dark backgrounds */
+  --bp-panel: #faf7f0;          /* parchment panel */
+  --bp-hairline: #dcd6c8;       /* subtle dividers */
+  --bp-heading-dark: #f3efe3;   /* warm near-parchment for dark-mode headings */
+
+  --bp-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --bp-body: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  --bp-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+/* ---- Fonts: both modes ------------------------------------------------- */
+.bd-article,
+.bd-article p,
+.bd-article li {
+  font-family: var(--bp-body);
+  font-size: 1.02rem;
+}
+
+.bd-article h1,
+.bd-article h2,
+.bd-article h3,
+.bd-article h4 {
+  font-family: var(--bp-display);
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.01em;
+}
+
+.bd-article h2 {
+  border-bottom: 1px solid var(--pst-color-border, rgba(128, 128, 128, 0.25));
+  padding-bottom: 0.25rem;
+}
+
+code, pre, .highlight {
+  font-family: var(--bp-mono);
+}
+.cell_output pre { font-family: var(--bp-mono); font-size: 0.85rem; }
+
+/* ---- Brand heading colour + links: LIGHT mode -------------------------- */
+html[data-theme="light"] .bd-article h1,
+html[data-theme="light"] .bd-article h2,
+html[data-theme="light"] .bd-article h3,
+html[data-theme="light"] .bd-article h4 { color: var(--bp-ink); }
+html[data-theme="light"] .bd-article a { color: var(--bp-accent); }
+html[data-theme="light"] .bd-article a:hover { color: var(--bp-ink); }
+
+/* ---- Brand heading colour + links: DARK mode --------------------------- */
+html[data-theme="dark"] .bd-article h1,
+html[data-theme="dark"] .bd-article h2,
+html[data-theme="dark"] .bd-article h3,
+html[data-theme="dark"] .bd-article h4 { color: var(--bp-heading-dark); }
+html[data-theme="dark"] .bd-article a { color: var(--bp-accent-bright); }
+html[data-theme="dark"] .bd-article a:hover { color: #ffffff; }
+
+/* ---- Hidden solution cells (stripped, policy=input) -------------------- */
+div.cell[class*="tag_solution"] div.cell_input,
+.bp-solution-hidden div.cell_input { display: none; }
+
+/* ---- Admonitions match the palette ------------------------------------ */
+.admonition { border-left-color: var(--bp-accent) !important; }
+
+/* ======================================================================= */
+/*  Course component classes — referenced by the static HTML blocks the    */
+/*  notebooks embed (header/footer banner, command card, watch-out beat).  */
+/* ======================================================================= */
+
+/* Header / footer banner: parchment panel, amber left rule. Mirrors the
+   ecp.style.header()/footer() look, but here it is plain HTML in a hidden
+   Markdown cell rather than a Python call (bash kernel can't call Python). */
+.bp-banner {
+  font-family: var(--bp-body);
+  background: var(--bp-panel);
+  border: 1px solid var(--bp-hairline);
+  border-left: 6px solid var(--bp-accent);
+  border-radius: 6px;
+  padding: 22px 28px;
+  margin: 4px 0 26px 0;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 8px 24px -18px rgba(22,33,62,.5);
+  color: var(--bp-ink);
+}
+.bp-banner .bp-series {
+  font-family: var(--bp-mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--bp-accent); font-weight: 600;
+  margin-bottom: 4px;
+}
+.bp-banner .bp-title {
+  font-family: var(--bp-display); font-weight: 900; font-size: 22px;
+  line-height: 1.15; color: var(--bp-ink); font-variation-settings: 'opsz' 144;
+}
+.bp-banner .bp-meta {
+  font-family: var(--bp-mono); font-size: 11px; letter-spacing: .06em;
+  color: var(--bp-ink-soft);
+}
+.bp-banner .bp-rule {
+  border-top: 1px solid var(--bp-hairline); margin-top: 16px; padding-top: 12px;
+}
+/* The banner sits on parchment in BOTH modes, so pin dark text inside it even
+   in dark mode (otherwise the theme's near-white body colour would vanish). */
+.bp-banner, .bp-banner .bp-title { color: var(--bp-ink) !important; }
+.bp-banner a { color: var(--bp-accent); border-bottom: 1px solid var(--bp-accent); text-decoration: none; }
+
+/* Command card: the structural unit for every command introduced. A titled
+   panel — the command + its one-line job, then its workhorse flags, then a
+   pointer to man/--help/tldr. Defined here so the notebook HTML is just
+   semantic structure. */
+.bp-card {
+  font-family: var(--bp-body);
+  border: 1px solid var(--bp-hairline);
+  border-left: 4px solid var(--bp-accent);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 18px 0;
+  background: color-mix(in srgb, var(--bp-panel) 55%, transparent);
+}
+.bp-card .bp-card-cmd {
+  font-family: var(--bp-mono); font-weight: 600; font-size: 15px;
+  color: var(--bp-accent);
+}
+.bp-card .bp-card-job { font-style: italic; }
+.bp-card table { margin: 8px 0 4px 0; font-size: 0.95rem; }
+.bp-card td:first-child {
+  font-family: var(--bp-mono); white-space: nowrap; padding-right: 1.2em;
+  color: var(--bp-ink-soft);
+}
+.bp-card .bp-card-more {
+  font-family: var(--bp-mono); font-size: 11px; letter-spacing: .04em;
+  color: var(--bp-ink-soft); margin-top: 6px;
+}
+
+/* "Watch out" beat for gotcha flags (rm -r, sort -n, grep -F, …): a short
+   wry-voice warning, visually distinct from a neutral command card. */
+.bp-watchout {
+  border-left: 4px solid #b4452f;
+  background: color-mix(in srgb, #b4452f 8%, transparent);
+  border-radius: 4px;
+  padding: 10px 16px;
+  margin: 14px 0;
+  font-size: 0.97rem;
+}
+.bp-watchout strong { color: #b4452f; }
+
+/* ---- Figure-caption labels (kept for parity with ECP, if figures appear) */
+figcaption .caption-number,
+.bd-article figcaption .caption-number {
+  display: inline-block; margin-right: 0.3em; font-weight: 700; font-style: normal;
+}
+figcaption .caption-number::after { content: "."; }
+html[data-theme="light"] figcaption .caption-number { color: var(--bp-accent); }
+html[data-theme="dark"] figcaption .caption-number { color: var(--bp-accent-bright); }

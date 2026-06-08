@@ -1,0 +1,1075 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1 The shell and the terminal &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=cc6f8bd1" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01-orientation/01-shell-and-terminal';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Introduction to the Bash Shell" href="../00-front-matter/preface.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1 The shell and the terminal</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/main?urlpath=tree/notebooks/01-orientation/01-shell-and-terminal.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01-orientation/01-shell-and-terminal.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/01-orientation/01-shell-and-terminal.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1 The shell and the terminal</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-the-lay-of-the-land">First, the lay of the land</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-a-shell">Getting a shell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prompt-and-the-anatomy-of-a-command">The prompt and the anatomy of a command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-first-commands">Your first commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help-the-most-important-skill-in-the-course">Getting help — the most important skill in the course</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-speak-to-the-shell">Exercise 1 (worked) — Speak to the shell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-who-and-where-am-i">Exercise 2 (your turn) — Who and where am I</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-worked-read-the-manual">Exercise 3 (worked) — Read the manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-your-turn-find-a-flag-yourself">Exercise 4 (your turn) — Find a flag yourself</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-your-turn-optional-recall-and-reuse">Exercise 5 (your turn, optional) — Recall and reuse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="the-shell-and-the-terminal">
+<h1>1 The shell and the terminal<a class="headerlink" href="#the-shell-and-the-terminal" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part I — Orientation</span>
+    <span class="bp-meta">Notebook&nbsp;1</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    What a terminal, a shell, and bash each are — and how to run your first
+    commands and find help on your own.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>This is the first step, and it assumes the truest beginning: that you have never
+opened a terminal, and that you would like to. No prior command-line experience
+is taken for granted, and <strong>no physics is needed — not here, not anywhere in this
+course.</strong> Later notebooks borrow real scientific files to practise on, but they
+are only ever <em>text to operate on</em>; you will never need to know what they mean.</p>
+<p>A confession about the premise: “the terminal” has a reputation for being arcane,
+a black rectangle for people with strong opinions about keyboards. It is not. It
+is one of the simplest tools you will ever use — a place to type the name of a
+thing you want done and read back what happened. This course exists because
+students arrive at the graduate <em>Molecular and Materials Modelling</em> course with
+wildly uneven footing — some fluent at the shell, some who have never opened one
+— and nothing computational can really begin until that gap is closed. We close
+it here.</p>
+</section>
+<section id="first-the-lay-of-the-land">
+<h2>First, the lay of the land<a class="headerlink" href="#first-the-lay-of-the-land" title="Link to this heading">#</a></h2>
+<p>Three words get used interchangeably and shouldn’t be. Pulling them apart now
+saves confusion later.</p>
+<ul class="simple">
+<li><p>The <strong>terminal</strong> is the <em>window</em> — the program that draws the text and takes
+your keystrokes. It is a viewport, nothing more.</p></li>
+<li><p>The <strong>shell</strong> is the program <em>running inside</em> that window. It reads the command
+you type, works out what you meant, and asks the operating system to carry it
+out. <strong>bash</strong> is one such shell — the one this course teaches, and the default
+on most Linux systems.</p></li>
+<li><p>The <strong>operating system</strong> does the actual work: it owns the files, the memory,
+the hardware, and it hands results back up the chain.</p></li>
+</ul>
+<p>So a command you type travels: from <strong>you</strong>, into the <strong>terminal</strong>, which passes
+it to the <strong>shell</strong> (bash), which asks the <strong>operating system</strong> to do the thing —
+and the answer comes back the same way.</p>
+<div class="bp-banner" style="background:#faf7f0;">
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px;color:#16213e;">
+    <span style="padding:6px 12px;border:1px solid #dcd6c8;border-radius:5px;background:#fff;">You</span>
+    <span style="color:#c0851a;font-weight:700;">&rarr;</span>
+    <span style="padding:6px 12px;border:1px solid #dcd6c8;border-radius:5px;background:#fff;">Terminal <span style="color:#46506b;">(the window)</span></span>
+    <span style="color:#c0851a;font-weight:700;">&rarr;</span>
+    <span style="padding:6px 12px;border:2px solid #c0851a;border-radius:5px;background:#fff;">Shell &mdash; <b>bash</b></span>
+    <span style="color:#c0851a;font-weight:700;">&rarr;</span>
+    <span style="padding:6px 12px;border:1px solid #dcd6c8;border-radius:5px;background:#fff;">Operating system <span style="color:#46506b;">(does the work)</span></span>
+  </div>
+</div>
+<p>That is the whole mental model you need for now. We are not going to talk about
+processes or kernels; you can drive a car without a theory of combustion.</p>
+</section>
+<section id="getting-a-shell">
+<h2>Getting a shell<a class="headerlink" href="#getting-a-shell" title="Link to this heading">#</a></h2>
+<p>The fastest way to follow along, with nothing to install: click the <strong>launch
+button (Binder)</strong> in the toolbar at the top of this page. It opens a real,
+throwaway bash session in your browser — a genuine shell, with this course’s
+files already in place. When you close the tab it vanishes, so you can type
+freely and break nothing.</p>
+<p>If you would rather use your own machine, you already have a terminal:</p>
+<ul class="simple">
+<li><p><strong>macOS</strong> — open <em>Terminal</em> (Applications → Utilities, or Spotlight “Terminal”).</p></li>
+<li><p><strong>Linux</strong> — open the terminal app your desktop ships (often Ctrl+Alt+T).</p></li>
+<li><p><strong>Windows</strong> — install <strong>WSL</strong> (Windows Subsystem for Linux), which gives you a
+real bash.</p></li>
+</ul>
+<p>And here is the quiet point of this whole notebook: <strong>the grey cells below are a
+live bash session.</strong> Every command in them was really run, and the text beneath
+each one is really what bash printed. Reading down the page, you are already
+watching a shell work.</p>
+</section>
+<section id="the-prompt-and-the-anatomy-of-a-command">
+<h2>The prompt and the anatomy of a command<a class="headerlink" href="#the-prompt-and-the-anatomy-of-a-command" title="Link to this heading">#</a></h2>
+<p>When a shell is ready for you, it prints a <strong>prompt</strong> and waits. A prompt often
+ends in <code class="docutils literal notranslate"><span class="pre">$</span></code> and may show your username, the machine, and where you are — for
+example <code class="docutils literal notranslate"><span class="pre">you&#64;laptop:~$</span></code>. Whatever it shows, the <code class="docutils literal notranslate"><span class="pre">$</span></code> is the shell saying “your
+turn”.</p>
+<p>You answer by typing a <strong>command</strong> and pressing Enter. Nearly every command has
+the same three-part shape, and learning to see it is most of the battle:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>command   [options]   [arguments]
+   |           |            |
+ what to     how to     what to
+   do        do it      do it to
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The <strong>command</strong> is the program’s name — what you want done.</p></li>
+<li><p><strong>Options</strong> (also called <strong>flags</strong>) tune <em>how</em> it runs. They usually start with
+a dash: <code class="docutils literal notranslate"><span class="pre">-l</span></code>, <code class="docutils literal notranslate"><span class="pre">--all</span></code>. Most are optional.</p></li>
+<li><p><strong>Arguments</strong> are what the command acts <em>on</em> — a file, some text, a name.</p></li>
+</ul>
+<p>Here is the smallest possible example. The command is <code class="docutils literal notranslate"><span class="pre">echo</span></code>; it has no options;
+its single argument is the word <code class="docutils literal notranslate"><span class="pre">hello</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>hello
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hello
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">echo</span></code> did exactly one thing: it printed its argument back to you. Hold on to the
+three words — <strong>command</strong>, <strong>option/flag</strong>, <strong>argument</strong> — because the entire
+course is built on them.</p>
+</section>
+<section id="your-first-commands">
+<h2>Your first commands<a class="headerlink" href="#your-first-commands" title="Link to this heading">#</a></h2>
+<p>Each new command below comes as a <strong>command card</strong>: what it does, the handful of
+flags worth knowing, and where to look for the rest. You are not meant to
+memorise these. You are meant to recognise the shape and know how to look things
+up — which is the next section’s whole subject.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">echo</span> — <span class="bp-card-job">print its
+  arguments back to standard output.</span>
+  <table>
+    <tr><td>-n</td><td>do <em>not</em> add the trailing newline</td></tr>
+    <tr><td>-e</td><td>interpret backslash escapes such as <code>\n</code> (newline) and <code>\t</code> (tab)</td></tr>
+  </table>
+  <div class="bp-card-more">more: <code>help echo</code></div>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello from the shell!&quot;</span>
+<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;two\tcolumns\nand a second line&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from the shell!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>two	columns
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>and a second line
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">pwd</span> — <span class="bp-card-job">print the
+  working directory: where you currently are in the filesystem.</span>
+  <div class="bp-card-more">more: <code>man pwd</code></div>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer/notebooks/01-orientation
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">whoami</span> — <span class="bp-card-job">print the
+  username the shell is running as.</span>
+  <div class="bp-card-more">more: <code>man whoami</code></div>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>whoami
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">date</span> — <span class="bp-card-job">print the
+  current date and time.</span>
+  <table>
+    <tr><td>+FORMAT</td><td>print using a format string — <code>%F</code> is the date as <code>YYYY-MM-DD</code>, <code>%T</code> the time as <code>HH:MM:SS</code></td></tr>
+  </table>
+  <div class="bp-card-more">more: <code>man date</code> · <code>date --help</code></div>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date
+date<span class="w"> </span>+<span class="s2">&quot;%F %T&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun  8 23:50:59 UTC 2026
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-08 23:50:59
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">clear</span> — <span class="bp-card-job">wipe the
+  visible screen, giving you a clean prompt.</span>
+  <div class="bp-card-more">more: <code>man clear</code> · or just press <kbd>Ctrl</kbd>+<kbd>L</kbd></div>
+</div>
+<p>There is nothing to <em>print</em> here: <code class="docutils literal notranslate"><span class="pre">clear</span></code> works by sending the terminal a short
+control code that means “blank yourself”. In a notebook there is no screen to
+blank, so let us simply <em>look</em> at the code it would send (the <code class="docutils literal notranslate"><span class="pre">^[</span></code> is the escape
+character):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">TERM</span><span class="o">=</span>xterm<span class="w"> </span>clear<span class="w"> </span><span class="p">|</span><span class="w"> </span>cat<span class="w"> </span>-v
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^[[H^[[2J^[[3J
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">history</span> — <span class="bp-card-job">list the
+  commands you have run, newest last, each with a number.</span>
+  <table>
+    <tr><td>-c</td><td>clear the history list</td></tr>
+  </table>
+  <div class="bp-card-more">more: <code>help history</code> · re-run entry <code>N</code> with <code>!N</code>, or search with <kbd>Ctrl</kbd>+<kbd>R</kbd></div>
+</div>
+<p>In your own shell, <code class="docutils literal notranslate"><span class="pre">history</span></code> fills up as you type. Here we seed it with a couple
+of entries so there is something to show:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">history</span><span class="w"> </span>-c
+<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;echo &quot;Hello from the shell!&quot;&#39;</span>
+<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;pwd&#39;</span>
+<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;whoami&#39;</span>
+<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;date +&quot;%F&quot;&#39;</span>
+<span class="nb">history</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    1  echo &quot;Hello from the shell!&quot;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    2  pwd
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    3  whoami
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    4  date +&quot;%F&quot;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    5  history
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="getting-help-the-most-important-skill-in-the-course">
+<h2>Getting help — the most important skill in the course<a class="headerlink" href="#getting-help-the-most-important-skill-in-the-course" title="Link to this heading">#</a></h2>
+<p>Nobody memorises flags. Not your instructor, not the people who wrote these
+tools. What a fluent user actually knows is narrower and far more useful: that a
+flag <em>probably exists</em> for what they want, and how to surface it in ten seconds.
+That skill — looking it up — is worth more than any list you could cram, and it
+is the one this course returns to again and again. Three tools cover almost
+everything.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">man</span> — <span class="bp-card-job">open the full
+  manual page for a command.</span>
+  <table>
+    <tr><td>-k <em>word</em></td><td>search every manual's summary line for a keyword (same as <code>apropos</code>) — for when you don't know the command's name yet</td></tr>
+  </table>
+  <div class="bp-card-more">press <kbd>q</kbd> to quit the manual · <code>man man</code> documents <code>man</code> itself</div>
+</div>
+<p>A manual page is thorough and a little dense; you skim it, you do not read it like
+a novel. Here are the first lines of the page for <code class="docutils literal notranslate"><span class="pre">ls</span></code> (we tidy the formatting
+with <code class="docutils literal notranslate"><span class="pre">col</span> <span class="pre">-b</span></code> and take only the top with <code class="docutils literal notranslate"><span class="pre">head</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>man<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>col<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LS(1)				 User Commands				 LS(1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NAME
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       ls - list directory contents
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SYNOPSIS
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       ls [OPTION]... [FILE]...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">--help</span> — <span class="bp-card-job">a flag most
+  commands accept to print a short usage summary.</span>
+  <div class="bp-card-more">quicker than <code>man</code> for a fast reminder; works on nearly every external command</div>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage: date [OPTION]... [+FORMAT]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  or:  date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Display date and time in the given FORMAT.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>With -s, or with [MMDDhhmm[[CC]YY][.ss]], set the date and time.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-watchout">
+  <strong>Watch out:</strong> a few commands — <code>echo</code>, <code>cd</code>,
+  <code>history</code> — are built into bash itself rather than being separate
+  programs, and for those <code>--help</code> backfires: <code>echo --help</code>
+  just prints the words <code>--help</code>! For these <em>builtins</em>, ask bash
+  directly with <code>help</code>: try <code>help echo</code>. (We use exactly
+  this in the last exercise.)
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">tldr</span> — <span class="bp-card-job">show a few
+  practical, copy-paste examples for a command, skipping the exhaustive manual.</span>
+  <div class="bp-card-more">often the friendliest first look — but it may need installing (<code>brew install tldr</code>, <code>npm install -g tldr</code>); when it is missing, <code>--help</code> is always there</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tldr</span></code> is a community project, so it is not guaranteed to be on every machine —
+which is the whole reason <code class="docutils literal notranslate"><span class="pre">--help</span></code> is worth knowing: it ships with the command
+itself and is <em>always</em> available. When in doubt, reach for <code class="docutils literal notranslate"><span class="pre">--help</span></code> first.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>From here on, each exercise follows the same rhythm: a short task, a place for
+your answer, and an automatic check that confirms the result with a green ✓. On
+the published page the answer code is hidden — you see the problem and the
+checkmark; the worked solutions are available on request (see the foot of the
+notebook).</p>
+<section id="exercise-1-worked-speak-to-the-shell">
+<h3>Exercise 1 (worked) — Speak to the shell<a class="headerlink" href="#exercise-1-worked-speak-to-the-shell" title="Link to this heading">#</a></h3>
+<p>Print a friendly greeting with <code class="docutils literal notranslate"><span class="pre">echo</span></code>, then print <strong>today’s date in ISO form</strong>
+(<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>) using <code class="docutils literal notranslate"><span class="pre">date</span></code> with a format string.</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from the shell!
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> today&#39;s date is in ISO 8601 form, YYYY-MM-DD
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-2-your-turn-who-and-where-am-i">
+<h3>Exercise 2 (your turn) — Who and where am I<a class="headerlink" href="#exercise-2-your-turn-who-and-where-am-i" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">whoami</span></code> and <code class="docutils literal notranslate"><span class="pre">pwd</span></code> to find out who the shell thinks you are and where you
+are standing, then combine both into a single line that reads
+<code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">am</span> <span class="pre">USER</span> <span class="pre">in</span> <span class="pre">DIR</span></code>. (Hint: a command in <code class="docutils literal notranslate"><span class="pre">$(</span> <span class="pre">…</span> <span class="pre">)</span></code> is replaced by its output, so
+<code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">&quot;...</span> <span class="pre">$(whoami)</span> <span class="pre">...&quot;</span></code> drops your username straight into the sentence.)</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I am runner in /home/runner/work/bash-primer/bash-primer/notebooks/01-orientation
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the line is non-empty and names you (runner)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3-worked-read-the-manual">
+<h3>Exercise 3 (worked) — Read the manual<a class="headerlink" href="#exercise-3-worked-read-the-manual" title="Link to this heading">#</a></h3>
+<p>Pure tool literacy, no science in sight. Consult the help for <code class="docutils literal notranslate"><span class="pre">ls</span></code> (the
+list-files command) and find out what two of its most common flags do: <strong><code class="docutils literal notranslate"><span class="pre">-l</span></code></strong>
+and <strong><code class="docutils literal notranslate"><span class="pre">-a</span></code></strong>. The quickest route is <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">--help</span></code>; the fuller one is <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ls</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^[[:space:]]*-(a|l)[ ,]&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  -a, --all                  do not ignore entries starting with .
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  -l                         use a long listing format
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-l  long format: one entry per line, with permissions, owner, size, and date
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-a  all: include hidden entries (those whose names begin with a dot)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> ls -la runs and produces a listing
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-your-turn-find-a-flag-yourself">
+<h3>Exercise 4 (your turn) — Find a flag yourself<a class="headerlink" href="#exercise-4-your-turn-find-a-flag-yourself" title="Link to this heading">#</a></h3>
+<p>A gentle taste of the course’s core skill: finding a flag without being told it.
+You want <code class="docutils literal notranslate"><span class="pre">echo</span></code> to print something <strong>without</strong> the usual newline at the end. The
+flag exists — find it. Because <code class="docutils literal notranslate"><span class="pre">echo</span></code> is a builtin, ask bash with <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">echo</span></code>
+(remember the watch-out above), spot the flag, and demonstrate it.</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>echo: echo [-neE] [arg ...]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      -n	do not append a newline
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>no trailing newline here
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> echo -n suppresses the trailing newline (2 bytes, not 3)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-5-your-turn-optional-recall-and-reuse">
+<h3>Exercise 5 (your turn, optional) — Recall and reuse<a class="headerlink" href="#exercise-5-your-turn-optional-recall-and-reuse" title="Link to this heading">#</a></h3>
+<p>You rarely retype a command — you fish it back out of your history. Run
+<code class="docutils literal notranslate"><span class="pre">history</span></code> to see the list, then, in your own shell, re-run an earlier entry with
+<code class="docutils literal notranslate"><span class="pre">!N</span></code> (where <code class="docutils literal notranslate"><span class="pre">N</span></code> is its number) or hunt for it with <kbd>Ctrl</kbd>+<kbd>R</kbd>.</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    1  pwd
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    2  ls -la
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    3  date +&quot;%F&quot;
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    4  history
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> your command history is non-empty
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now stand in a shell, type a command, read what comes back, and — most
+importantly — find out what you don’t know on your own. That last skill is the
+one that compounds. What you cannot yet do is <em>move</em>: every command so far has
+run wherever the shell happened to drop you. The next notebook gives you the map
+and the legs — the <strong>filesystem</strong>, and how to walk through it — which is the
+ground every later trick, from finding files to extracting numbers from them,
+stands on.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Use the launch button (Binder) in the toolbar above to open a real bash
+    session and run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/01-orientation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../00-front-matter/preface.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to the Bash Shell</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-the-lay-of-the-land">First, the lay of the land</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-a-shell">Getting a shell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prompt-and-the-anatomy-of-a-command">The prompt and the anatomy of a command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-first-commands">Your first commands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help-the-most-important-skill-in-the-course">Getting help — the most important skill in the course</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-speak-to-the-shell">Exercise 1 (worked) — Speak to the shell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-who-and-where-am-i">Exercise 2 (your turn) — Who and where am I</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-worked-read-the-manual">Exercise 3 (worked) — Read the manual</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-your-turn-find-a-flag-yourself">Exercise 4 (your turn) — Find a flag yourself</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-your-turn-optional-recall-and-reuse">Exercise 5 (your turn, optional) — Recall and reuse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
