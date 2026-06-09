@@ -1,0 +1,1008 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2 Navigating the filesystem &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=4c0722a5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01-orientation/02-navigating-the-filesystem';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="1 The shell and the terminal" href="01-shell-and-terminal.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2 Navigating the filesystem</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01-orientation/02-navigating-the-filesystem.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/01-orientation/02-navigating-the-filesystem.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2 Navigating the filesystem</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filesystem-is-a-tree">The filesystem is a tree</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-am-i-pwd-and-the-prompt">Where am I — <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and the prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-around-cd">Moving around — <code class="docutils literal notranslate"><span class="pre">cd</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-vs-relative-paths">Absolute vs relative paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#listing-ls">Listing — <code class="docutils literal notranslate"><span class="pre">ls</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seeing-structure-tree">Seeing structure — <code class="docutils literal notranslate"><span class="pre">tree</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tab-completion-the-navigation-superpower">Tab completion — the navigation superpower</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-where-am-i-what-s-here">Exercise 1 (worked) — Where am I, what’s here</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-reach-the-data-directory">Exercise 2 (your turn) — Reach the data directory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-your-turn-same-file-two-paths">Exercise 3 (your turn) — Same file, two paths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-worked-visualize-the-tree">Exercise 4 (worked) — Visualize the tree</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-your-turn-the-right-ls-flags">Exercise 5 (your turn) — The right <code class="docutils literal notranslate"><span class="pre">ls</span></code> flags</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-terminal-only-tab-completion">Exercise 6 (terminal-only) — Tab completion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="navigating-the-filesystem">
+<h1>2 Navigating the filesystem<a class="headerlink" href="#navigating-the-filesystem" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part I — Orientation</span>
+    <span class="bp-meta">Notebook&nbsp;2</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The filesystem as a tree, and how to move through it: where you are, how to
+    get elsewhere with paths, and how to see what is around you.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>In Notebook 1 you learned to run a command and to find help on your own. But a
+command always acts <em>somewhere</em> — it lists <em>this</em> folder, opens <em>that</em> file. So
+the next question is <strong>where</strong>: where you are in the filesystem, and how to get
+to where the file you want lives.</p>
+<p>The filesystem is a tree of folders, and this notebook is about walking it. Our
+playground is the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> folder — <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> trajectories and
+simulation inputs from the Molecular and Materials Modelling course. <strong>You do not
+need to know what any of these files are.</strong> They are just files in folders; the
+skill is reaching them, and that skill is identical whether the file holds atomic
+coordinates or a grocery list.</p>
+</section>
+<section id="the-filesystem-is-a-tree">
+<h2>The filesystem is a tree<a class="headerlink" href="#the-filesystem-is-a-tree" title="Link to this heading">#</a></h2>
+<p>Every file on the machine lives in a directory (a “folder”), directories nest
+inside other directories, and the whole thing hangs off a single top called the
+<strong>root</strong>, written <code class="docutils literal notranslate"><span class="pre">/</span></code>. Follow the branches down and you reach every file; the
+list of branches you followed, joined by slashes, is the file’s <strong>path</strong> — its
+address in the tree.</p>
+<p>Two landmarks you will lean on constantly: <code class="docutils literal notranslate"><span class="pre">/</span></code> is the root of everything, and
+<strong><code class="docutils literal notranslate"><span class="pre">~</span></code></strong> is <em>your home directory</em>, the branch you start on and where your own
+files live. Here is the patch of tree we are about to explore:</p>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">The course data, as a tree</div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">/                              the root — everything is under here
+└── ~  <span style="color:#8aa0b4;">(your home directory)</span>      where you start
+    └── data/                  the playground
+        ├── trajectories/
+        │   ├── lj38-optimization.xyz
+        │   └── lj38-relaxed.xyz
+        ├── inputs/
+        │   ├── geo-opt.inp
+        │   ├── production-md.inp
+        │   └── replica-exchange.lammps
+        ├── results/
+        │   ├── sn2-neb.ener
+        │   └── pt-slab.xyz
+        └── .dataset-notes     <span style="color:#8aa0b4;">(hidden — see ls -a, below)</span></pre>
+</div>
+</section>
+<section id="where-am-i-pwd-and-the-prompt">
+<h2>Where am I — <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and the prompt<a class="headerlink" href="#where-am-i-pwd-and-the-prompt" title="Link to this heading">#</a></h2>
+<p>When you are unsure where you stand, ask. <code class="docutils literal notranslate"><span class="pre">pwd</span></code> (“print working directory”) prints
+the absolute path of the directory you are currently in:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is the <strong>working directory</strong> — the folder every relative command is measured
+from. There is a quieter way to know it, too: the <strong>prompt itself can show your
+location.</strong> In this course’s live terminal the prompt is set to display the
+working directory, so it reads something like <code class="docutils literal notranslate"><span class="pre">~/data</span> <span class="pre">$</span></code> — the <code class="docutils literal notranslate"><span class="pre">$</span></code> still means
+“your turn”, but the part before it tells you where you are.</p>
+<div class="tip admonition">
+<p class="admonition-title">See it for yourself</p>
+<p>The rendered cells on this page keep a plain <code class="docutils literal notranslate"><span class="pre">$</span></code> prompt, because a printed page
+cannot know where <em>you</em> are. To watch the prompt track your location as you move,
+open the <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>
+and run a few <code class="docutils literal notranslate"><span class="pre">cd</span></code> commands — the path before the <code class="docutils literal notranslate"><span class="pre">$</span></code> changes with every step.</p>
+</div>
+</section>
+<section id="moving-around-cd">
+<h2>Moving around — <code class="docutils literal notranslate"><span class="pre">cd</span></code><a class="headerlink" href="#moving-around-cd" title="Link to this heading">#</a></h2>
+<p>To go somewhere, use <code class="docutils literal notranslate"><span class="pre">cd</span></code> (“change directory”) and give it the path of where you
+want to be.</p>
+<div class="bp-card" id="cmd-cd"><span class="bp-card-cmd">cd</span> &mdash; <span class="bp-card-job">change the working directory — move around the tree.</span><table><tr><td>&lt;dir&gt;</td><td>go into a directory (by absolute or relative path)</td></tr><tr><td>~  /  cd</td><td>go to your home directory (bare <code>cd</code> does this too)</td></tr><tr><td>..</td><td>go up to the parent directory</td></tr><tr><td>-</td><td>go back to the previous directory you were in</td></tr><tr><td>/abs/path</td><td>go to an absolute location, counted from the root <code>/</code></td></tr></table><div class="bp-card-more">more: <code>help cd</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> bare <code>cd</code> with no argument jumps to your home directory — surprising the first time</div><p>Let us walk down into the data and back up. <code class="docutils literal notranslate"><span class="pre">cd</span></code> prints nothing when it succeeds —
+just like a real terminal, the only sign it worked is that the next <code class="docutils literal notranslate"><span class="pre">pwd</span></code> reports
+the new location:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer/data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>..
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">..</span></code> meant “up one level”, so we landed back where we started. That little
+<code class="docutils literal notranslate"><span class="pre">..</span></code> is one of a handful of path shorthands worth knowing cold — which brings us
+to the heart of the notebook.</p>
+</section>
+<section id="absolute-vs-relative-paths">
+<h2>Absolute vs relative paths<a class="headerlink" href="#absolute-vs-relative-paths" title="Link to this heading">#</a></h2>
+<p>There are two ways to name any place in the tree, and the difference is the single
+most useful idea in this notebook.</p>
+<ul class="simple">
+<li><p>An <strong>absolute path</strong> starts from the root <code class="docutils literal notranslate"><span class="pre">/</span></code> and spells out every branch:
+<code class="docutils literal notranslate"><span class="pre">/home/you/data/inputs/geo-opt.inp</span></code>. It means the same thing no matter where you
+are standing — it is the file’s full address.</p></li>
+<li><p>A <strong>relative path</strong> starts from <em>where you are now</em> (your working directory):
+from the repo root, the same file is just <code class="docutils literal notranslate"><span class="pre">data/inputs/geo-opt.inp</span></code>. Shorter,
+but its meaning depends on where you stand.</p></li>
+</ul>
+<p>Three shorthands appear in relative paths constantly: <strong><code class="docutils literal notranslate"><span class="pre">.</span></code></strong> is “here” (the
+current directory), <strong><code class="docutils literal notranslate"><span class="pre">..</span></code></strong> is “up one level” (the parent), and <strong><code class="docutils literal notranslate"><span class="pre">~</span></code></strong> is your
+home directory.</p>
+<p>Here is the same file reached both ways. First relatively, from where we are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data/results/sn2-neb.ener
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/sn2-neb.ener
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the absolute path to the very same file — <code class="docutils literal notranslate"><span class="pre">$(pwd)</span></code> fills in the full address
+of where we are, and we tack the rest on:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/data/results/sn2-neb.ener&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer/data/results/sn2-neb.ener
+</pre></div>
+</div>
+</div>
+</div>
+<p>Same file, two names. Use a relative path when the thing is near you (less to
+type); reach for an absolute path when you need to name a place unambiguously,
+from anywhere.</p>
+</section>
+<section id="listing-ls">
+<h2>Listing — <code class="docutils literal notranslate"><span class="pre">ls</span></code><a class="headerlink" href="#listing-ls" title="Link to this heading">#</a></h2>
+<p>You have met <code class="docutils literal notranslate"><span class="pre">ls</span></code> already; now meet its workhorse flags. They turn a bare list of
+names into something you can actually read — sizes, dates, hidden files, and more.</p>
+<div class="bp-card" id="cmd-ls"><span class="bp-card-cmd">ls</span> &mdash; <span class="bp-card-job">list directory contents.</span><table><tr><td>-l</td><td>long format: permissions, size, owner, timestamp</td></tr><tr><td>-a</td><td>include hidden dotfiles</td></tr><tr><td>-h</td><td>human-readable sizes (with <code>-l</code>)</td></tr><tr><td>-t</td><td>sort by modification time, newest first</td></tr><tr><td>-R</td><td>recurse into subdirectories</td></tr></table><div class="bp-card-more">more: <code>man ls</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> dotfiles stay hidden without <code>-a</code>; flags combine, e.g. <code>ls -lh</code></div><p>A one-line motivation, then the physics-optional release valve: the <code class="docutils literal notranslate"><span class="pre">data/</span></code> files
+are simulation outputs, and a real reason to list them is to see which run
+produced the most data. You do not need to know what the files <em>are</em> — we are only
+reading their <strong>names, sizes, and dates</strong>. Plain <code class="docutils literal notranslate"><span class="pre">ls</span></code> just names them:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data/trajectories
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38-optimization.xyz  lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">-l</span></code> for the long form — one file per line, with permissions, size (in bytes),
+and a timestamp:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-l<span class="w"> </span>data/trajectories
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 160
+-rw-r--r-- 1 runner runner 158697 Apr  1  2023 lj38-optimization.xyz
+-rw-r--r-- 1 runner runner   2517 Apr  1  2023 lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Those byte counts are hard to eyeball. Flags combine, so add <code class="docutils literal notranslate"><span class="pre">-h</span></code> for
+human-readable sizes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-lh<span class="w"> </span>data/trajectories
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 160K
+-rw-r--r-- 1 runner runner 155K Apr  1  2023 lj38-optimization.xyz
+-rw-r--r-- 1 runner runner 2.5K Apr  1  2023 lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the size difference jumps out: one trajectory is far larger than the other.
+And remember the gotcha from the card — without <code class="docutils literal notranslate"><span class="pre">-a</span></code>, the hidden <code class="docutils literal notranslate"><span class="pre">.dataset-notes</span></code>
+file is invisible:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-a<span class="w"> </span>data
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.  ..  .dataset-notes  README.md  inputs  results  trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<p>There it is, alongside <code class="docutils literal notranslate"><span class="pre">.</span></code> (this directory) and <code class="docutils literal notranslate"><span class="pre">..</span></code> (its parent).</p>
+</section>
+<section id="seeing-structure-tree">
+<h2>Seeing structure — <code class="docutils literal notranslate"><span class="pre">tree</span></code><a class="headerlink" href="#seeing-structure-tree" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ls</span></code> shows one directory at a time. To see a whole branch at a glance — folders
+within folders — use <code class="docutils literal notranslate"><span class="pre">tree</span></code>:</p>
+<div class="bp-card" id="cmd-tree"><span class="bp-card-cmd">tree</span> &mdash; <span class="bp-card-job">show a directory and everything beneath it as an indented tree.</span><table><tr><td>-L n</td><td>descend at most n levels (keep deep trees readable)</td></tr><tr><td>-d</td><td>show directories only, not files</td></tr></table><div class="bp-card-more">more: <code>man tree</code> · <code>tree --help</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> not always preinstalled — it ships in this course&#x27;s image; elsewhere install it with your package manager</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tree<span class="w"> </span>-L<span class="w"> </span><span class="m">2</span><span class="w"> </span>data
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
+├── README.md
+├── inputs
+│   ├── geo-opt.inp
+│   ├── production-md.inp
+│   └── replica-exchange.lammps
+├── results
+│   ├── pt-slab.xyz
+│   └── sn2-neb.ener
+└── trajectories
+    ├── lj38-optimization.xyz
+    └── lj38-relaxed.xyz
+4 directories, 8 files
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is exactly the schematic from the top of the notebook, drawn by the machine
+from the real folders. <code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">2</span></code> kept it to two levels deep; drop it on a big tree
+and you may get more than you bargained for.</p>
+</section>
+<section id="tab-completion-the-navigation-superpower">
+<h2>Tab completion — the navigation superpower<a class="headerlink" href="#tab-completion-the-navigation-superpower" title="Link to this heading">#</a></h2>
+<p>Everything above you can do with careful typing. This last one you can only do by
+<em>pressing a key</em>, so it cannot be shown in a printed cell — but it is the single
+biggest speed-up in the whole notebook, so do not skip it.</p>
+<p>Start typing a command or a path and press <strong>Tab</strong>: the shell completes it for you.
+Type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">data/tr</span></code> then Tab, and the shell fills in <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">data/trajectories/</span></code>. Press
+Tab <strong>twice</strong> and it lists all the options that match. It cuts typos, saves
+keystrokes, and means you never again misspell a long filename like
+<code class="docutils literal notranslate"><span class="pre">lj38-optimization.xyz</span></code>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Practise this in your terminal</p>
+<p>Tab completion is interactive — there is nothing to render here, only something
+to <em>do</em>. Open the <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
+type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">data/</span></code> and start pressing <strong>Tab</strong>, and feel how much faster moving around
+becomes. This one habit will save you more time than any other in this course.</p>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The pattern is the same as before: a task, a place for your answer, and an
+automatic ✓. Each starts from the repo root, so paths line up.</p>
+<section id="exercise-1-worked-where-am-i-what-s-here">
+<h3>Exercise 1 (worked) — Where am I, what’s here<a class="headerlink" href="#exercise-1-worked-where-am-i-what-s-here" title="Link to this heading">#</a></h3>
+<p>Report where you are with <code class="docutils literal notranslate"><span class="pre">pwd</span></code>, list what is in the current directory with <code class="docutils literal notranslate"><span class="pre">ls</span></code>,
+then list your home directory in full, including hidden files, with <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-la</span> <span class="pre">~</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer
+CHANGELOG.md	   SERIES_VERSION  data			     reference
+CLAUDE.md	   _config.yml	   environment.yml	     references.bib
+LICENSE-CODE	   _ext		   jupyter_server_config.py  requirements.txt
+LICENSE-CONTENT    _static	   manifest.yml		     templates
+NOTEBOOK_STYLE.md  _toc.yml	   notebooks		     tools
+README.md	   commands.yml    postBuild
+total 80
+drwxr-x---  15 runner runner 4096 Jun  9 12:45 .
+drwxr-xr-x+  5 root   root   4096 May 25 22:22 ..
+-rw-------   1 runner runner 1549 Jun  9 12:46 .bash_history
+-rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
+-rw-r--r--   1 runner runner   67 May 25 21:44 .bash_profile
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> pwd reports where you are and ls runs
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-2-your-turn-reach-the-data-directory">
+<h3>Exercise 2 (your turn) — Reach the data directory<a class="headerlink" href="#exercise-2-your-turn-reach-the-data-directory" title="Link to this heading">#</a></h3>
+<p>Move into the <code class="docutils literal notranslate"><span class="pre">data/</span></code> directory with <code class="docutils literal notranslate"><span class="pre">cd</span></code>, then list it in long, human-readable
+form with <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-lh</span></code>. (Afterwards, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> should end in <code class="docutils literal notranslate"><span class="pre">data</span></code>.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16K
+-rw-r--r-- 1 runner runner 1.8K Jun  1  2023 README.md
+drwxr-xr-x 2 runner runner 4.0K Mar  1  2023 inputs
+drwxr-xr-x 2 runner runner 4.0K May  1  2023 results
+drwxr-xr-x 2 runner runner 4.0K Apr  1  2023 trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> you are now standing in the data directory
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3-your-turn-same-file-two-paths">
+<h3>Exercise 3 (your turn) — Same file, two paths<a class="headerlink" href="#exercise-3-your-turn-same-file-two-paths" title="Link to this heading">#</a></h3>
+<p>Point at the file <code class="docutils literal notranslate"><span class="pre">data/results/pt-slab.xyz</span></code> with a <strong>relative</strong> path, then print
+its <strong>absolute</strong> path (hint: <code class="docutils literal notranslate"><span class="pre">$(pwd)</span></code> is the absolute path of where you are).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz
+/home/runner/work/bash-primer/bash-primer/data/results/pt-slab.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the absolute path resolves to the same real file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-worked-visualize-the-tree">
+<h3>Exercise 4 (worked) — Visualize the tree<a class="headerlink" href="#exercise-4-worked-visualize-the-tree" title="Link to this heading">#</a></h3>
+<p>Draw the <code class="docutils literal notranslate"><span class="pre">data/</span></code> tree two levels deep with <code class="docutils literal notranslate"><span class="pre">tree</span> <span class="pre">-L</span> <span class="pre">2</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
+├── README.md
+├── inputs
+│   ├── geo-opt.inp
+│   ├── production-md.inp
+│   └── replica-exchange.lammps
+├── results
+│   ├── pt-slab.xyz
+│   └── sn2-neb.ener
+└── trajectories
+    ├── lj38-optimization.xyz
+    └── lj38-relaxed.xyz
+4 directories, 8 files
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the tree shows the trajectories/ subdirectory
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-5-your-turn-the-right-ls-flags">
+<h3>Exercise 5 (your turn) — The right <code class="docutils literal notranslate"><span class="pre">ls</span></code> flags<a class="headerlink" href="#exercise-5-your-turn-the-right-ls-flags" title="Link to this heading">#</a></h3>
+<p>List <code class="docutils literal notranslate"><span class="pre">data/</span></code> with one combined set of flags so that you see <strong>hidden files</strong>,
+<strong>human-readable sizes</strong>, and entries <strong>sorted newest-first by time</strong>. Which entry
+is newest? (The flags <code class="docutils literal notranslate"><span class="pre">-a</span></code>, <code class="docutils literal notranslate"><span class="pre">-h</span></code>, <code class="docutils literal notranslate"><span class="pre">-t</span></code>, and <code class="docutils literal notranslate"><span class="pre">-l</span></code> combine into one.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 28K
+drwxr-xr-x 11 runner runner 4.0K Jun  9 12:46 ..
+drwxr-xr-x  5 runner runner 4.0K Jun  9 12:45 .
+-rw-r--r--  1 runner runner  460 Jun 15  2023 .dataset-notes
+-rw-r--r--  1 runner runner 1.8K Jun  1  2023 README.md
+drwxr-xr-x  2 runner runner 4.0K May  1  2023 results
+drwxr-xr-x  2 runner runner 4.0K Apr  1  2023 trajectories
+drwxr-xr-x  2 runner runner 4.0K Mar  1  2023 inputs
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the listing reveals the hidden .dataset-notes (and -t puts the newest first)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-6-terminal-only-tab-completion">
+<h3>Exercise 6 (terminal-only) — Tab completion<a class="headerlink" href="#exercise-6-terminal-only-tab-completion" title="Link to this heading">#</a></h3>
+<p>This one has no ✓ — it is interactive. In the
+<a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
+type <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">data/</span></code> then the first letter or two of a subdirectory, and press <strong>Tab</strong>.
+Watch the shell finish the name. Then try it on a long filename inside
+<code class="docutils literal notranslate"><span class="pre">trajectories/</span></code>. That reflex — type a little, press Tab — is worth building now.</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now find your way to any file in the tree: you know where you are, how to
+move, how to name a place two different ways, and how to see what is around you.
+What you cannot yet do is look <em>inside</em> a file or move one around. That is the next
+notebook — <code class="docutils literal notranslate"><span class="pre">cat</span></code>, <code class="docutils literal notranslate"><span class="pre">less</span></code>, <code class="docutils literal notranslate"><span class="pre">head</span></code>, <code class="docutils literal notranslate"><span class="pre">tail</span></code> to peek at contents, and <code class="docutils literal notranslate"><span class="pre">cp</span></code>, <code class="docutils literal notranslate"><span class="pre">mv</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rm</span></code>, <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> to organize them — and it is the last stretch of groundwork before
+the text-extraction heart of the course in Part II.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-cd"><code class="bp-cmd-name">cd</code></a> &mdash; change the working directory — move around the tree.</li><li><a href="#cmd-ls"><code class="bp-cmd-name">ls</code></a> &mdash; list directory contents.</li><li><a href="#cmd-tree"><code class="bp-cmd-name">tree</code></a> &mdash; show a directory and everything beneath it as an indented tree.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/01-orientation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-shell-and-terminal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1 The shell and the terminal</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filesystem-is-a-tree">The filesystem is a tree</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-am-i-pwd-and-the-prompt">Where am I — <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and the prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-around-cd">Moving around — <code class="docutils literal notranslate"><span class="pre">cd</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-vs-relative-paths">Absolute vs relative paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#listing-ls">Listing — <code class="docutils literal notranslate"><span class="pre">ls</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seeing-structure-tree">Seeing structure — <code class="docutils literal notranslate"><span class="pre">tree</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tab-completion-the-navigation-superpower">Tab completion — the navigation superpower</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-where-am-i-what-s-here">Exercise 1 (worked) — Where am I, what’s here</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-reach-the-data-directory">Exercise 2 (your turn) — Reach the data directory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-your-turn-same-file-two-paths">Exercise 3 (your turn) — Same file, two paths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-worked-visualize-the-tree">Exercise 4 (worked) — Visualize the tree</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-your-turn-the-right-ls-flags">Exercise 5 (your turn) — The right <code class="docutils literal notranslate"><span class="pre">ls</span></code> flags</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-6-terminal-only-tab-completion">Exercise 6 (terminal-only) — Tab completion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

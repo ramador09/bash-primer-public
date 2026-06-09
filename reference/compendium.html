@@ -64,7 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'reference/compendium';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="1 The shell and the terminal" href="../notebooks/01-orientation/01-shell-and-terminal.html" />
+    <link rel="prev" title="2 Navigating the filesystem" href="../notebooks/01-orientation/02-navigating-the-filesystem.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -163,6 +163,7 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -378,12 +379,24 @@ each command links back to the notebook where it was introduced.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">clear</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-cd"><span class="std std-ref">cd</span></a></p></td>
+<td><p>change the working directory — move around the tree.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>  go into a directory (by absolute or relative path)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">~</span>&#160; <span class="pre">/</span>&#160; <span class="pre">cd</span></code>  go to your home directory (bare `cd` does this too)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">..</span></code>  go up to the parent directory</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-</span></code>  go back to the previous directory you were in</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">/abs/path</span></code>  go to an absolute location, counted from the root `/`</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-cd"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">clear</span></a></p></td>
 <td><p>wipe the visible screen, giving you a clean prompt.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">date</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">date</span></a></p></td>
 <td><p>print the current date and time.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">+FORMAT</span></code>  print using a format string — `%F` is the date as `YYYY-MM-DD`, `%T` the time as `HH:MM:SS`</div>
@@ -391,7 +404,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">echo</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">echo</span></a></p></td>
 <td><p>print its arguments back to standard output.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  do not add the trailing newline</div>
@@ -400,13 +413,25 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">history</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">history</span></a></p></td>
 <td><p>list the commands you have run, newest last, each with a number.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span></code>  clear the history list</div>
 </div>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-ls"><span class="std std-ref">ls</span></a></p></td>
+<td><p>list directory contents.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-l</span></code>  long format: permissions, size, owner, timestamp</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span></code>  include hidden dotfiles</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-h</span></code>  human-readable sizes (with `-l`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-t</span></code>  sort by modification time, newest first</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-R</span></code>  recurse into subdirectories</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-ls"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">man</span></a></p></td>
 <td><p>open the full manual page for a command.</p></td>
@@ -426,7 +451,16 @@ each command links back to the notebook where it was introduced.</p>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-tldr"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">whoami</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-tree"><span class="std std-ref">tree</span></a></p></td>
+<td><p>show a directory and everything beneath it as an indented tree.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">n</span></code>  descend at most n levels (keep deep trees readable)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span></code>  show directories only, not files</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-tree"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">whoami</span></a></p></td>
 <td><p>print the username the shell is running as.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
@@ -467,12 +501,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/01-orientation/01-shell-and-terminal.html"
+       href="../notebooks/01-orientation/02-navigating-the-filesystem.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">1 The shell and the terminal</p>
+        <p class="prev-next-title">2 Navigating the filesystem</p>
       </div>
     </a>
 </div>
