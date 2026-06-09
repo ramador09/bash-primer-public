@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction to the Bash Shell &#8212; Introduction to the Bash Shell</title>
+    <title>Compendium Scriptorum &#8212; Introduction to the Bash Shell</title>
   
   
   
@@ -27,44 +27,44 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=4c0722a5" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/bashprimer.css?v=4c0722a5" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/00-front-matter/preface';</script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1 The shell and the terminal" href="../01-orientation/01-shell-and-terminal.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/compendium';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="1 The shell and the terminal" href="../notebooks/01-orientation/01-shell-and-terminal.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -86,7 +86,7 @@
   <dialog id="pst-search-dialog">
     
 <form class="bd-search d-flex align-items-center"
-      action="../../search.html"
+      action="../search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -116,8 +116,6 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
@@ -137,7 +135,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="../notebooks/00-front-matter/preface.html">
   
   
   
@@ -148,8 +146,8 @@
       
     
     
-    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
-    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
   
   
 </a></div>
@@ -164,11 +162,11 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Compendium Scriptorum</a></li>
 </ul>
 
     </div>
@@ -245,7 +243,7 @@
       
       
       
-      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/00-front-matter/preface.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Freference/compendium.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -275,7 +273,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/00-front-matter/preface.ipynb" target="_blank"
+      <li><a href="../_sources/reference/compendium.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -285,7 +283,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -338,9 +336,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -351,21 +347,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction to the Bash Shell</h1>
+    <h1>Compendium Scriptorum</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-promises">Two promises</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-course-is-built">How the course is built</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-roadmap">The roadmap</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -375,57 +361,78 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="introduction-to-the-bash-shell">
-<h1>Introduction to the Bash Shell<a class="headerlink" href="#introduction-to-the-bash-shell" title="Link to this heading">#</a></h1>
-<p>A short course that teaches shell fluency from zero. It is a <strong>leveling primer</strong>,
-not a comprehensive reference: its job is to take you from “I have never opened a
-terminal” to “I can stand in a shell, run a command, read its output, and find
-help on my own” — the footing that every computational course quietly assumes.</p>
-<p>It exists for a specific reason. Students arrive at the graduate <strong>Molecular and
-Materials Modelling</strong> course with wildly uneven shell skills: some are fluent,
-some have never seen a command line. A computational course cannot really begin
-until everyone is on the same footing. This primer closes that gap.</p>
-<section id="two-promises">
-<h2>Two promises<a class="headerlink" href="#two-promises" title="Link to this heading">#</a></h2>
-<p><strong>No physics required — ever.</strong> Real computational-science files (simulation
-trajectories, run logs) show up as the <em>playground</em> the commands operate on, but
-you never need to understand the science to do the shell work. Every exercise
-that borrows a scientific setting says so out loud and tells you exactly what you
-may ignore.</p>
-<p><strong>No installation required.</strong> Every lesson comes with a <strong>live terminal</strong>: a
-real, full-screen bash session in your browser, opened from the “Practice here”
-box in each notebook, with the course data already sitting in its filesystem. The
-page itself is for reading; the terminal is where you type. Prefer your own
-machine? A native terminal works just as well — macOS Terminal, any Linux
-terminal, or Windows via WSL.</p>
-</section>
-<section id="how-the-course-is-built">
-<h2>How the course is built<a class="headerlink" href="#how-the-course-is-built" title="Link to this heading">#</a></h2>
-<p>Every code cell you see is <strong>real bash, actually executed</strong> — the output below
-each command is what the command really printed, not a transcript someone typed
-up. Worked solutions are hidden on this public site (you see each problem and its
-result, not the answer code); if you would like the reference solutions, the note
-at the foot of each notebook tells you how to get them.</p>
-</section>
-<section id="the-roadmap">
-<h2>The roadmap<a class="headerlink" href="#the-roadmap" title="Link to this heading">#</a></h2>
-<p>The course is a single cumulative ladder of notebooks, grouped into five parts:</p>
-<ol class="arabic simple">
-<li><p><strong>Orientation</strong> — the terminal, the filesystem, and looking at files.</p></li>
-<li><p><strong>Pipelines and text extraction</strong> — redirection, pipes, globbing, <code class="docutils literal notranslate"><span class="pre">grep</span></code>, the
-stream toolkit, <code class="docutils literal notranslate"><span class="pre">awk</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code>. The heart of the course.</p></li>
-<li><p><strong>From commands to scripts</strong> — quoting, permissions, writing scripts, control
-flow.</p></li>
-<li><p><strong>Working on a cluster</strong> — environment and modules, remote work, SLURM, and
-reading real scaling data.</p></li>
-<li><p><strong>Automation</strong> — <code class="docutils literal notranslate"><span class="pre">make</span></code> and Makefiles, wiring it all together.</p></li>
-</ol>
-<p>Start at the top of Part I and work down. Each notebook assumes only the ones
-before it.</p>
-</section>
-<div class="toctree-wrapper compound">
+  <section id="compendium-scriptorum">
+<h1>Compendium Scriptorum<a class="headerlink" href="#compendium-scriptorum" title="Link to this heading">#</a></h1>
+<p>A map of every command you have met and where to find it again — not a list to
+memorise. Nobody holds all of this in their head; the skill the course keeps
+returning to is <em>looking things up</em>, and this page is where you look. Your
+browser’s find (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>F</kbd>) is the search box;
+each command links back to the notebook where it was introduced.</p>
+<p class="rubric">Part I</p>
+<div class="pst-scrollable-table-container"><table class="bp-compendium table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Job</p></th>
+<th class="head"><p>Workhorse flags</p></th>
+<th class="head"><p>Introduced in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">clear</span></a></p></td>
+<td><p>wipe the visible screen, giving you a clean prompt.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">date</span></a></p></td>
+<td><p>print the current date and time.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">+FORMAT</span></code>  print using a format string — `%F` is the date as `YYYY-MM-DD`, `%T` the time as `HH:MM:SS`</div>
 </div>
-<div class="toctree-wrapper compound">
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">echo</span></a></p></td>
+<td><p>print its arguments back to standard output.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  do not add the trailing newline</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-e</span></code>  interpret backslash escapes such as `\n` (newline) and `\t` (tab)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">history</span></a></p></td>
+<td><p>list the commands you have run, newest last, each with a number.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span></code>  clear the history list</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">man</span></a></p></td>
+<td><p>open the full manual page for a command.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">word</span></code>  search every manual’s summary line for a keyword (same as `apropos`) — for when you don’t know the command’s name yet</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-pwd"><span class="std std-ref">pwd</span></a></p></td>
+<td><p>print the working directory: where you currently are in the filesystem.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-pwd"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-tldr"><span class="std std-ref">tldr</span></a></p></td>
+<td><p>show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-tldr"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">whoami</span></a></p></td>
+<td><p>print the username the shell is running as.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 
@@ -442,7 +449,7 @@ before it.</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./notebooks/00-front-matter"
+            path: "./reference"
         },
         predefinedOutput: true
     }
@@ -459,14 +466,14 @@ before it.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="../01-orientation/01-shell-and-terminal.html"
-       title="next page">
+    <a class="left-prev"
+       href="../notebooks/01-orientation/01-shell-and-terminal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">1 The shell and the terminal</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -474,25 +481,6 @@ before it.</p>
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-promises">Two promises</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-course-is-built">How the course is built</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-roadmap">The roadmap</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
@@ -537,8 +525,8 @@ By Raymond Amador
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

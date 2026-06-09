@@ -271,3 +271,41 @@ html[data-theme="dark"] figcaption .caption-number { color: var(--bp-accent-brig
 .bd-article div.cell .cell_input div.highlight pre {
   white-space: pre-wrap; word-break: break-word;
 }
+
+/* ======================================================================= */
+/*  Compendium Scriptorum (reference table) + per-notebook "New in the      */
+/*  Compendium" recap — both generated from commands.yml by the bashprimer  */
+/*  Sphinx extension.                                                        */
+/* ======================================================================= */
+
+/* The command name in the compendium is an xref (<a>) in the first column, so it
+   already takes the theme's amber link colour in both modes; we only add weight +
+   mono. Target the first-column link directly (Sphinx may drop the inner span's
+   class during xref resolution); the last column ("introduced in") stays normal. */
+.bp-compendium tbody td:first-child a,
+.bp-compendium .bp-cmd-name { font-family: var(--bp-mono); font-weight: 700; }
+.bd-article table.bp-compendium { width: 100%; }
+.bp-compendium td, .bp-compendium th { vertical-align: top; }
+.bp-compendium .line-block { margin: 0; }
+.bp-compendium .line { font-size: 0.9rem; margin: 0; }
+.bp-compendium .line code, .bp-compendium .line .pre {
+  font-family: var(--bp-mono); font-weight: 600;
+}
+
+/* Per-notebook recap: a faint amber-washed panel with the amber left rule. */
+.bp-compendium-new {
+  border: 1px solid var(--bp-hairline);
+  border-left: 4px solid var(--bp-accent);
+  border-radius: 6px;
+  padding: 12px 18px 6px 18px;
+  margin: 22px 0 10px 0;
+  background: color-mix(in srgb, var(--bp-accent) 6%, transparent);
+}
+.bp-compendium-new-title {
+  font-family: var(--bp-mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--bp-accent); font-weight: 600;
+  margin-bottom: 6px;
+}
+.bp-compendium-new ul { margin: 0 0 6px 0; padding-left: 1.1em; }
+.bp-compendium-new li { margin: 2px 0; }
+.bp-compendium-new code.bp-cmd-name { font-family: var(--bp-mono); font-weight: 700; }

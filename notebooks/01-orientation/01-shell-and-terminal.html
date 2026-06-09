@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=0b6cb2a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=4c0722a5" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -64,6 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01-orientation/01-shell-and-terminal';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
     <link rel="prev" title="Introduction to the Bash Shell" href="../00-front-matter/preface.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -163,6 +164,10 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">1 The shell and the terminal</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
 </ul>
 
     </div>
@@ -512,15 +517,7 @@ course is built on them.</p>
 flags worth knowing, and where to look for the rest. You are not meant to
 memorise these. You are meant to recognise the shape and know how to look things
 up — which is the next section’s whole subject.</p>
-<div class="bp-card">
-  <span class="bp-card-cmd">echo</span> — <span class="bp-card-job">print its
-  arguments back to standard output.</span>
-  <table>
-    <tr><td>-n</td><td>do <em>not</em> add the trailing newline</td></tr>
-    <tr><td>-e</td><td>interpret backslash escapes such as <code>\n</code> (newline) and <code>\t</code> (tab)</td></tr>
-  </table>
-  <div class="bp-card-more">more: <code>help echo</code></div>
-</div><div class="cell docutils container">
+<div class="bp-card" id="cmd-echo"><span class="bp-card-cmd">echo</span> &mdash; <span class="bp-card-job">print its arguments back to standard output.</span><table><tr><td>-n</td><td>do not add the trailing newline</td></tr><tr><td>-e</td><td>interpret backslash escapes such as <code>\n</code> (newline) and <code>\t</code> (tab)</td></tr></table><div class="bp-card-more">more: <code>help echo</code></div></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello from the shell!&quot;</span>
 </pre></div>
@@ -545,11 +542,7 @@ and a second line
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">pwd</span> — <span class="bp-card-job">print the
-  working directory: where you currently are in the filesystem.</span>
-  <div class="bp-card-more">more: <code>man pwd</code></div>
-</div><div class="cell docutils container">
+<div class="bp-card" id="cmd-pwd"><span class="bp-card-cmd">pwd</span> &mdash; <span class="bp-card-job">print the working directory: where you currently are in the filesystem.</span><div class="bp-card-more">more: <code>man pwd</code></div></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
 </pre></div>
@@ -561,11 +554,7 @@ and a second line
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">whoami</span> — <span class="bp-card-job">print the
-  username the shell is running as.</span>
-  <div class="bp-card-more">more: <code>man whoami</code></div>
-</div><div class="cell docutils container">
+<div class="bp-card" id="cmd-whoami"><span class="bp-card-cmd">whoami</span> &mdash; <span class="bp-card-job">print the username the shell is running as.</span><div class="bp-card-more">more: <code>man whoami</code></div></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>whoami
 </pre></div>
@@ -577,21 +566,14 @@ and a second line
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">date</span> — <span class="bp-card-job">print the
-  current date and time.</span>
-  <table>
-    <tr><td>+FORMAT</td><td>print using a format string — <code>%F</code> is the date as <code>YYYY-MM-DD</code>, <code>%T</code> the time as <code>HH:MM:SS</code></td></tr>
-  </table>
-  <div class="bp-card-more">more: <code>man date</code> · <code>date --help</code></div>
-</div><div class="cell docutils container">
+<div class="bp-card" id="cmd-date"><span class="bp-card-cmd">date</span> &mdash; <span class="bp-card-job">print the current date and time.</span><table><tr><td>+FORMAT</td><td>print using a format string — <code>%F</code> is the date as <code>YYYY-MM-DD</code>, <code>%T</code> the time as <code>HH:MM:SS</code></td></tr></table><div class="bp-card-more">more: <code>man date</code> · <code>date --help</code></div></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun  9 11:54:53 UTC 2026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun  9 12:25:38 UTC 2026
 </pre></div>
 </div>
 </div>
@@ -603,17 +585,12 @@ and a second line
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09 11:54:53
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09 12:25:38
 </pre></div>
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">clear</span> — <span class="bp-card-job">wipe the
-  visible screen, giving you a clean prompt.</span>
-  <div class="bp-card-more">more: <code>man clear</code> · or just press <kbd>Ctrl</kbd>+<kbd>L</kbd></div>
-</div>
-<p>There is nothing to <em>print</em> here: <code class="docutils literal notranslate"><span class="pre">clear</span></code> works by sending the terminal a short
+<div class="bp-card" id="cmd-clear"><span class="bp-card-cmd">clear</span> &mdash; <span class="bp-card-job">wipe the visible screen, giving you a clean prompt.</span><div class="bp-card-more">more: <code>man clear</code>, or just press <code>Ctrl+L</code></div></div><p>There is nothing to <em>print</em> here: <code class="docutils literal notranslate"><span class="pre">clear</span></code> works by sending the terminal a short
 control code that means “blank yourself”. In a notebook there is no screen to
 blank, so let us simply <em>look</em> at the code it would send (the <code class="docutils literal notranslate"><span class="pre">^[</span></code> is the escape
 character):</p>
@@ -629,15 +606,7 @@ character):</p>
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">history</span> — <span class="bp-card-job">list the
-  commands you have run, newest last, each with a number.</span>
-  <table>
-    <tr><td>-c</td><td>clear the history list</td></tr>
-  </table>
-  <div class="bp-card-more">more: <code>help history</code> · re-run entry <code>N</code> with <code>!N</code>, or search with <kbd>Ctrl</kbd>+<kbd>R</kbd></div>
-</div>
-<p>In your own shell, <code class="docutils literal notranslate"><span class="pre">history</span></code> fills up as you type. Here we seed it with a couple
+<div class="bp-card" id="cmd-history"><span class="bp-card-cmd">history</span> &mdash; <span class="bp-card-job">list the commands you have run, newest last, each with a number.</span><table><tr><td>-c</td><td>clear the history list</td></tr></table><div class="bp-card-more">more: <code>help history</code> · re-run entry N with <code>!N</code>, or search with <code>Ctrl+R</code></div></div><p>In your own shell, <code class="docutils literal notranslate"><span class="pre">history</span></code> fills up as you type. Here we seed it with a couple
 of entries so there is something to show:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -667,15 +636,7 @@ flag <em>probably exists</em> for what they want, and how to surface it in ten s
 That skill — looking it up — is worth more than any list you could cram, and it
 is the one this course returns to again and again. Three tools cover almost
 everything.</p>
-<div class="bp-card">
-  <span class="bp-card-cmd">man</span> — <span class="bp-card-job">open the full
-  manual page for a command.</span>
-  <table>
-    <tr><td>-k <em>word</em></td><td>search every manual's summary line for a keyword (same as <code>apropos</code>) — for when you don't know the command's name yet</td></tr>
-  </table>
-  <div class="bp-card-more">press <kbd>q</kbd> to quit the manual · <code>man man</code> documents <code>man</code> itself</div>
-</div>
-<p>A manual page is thorough and a little dense; you skim it, you do not read it like
+<div class="bp-card" id="cmd-man"><span class="bp-card-cmd">man</span> &mdash; <span class="bp-card-job">open the full manual page for a command.</span><table><tr><td>-k word</td><td>search every manual&#x27;s summary line for a keyword (same as <code>apropos</code>) — for when you don&#x27;t know the command&#x27;s name yet</td></tr></table><div class="bp-card-more">more: press <code>q</code> to quit the manual; <code>man man</code> documents man itself</div></div><p>A manual page is thorough and a little dense; you skim it, you do not read it like
 a novel. Here are the first lines of the page for <code class="docutils literal notranslate"><span class="pre">ls</span></code> (we tidy the formatting
 with <code class="docutils literal notranslate"><span class="pre">col</span> <span class="pre">-b</span></code> and take only the top with <code class="docutils literal notranslate"><span class="pre">head</span></code>):</p>
 <div class="cell docutils container">
@@ -694,11 +655,11 @@ SYNOPSIS
 </div>
 </div>
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">--help</span> — <span class="bp-card-job">a flag most
-  commands accept to print a short usage summary.</span>
-  <div class="bp-card-more">quicker than <code>man</code> for a fast reminder; works on nearly every external command</div>
-</div><div class="cell docutils container">
+<p>The second tool is not a command at all but a <strong>flag</strong>, <code class="docutils literal notranslate"><span class="pre">--help</span></code>: most external
+commands accept it and print a short usage summary. It is quicker than <code class="docutils literal notranslate"><span class="pre">man</span></code> for
+a fast reminder, and it ships with the command itself, so it is almost always
+there.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span>
 </pre></div>
@@ -721,12 +682,7 @@ With -s, or with [MMDDhhmm[[CC]YY][.ss]], set the date and time.
   directly with <code>help</code>: try <code>help echo</code>. (We use exactly
   this in the last exercise.)
 </div>
-<div class="bp-card">
-  <span class="bp-card-cmd">tldr</span> — <span class="bp-card-job">show a few
-  practical, copy-paste examples for a command, skipping the exhaustive manual.</span>
-  <div class="bp-card-more">often the friendliest first look — but it may need installing (<code>brew install tldr</code>, <code>npm install -g tldr</code>); when it is missing, <code>--help</code> is always there</div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">tldr</span></code> is a community project, so it is not guaranteed to be on every machine —
+<div class="bp-card" id="cmd-tldr"><span class="bp-card-cmd">tldr</span> &mdash; <span class="bp-card-job">show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</span><div class="bp-card-more">more: may need installing (<code>brew install tldr</code>, <code>npm install -g tldr</code>); when it is missing, <code>--help</code> is always there</div></div><p><code class="docutils literal notranslate"><span class="pre">tldr</span></code> is a community project, so it is not guaranteed to be on every machine —
 which is the whole reason <code class="docutils literal notranslate"><span class="pre">--help</span></code> is worth knowing: it ships with the command
 itself and is <em>always</em> available. When in doubt, reach for <code class="docutils literal notranslate"><span class="pre">--help</span></code> first.</p>
 </section>
@@ -868,6 +824,7 @@ run wherever the shell happened to drop you. The next notebook gives you the map
 and the legs — the <strong>filesystem</strong>, and how to walk through it — which is the
 ground every later trick, from finding files to extracting numbers from them,
 stands on.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-echo"><code class="bp-cmd-name">echo</code></a> &mdash; print its arguments back to standard output.</li><li><a href="#cmd-pwd"><code class="bp-cmd-name">pwd</code></a> &mdash; print the working directory: where you currently are in the filesystem.</li><li><a href="#cmd-whoami"><code class="bp-cmd-name">whoami</code></a> &mdash; print the username the shell is running as.</li><li><a href="#cmd-date"><code class="bp-cmd-name">date</code></a> &mdash; print the current date and time.</li><li><a href="#cmd-clear"><code class="bp-cmd-name">clear</code></a> &mdash; wipe the visible screen, giving you a clean prompt.</li><li><a href="#cmd-history"><code class="bp-cmd-name">history</code></a> &mdash; list the commands you have run, newest last, each with a number.</li><li><a href="#cmd-man"><code class="bp-cmd-name">man</code></a> &mdash; open the full manual page for a command.</li><li><a href="#cmd-tldr"><code class="bp-cmd-name">tldr</code></a> &mdash; show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
@@ -918,6 +875,15 @@ stands on.</p>
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Introduction to the Bash Shell</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
