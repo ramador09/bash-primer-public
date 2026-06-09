@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9 Editing in the terminal: Vim &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03-scripting/09-editing-in-the-terminal';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="4 Redirection and pipes" href="../02-pipelines/04-redirection-and-pipes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9 Editing in the terminal: Vim</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03-scripting/09-editing-in-the-terminal.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/03-scripting/09-editing-in-the-terminal.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>9 Editing in the terminal: Vim</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-practise-this-notebook">How to practise this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-modal-model">A. The modal model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-survival-first">B. Survival first</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-moving-around">C. Moving around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-editing-verbs-and-motions">D. Editing — verbs and motions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-visual-mode-select-first-then-operate">E. Visual mode — select first, then operate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-block-mode-power-moves">The block-mode power moves</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-search">F. Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g-search-and-replace-the-power-tool">G. Search and replace — the power tool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h-a-word-on-nano-and-why-vim-anyway">H. A word on <code class="docutils literal notranslate"><span class="pre">nano</span></code> (and why Vim anyway)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-survival-drill">Warm-up — Survival drill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-fix-a-broken-file">Applied 1 — Fix a broken file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-search-and-replace-the-centrepiece">Applied 2 — Search and replace (the centrepiece)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-block-edit-a-column-visual-block">Applied 3 — Block edit a column (visual block)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-author-from-scratch">Composite — putting it together (author from scratch)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-only-efficiency-challenge">Optional stretch (terminal-only) — Efficiency challenge</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="editing-in-the-terminal-vim">
+<h1>9 Editing in the terminal: Vim<a class="headerlink" href="#editing-in-the-terminal-vim" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part III — From commands to scripts</span>
+    <span class="bp-meta">Notebook&nbsp;9</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The first notebook where you <em>write</em> rather than only read: the modal
+    editor that lives on every cluster, from survival to search-and-replace.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Part II was all about <em>reading</em> — pulling things out of read-only data. Part III
+is where you start <em>writing</em>: scripts, configs, submission files of your own. And
+writing needs an editor.</p>
+<p>The editor is <strong>Vim</strong>. Two reasons it is worth the climb, said plainly. First, it
+is <em>everywhere</em>: every Linux box and every cluster has it, often as the only
+editor installed. Second, you will be dropped into it whether you ask or not —
+<code class="docutils literal notranslate"><span class="pre">git</span></code> opens it for commit messages, <code class="docutils literal notranslate"><span class="pre">crontab</span> <span class="pre">-e</span></code> opens it, countless tools default
+to it — so “I’ll just avoid Vim” is not actually on the menu. Better to learn it
+properly once.</p>
+<p>As always: the files you edit here are scripts and configs, <strong>just text.</strong> No
+physics required.</p>
+</section>
+<section id="how-to-practise-this-notebook">
+<h2>How to practise this notebook<a class="headerlink" href="#how-to-practise-this-notebook" title="Link to this heading">#</a></h2>
+<p>Here is the one unusual thing about this notebook. Vim is <em>interactive</em> — it takes
+over your whole terminal and responds to keystrokes — so it <strong>cannot run in the
+grey cells</strong> on this page. There is no live keyboard here.</p>
+<p>So the workspace for this notebook is the <strong>live terminal</strong>, not the page:</p>
+<div class="tip admonition">
+<p class="admonition-title">Practise this notebook in your terminal</p>
+<p><strong><a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">▶ Open the live terminal</a></strong>
+and keep it beside this page. Every “try it” below is something you <em>do</em> there. The
+cells on this page show the <em>before and after</em> of an edit (produced with scripted
+Vim so they are reproducible) — but the editing itself is yours to do live.</p>
+</div>
+</section>
+<section id="a-the-modal-model">
+<h2>A. The modal model<a class="headerlink" href="#a-the-modal-model" title="Link to this heading">#</a></h2>
+<p>The single idea that unlocks Vim — and the single thing that traps every beginner
+who skips it — is that Vim is <strong>modal</strong>. The keys do different things depending on
+which <em>mode</em> you are in. There are four worth knowing:</p>
+<ul class="simple">
+<li><p><strong>Normal</strong> — where you start. Letters are <strong>commands</strong>, not text (<code class="docutils literal notranslate"><span class="pre">d</span></code> deletes,
+<code class="docutils literal notranslate"><span class="pre">i</span></code> starts inserting). This is home base.</p></li>
+<li><p><strong>Insert</strong> — where you actually type text, like a normal editor.</p></li>
+<li><p><strong>Visual</strong> — where you select a region, then act on it.</p></li>
+<li><p><strong>Command-line</strong> — where you type <code class="docutils literal notranslate"><span class="pre">:</span></code> commands like <code class="docutils literal notranslate"><span class="pre">:w</span></code> (save) and <code class="docutils literal notranslate"><span class="pre">:q</span></code> (quit).</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Esc</span></code> always takes you back to Normal. When in doubt, press <code class="docutils literal notranslate"><span class="pre">Esc</span></code> and you are home.</p>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Vim's modes, and how to move between them</div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">              ┌──────────────────────────────────────────────┐
+              │                 NORMAL  mode                 │
+              │      you start here — letters are commands    │
+              └────┬─────────────────┬────────────────┬──────┘
+              press i a o      press v V Ctrl-v     press :
+                   │                 │                │
+                   ▼                 ▼                ▼
+                INSERT            VISUAL         COMMAND-LINE
+              (type text)    (select a region)  ( :w  :q  :wq  :%s/… )
+                   │                 │                │
+                   └─────── Esc ─────┴──── Esc ───────┘  ──▶ back to NORMAL</pre>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">vim</span></code> is the program you launch; here is its card. Everything <em>inside</em> Vim — the
+modes, motions, and <code class="docutils literal notranslate"><span class="pre">:</span></code> commands — lives in the reference tables below, not in the
+card.</p>
+<div class="bp-card" id="cmd-vim"><span class="bp-card-cmd">vim</span> &mdash; <span class="bp-card-job">open the Vim editor — the modal editor that is on every cluster, and the one git, crontab, and friends drop you into whether you asked or not.</span><table><tr><td>&lt;file&gt;</td><td>open (or create) a file for editing</td></tr><tr><td>+N &lt;file&gt;</td><td>open with the cursor already on line N</td></tr><tr><td>-R &lt;file&gt;</td><td>open read-only (the <code>view</code> command does the same) so you cannot change it by accident</td></tr></table><div class="bp-card-more">more: <code>:help</code> inside Vim (quit help with <code>:q</code>); <code>man vim</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> Vim starts in NORMAL mode, where letters are commands, not text — press <code>i</code> to type, <code>Esc</code> to go back. If you are ever stuck, <code>:q!</code> always bails out without saving</div></section>
+<section id="b-survival-first">
+<h2>B. Survival first<a class="headerlink" href="#b-survival-first" title="Link to this heading">#</a></h2>
+<p>Before anything else, the four things that stop you ever being trapped. The most
+common question about Vim is “how do I get <em>out</em> of it” — so here is the answer,
+up front.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Survival kit</span> — <span class="bp-card-job">the keys that open, save, and quit. Press <code>Esc</code> first if unsure where you are.</span>
+  <table>
+    <tr><td>vim&nbsp;file</td><td>open (or create) the file</td></tr>
+    <tr><td>i</td><td>enter Insert mode and start typing</td></tr>
+    <tr><td>Esc</td><td>leave Insert, back to Normal</td></tr>
+    <tr><td>:w</td><td>write (save)</td></tr>
+    <tr><td>:q</td><td>quit</td></tr>
+    <tr><td>:wq&nbsp;&nbsp;or&nbsp;ZZ</td><td>save <b>and</b> quit</td></tr>
+    <tr><td>:q!</td><td>quit and <b>throw away</b> unsaved changes — the escape hatch</td></tr>
+  </table>
+</div>
+<p>That last one, <code class="docutils literal notranslate"><span class="pre">:q!</span></code>, is your panic button: it always gets you out, no matter what
+mess you have made, without saving it. Commit it to memory now.</p>
+<div class="tip admonition">
+<p class="admonition-title">Try it (in your terminal)</p>
+<p><code class="docutils literal notranslate"><span class="pre">vim</span> <span class="pre">scratch-hello.txt</span></code>, press <code class="docutils literal notranslate"><span class="pre">i</span></code>, type a line, press <code class="docutils literal notranslate"><span class="pre">Esc</span></code>, type <code class="docutils literal notranslate"><span class="pre">:wq</span></code>, Enter.
+You just created and saved a file in Vim. Now <code class="docutils literal notranslate"><span class="pre">vim</span> <span class="pre">scratch-hello.txt</span></code> again to
+reopen it, and <code class="docutils literal notranslate"><span class="pre">:q</span></code> to leave.</p>
+</div>
+</section>
+<section id="c-moving-around">
+<h2>C. Moving around<a class="headerlink" href="#c-moving-around" title="Link to this heading">#</a></h2>
+<p>In Normal mode you move the cursor without arrow keys (your hands never leave the
+home row). Motions also combine with <strong>counts</strong> — a number before a motion repeats
+it, so <code class="docutils literal notranslate"><span class="pre">5j</span></code> moves down five lines.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Motions</span> — <span class="bp-card-job">move the cursor in Normal mode (no arrow keys needed).</span>
+  <table>
+    <tr><td>h&nbsp;j&nbsp;k&nbsp;l</td><td>left, down, up, right (one character/line)</td></tr>
+    <tr><td>w&nbsp;&nbsp;b&nbsp;&nbsp;e</td><td>forward a word, back a word, to word-end</td></tr>
+    <tr><td>0&nbsp;&nbsp;^&nbsp;&nbsp;$</td><td>start of line, first non-blank, end of line</td></tr>
+    <tr><td>gg&nbsp;&nbsp;G</td><td>top of file, bottom of file</td></tr>
+    <tr><td>:N</td><td>jump to line number N</td></tr>
+    <tr><td>5j&nbsp;&nbsp;3w</td><td>counts: repeat a motion (down 5 lines; forward 3 words)</td></tr>
+  </table>
+</div>
+</section>
+<section id="d-editing-verbs-and-motions">
+<h2>D. Editing — verbs and motions<a class="headerlink" href="#d-editing-verbs-and-motions" title="Link to this heading">#</a></h2>
+<p>Here is the part that makes Vim worth learning, and it rhymes with something you
+already know. In Part II you saw the Unix idea: small tools <strong>composed</strong> with
+pipes. Vim has the same idea for editing: small <strong>verbs</strong> composed with <strong>motions</strong>.</p>
+<p>A verb is an operator — <code class="docutils literal notranslate"><span class="pre">d</span></code> delete, <code class="docutils literal notranslate"><span class="pre">c</span></code> change, <code class="docutils literal notranslate"><span class="pre">y</span></code> yank (copy). A motion says
+<em>how far</em>. Snap them together and you get a precise edit:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dw</span></code> — <strong>d</strong>elete a <strong>w</strong>ord; <code class="docutils literal notranslate"><span class="pre">d$</span></code> — delete to end of line; <code class="docutils literal notranslate"><span class="pre">3dw</span></code> — delete three words.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cw</span></code> — <strong>c</strong>hange a word (delete it and drop straight into Insert mode).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y$</span></code> — yank to end of line; <code class="docutils literal notranslate"><span class="pre">p</span></code> — paste it back.</p></li>
+</ul>
+<p>Once you see the grammar, you do not memorise hundreds of commands — you combine a
+handful of verbs with the motions from the table above.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Verbs &amp; everyday edits</span> — <span class="bp-card-job">operators compose with the motions above; these are the ones you reach for daily.</span>
+  <table>
+    <tr><td>x</td><td>delete the character under the cursor</td></tr>
+    <tr><td>dd&nbsp;&nbsp;yy</td><td>delete / yank (copy) the whole line</td></tr>
+    <tr><td>dw&nbsp;&nbsp;cw</td><td>delete / change a word (verb + motion)</td></tr>
+    <tr><td>p&nbsp;&nbsp;P</td><td>paste after / before the cursor</td></tr>
+    <tr><td>o&nbsp;&nbsp;O</td><td>open a new line below / above and start typing</td></tr>
+    <tr><td>u&nbsp;&nbsp;Ctrl-r</td><td>undo / redo</td></tr>
+    <tr><td>.</td><td>repeat the last change (astonishingly useful)</td></tr>
+  </table>
+</div>
+</section>
+<section id="e-visual-mode-select-first-then-operate">
+<h2>E. Visual mode — select first, then operate<a class="headerlink" href="#e-visual-mode-select-first-then-operate" title="Link to this heading">#</a></h2>
+<p>Verbs-and-motions act <em>forward</em> from the cursor. Visual mode is the other way
+round: <strong>select a region first, watch it highlight, then apply one verb to all of
+it.</strong> There are three flavours, and the third is a Vim signature.</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">v</span></code></strong> — charwise: select character by character.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">V</span></code></strong> — linewise: select whole lines.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code></strong> — <strong>blockwise</strong>: select a <em>rectangular column</em>. This is the one
+nothing else does as cleanly, and the one you will reach for constantly on
+structured text — scripts, config files, aligned columns in an input deck.</p></li>
+</ul>
+<p>Once a region is selected, operate on it: <code class="docutils literal notranslate"><span class="pre">d</span></code> delete, <code class="docutils literal notranslate"><span class="pre">y</span></code> yank, <code class="docutils literal notranslate"><span class="pre">c</span></code> change, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> /
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> indent, <code class="docutils literal notranslate"><span class="pre">~</span></code> toggle case.</p>
+<section id="the-block-mode-power-moves">
+<h3>The block-mode power moves<a class="headerlink" href="#the-block-mode-power-moves" title="Link to this heading">#</a></h3>
+<p>Blockwise visual mode earns its own paragraph because of what it does to <em>columns</em>.
+Mark a rectangle with <code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code>, then:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">I</span></code></strong> — insert text at the start of <strong>every</strong> selected line. Type it once, press
+<code class="docutils literal notranslate"><span class="pre">Esc</span></code>, and it appears on all of them.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">A</span></code></strong> — the same, but append (use <code class="docutils literal notranslate"><span class="pre">$</span></code> first to catch ragged line-ends).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">d</span></code></strong> deletes the column, <strong>c</strong> changes it, <strong><code class="docutils literal notranslate"><span class="pre">r</span></code></strong> replaces it.</p></li>
+</ul>
+<p>The everyday payoff is <strong>block-commenting</strong>: put <code class="docutils literal notranslate"><span class="pre">#</span> </code> in front of a run of lines in
+one move — <code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code>, select down with <code class="docutils literal notranslate"><span class="pre">j</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code>, type <code class="docutils literal notranslate"><span class="pre">#</span> </code>, <code class="docutils literal notranslate"><span class="pre">Esc</span></code>. Here is that
+edit’s before and after, produced on a scratch file with scripted Vim so you can
+see the result (in your terminal you would do it with the keystrokes just
+described):</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/deck.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>set cutoff 300
+set maxiter 50
+set window 4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vim<span class="w"> </span>-es<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;%s/^/# /&#39;</span><span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;wq&#39;</span><span class="w"> </span>scratch/deck.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/deck.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># set cutoff 300
+# set maxiter 50
+# set window 4
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every line now carries a leading <code class="docutils literal notranslate"><span class="pre">#</span> </code> — three lines commented in one gesture. The
+reverse (deleting a leading column with <code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code> then <code class="docutils literal notranslate"><span class="pre">d</span></code>) is just as quick.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Visual mode</span> — <span class="bp-card-job">enter a mode, extend with motions, then operate. <code>Esc</code> applies block edits to every line.</span>
+  <table>
+    <tr><td>v&nbsp;&nbsp;V</td><td>charwise / linewise selection</td></tr>
+    <tr><td>Ctrl-v</td><td>blockwise (rectangular column) selection</td></tr>
+    <tr><td>d&nbsp;&nbsp;y&nbsp;&nbsp;c</td><td>delete / yank / change the selection</td></tr>
+    <tr><td>&gt;&nbsp;&nbsp;&lt;&nbsp;&nbsp;~</td><td>indent right / left; toggle case</td></tr>
+    <tr><td>Ctrl-v&nbsp;…&nbsp;I</td><td>block: insert on every selected line (then <code>Esc</code>)</td></tr>
+    <tr><td>Ctrl-v&nbsp;…&nbsp;A</td><td>block: append on every line (<code>$</code> first for ragged ends)</td></tr>
+  </table>
+</div>
+</section>
+</section>
+<section id="f-search">
+<h2>F. Search<a class="headerlink" href="#f-search" title="Link to this heading">#</a></h2>
+<p>Finding things is the same <code class="docutils literal notranslate"><span class="pre">/</span></code> you already met in <code class="docutils literal notranslate"><span class="pre">less</span></code> and <code class="docutils literal notranslate"><span class="pre">man</span></code> (they page
+through <code class="docutils literal notranslate"><span class="pre">less</span></code>, remember). In Normal mode:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">/pattern</span></code></strong> then Enter — search forward; <strong><code class="docutils literal notranslate"><span class="pre">?pattern</span></code></strong> searches backward.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">n</span></code></strong> — jump to the next match; <strong><code class="docutils literal notranslate"><span class="pre">N</span></code></strong> — the previous one.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">*</span></code></strong> — search for the word currently under the cursor (no typing needed).</p></li>
+</ul>
+</section>
+<section id="g-search-and-replace-the-power-tool">
+<h2>G. Search and replace — the power tool<a class="headerlink" href="#g-search-and-replace-the-power-tool" title="Link to this heading">#</a></h2>
+<p>This is the move that justifies the whole notebook, and it carries a gift from
+Part II: <strong>the regular expressions you learned for <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code> are the same
+regexes Vim searches and replaces with.</strong> The command lives in command-line mode:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">:s/old/new/</span></code> — replace the first <code class="docutils literal notranslate"><span class="pre">old</span></code> on the <strong>current line</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:s/old/new/g</span></code> — replace <strong>g</strong>lobally on the current line (every match).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:%s/old/new/g</span></code> — <code class="docutils literal notranslate"><span class="pre">%</span></code> means “all lines”, so this replaces <strong>every</strong> occurrence in
+the file. This is the one you will use most.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:10,20s/old/new/g</span></code> — only within a line range.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:%s/old/new/gc</span></code> — add <code class="docutils literal notranslate"><span class="pre">c</span></code> to <strong>confirm</strong> each change (<code class="docutils literal notranslate"><span class="pre">y</span></code>/<code class="docutils literal notranslate"><span class="pre">n</span></code>) before it happens.</p></li>
+</ul>
+<p>Here it is on a scratch parameter file. Before:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/params.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cutoff   = 300
+maxsteps = 300
+window   = 300
+</pre></div>
+</div>
+</div>
+</div>
+<p>In your terminal you would open the file and type <code class="docutils literal notranslate"><span class="pre">:%s/300/500/g</span></code>. Run
+non-interactively for the page, that is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vim<span class="w"> </span>-es<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;%s/300/500/g&#39;</span><span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;wq&#39;</span><span class="w"> </span>scratch/params.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/params.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cutoff   = 500
+maxsteps = 500
+window   = 500
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every <code class="docutils literal notranslate"><span class="pre">300</span></code> became <code class="docutils literal notranslate"><span class="pre">500</span></code>, across all three lines, in one command. That is the
+edit you will run a thousand times: change a parameter everywhere, rename a
+variable throughout a script, retarget a path across a config.</p>
+</section>
+<section id="h-a-word-on-nano-and-why-vim-anyway">
+<h2>H. A word on <code class="docutils literal notranslate"><span class="pre">nano</span></code> (and why Vim anyway)<a class="headerlink" href="#h-a-word-on-nano-and-why-vim-anyway" title="Link to this heading">#</a></h2>
+<p>If Vim’s modes are genuinely not for you today, there is a gentler editor: <strong><code class="docutils literal notranslate"><span class="pre">nano</span></code></strong>.
+It is <em>modeless</em> — you just type, like a text box — and it shows its key shortcuts
+along the bottom of the screen (<code class="docutils literal notranslate"><span class="pre">^O</span></code> to save, <code class="docutils literal notranslate"><span class="pre">^X</span></code> to exit, where <code class="docutils literal notranslate"><span class="pre">^</span></code> means Ctrl).
+It is a perfectly fine fallback, and on your own machine you may prefer it.</p>
+<div class="bp-card" id="cmd-nano"><span class="bp-card-cmd">nano</span> &mdash; <span class="bp-card-job">open the nano editor — modeless, with its key shortcuts shown along the bottom of the screen.</span><table><tr><td>^O</td><td>write the file out (save) — the <code>^</code> means the Ctrl key</td></tr><tr><td>^X</td><td>exit (it offers to save first)</td></tr><tr><td>^W</td><td>search (&quot;where is&quot;)</td></tr></table><div class="bp-card-more">more: <code>man nano</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the <code>^X</code> shown on screen means Ctrl-X, not a literal caret followed by X</div><p>But the reason this notebook leads with Vim and not <code class="docutils literal notranslate"><span class="pre">nano</span></code> is simple: when you
+<code class="docutils literal notranslate"><span class="pre">ssh</span></code> into a cluster at 2 a.m. to fix a submission script, Vim is what is <em>there</em>,
+and the tool that drops you in unannounced is Vim, not <code class="docutils literal notranslate"><span class="pre">nano</span></code>. Learning it is an
+investment that pays off on every machine you will ever touch.</p>
+<div class="note admonition">
+<p class="admonition-title">Optional: a friendlier Vim</p>
+<p>Vim is endlessly configurable through a <code class="docutils literal notranslate"><span class="pre">~/.vimrc</span></code> file. A few beginner-friendly
+lines — <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">number</span></code> (show line numbers), <code class="docutils literal notranslate"><span class="pre">syntax</span> <span class="pre">on</span></code> (colour), <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">incsearch</span></code> (search as you type) — make it much more pleasant. You do not need this
+to start; just know the knob exists for when you are ready.</p>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>These are different from the earlier notebooks’: the editing happens <strong>in your
+terminal</strong>, live — so
+<a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/"><strong>open it now</strong></a>
+if it is not already beside you. Each exercise tells you what to do in Vim; the
+graded ✓ checks the file you end up with. (On this page the answer is produced with scripted Vim so
+the build stays green — but the real practice is yours to do in the terminal.) As
+always, we work on fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> copies, never on <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p>
+<section id="warm-up-survival-drill">
+<h3>Warm-up — Survival drill<a class="headerlink" href="#warm-up-survival-drill" title="Link to this heading">#</a></h3>
+<p>In your terminal: <code class="docutils literal notranslate"><span class="pre">vim</span> <span class="pre">scratch/hello.txt</span></code>, press <code class="docutils literal notranslate"><span class="pre">i</span></code>, type <code class="docutils literal notranslate"><span class="pre">Hello,</span> <span class="pre">Vim</span></code>, press
+<code class="docutils literal notranslate"><span class="pre">Esc</span></code>, save and quit with <code class="docutils literal notranslate"><span class="pre">:wq</span></code>. Reopen it to confirm it stuck.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello, Vim
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the file holds the line you inserted
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-fix-a-broken-file">
+<h3>Applied 1 — Fix a broken file<a class="headerlink" href="#applied-1-fix-a-broken-file" title="Link to this heading">#</a></h3>
+<p>This scratch script has a typo: <code class="docutils literal notranslate"><span class="pre">eccho</span></code> should be <code class="docutils literal notranslate"><span class="pre">echo</span></code>. Open it in Vim, fix the
+typo (with <code class="docutils literal notranslate"><span class="pre">cw</span></code>, or <code class="docutils literal notranslate"><span class="pre">x</span></code>, or <code class="docutils literal notranslate"><span class="pre">:s</span></code> — your choice), save, and the script will run.
+It is just text; you do not need to know what it computes.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>binding energy: 42 meV
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the typo is fixed and the script now runs
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-search-and-replace-the-centrepiece">
+<h3>Applied 2 — Search and replace (the centrepiece)<a class="headerlink" href="#applied-2-search-and-replace-the-centrepiece" title="Link to this heading">#</a></h3>
+<p>This config sets the value <code class="docutils literal notranslate"><span class="pre">300</span></code> on every line. Open it in Vim and change <strong>every</strong>
+<code class="docutils literal notranslate"><span class="pre">300</span></code> to <code class="docutils literal notranslate"><span class="pre">500</span></code> in one command with <code class="docutils literal notranslate"><span class="pre">:%s/300/500/g</span></code>. None should be missed.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cutoff   = 500
+maxsteps = 500
+window   = 500
+seed     = 500
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> every 300 became 500 — all four, none missed
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-block-edit-a-column-visual-block">
+<h3>Applied 3 — Block edit a column (visual block)<a class="headerlink" href="#applied-3-block-edit-a-column-visual-block" title="Link to this heading">#</a></h3>
+<p>The real payoff of block mode. This scratch file has a run of lines. <strong>(a)</strong>
+Block-comment all of them: <code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code>, select down with <code class="docutils literal notranslate"><span class="pre">j</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code>, type <code class="docutils literal notranslate"><span class="pre">#</span> </code>, <code class="docutils literal notranslate"><span class="pre">Esc</span></code>.
+<strong>(b)</strong> On the second file, delete the leading <code class="docutils literal notranslate"><span class="pre">|</span> </code> column: <code class="docutils literal notranslate"><span class="pre">Ctrl-v</span></code>, select the
+two-character column down, <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># echo alpha
+# echo beta
+# echo gamma
+1.0 | x |
+2.0 | y |
+3.0 | z |
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> every line was commented, and the leading column was removed
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-author-from-scratch">
+<h3>Composite — putting it together (author from scratch)<a class="headerlink" href="#composite-putting-it-together-author-from-scratch" title="Link to this heading">#</a></h3>
+<p>Open a brand-new file <code class="docutils literal notranslate"><span class="pre">scratch/greet.sh</span></code> in Vim and write a small script by hand:
+a shebang line, then two <code class="docutils literal notranslate"><span class="pre">echo</span></code> lines. Save it, then run it. This exercises
+everything — open, insert, new lines (<code class="docutils literal notranslate"><span class="pre">o</span></code>), save — and points straight at Notebook
+12, where you will write real scripts.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#!/usr/bin/env bash
+echo &quot;written in Vim&quot;
+echo &quot;the date is $(date +%F)&quot;
+written in Vim
+the date is 2026-06-09
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the file exists, starts with a shebang, and runs
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-terminal-only-efficiency-challenge">
+<h3>Optional stretch (terminal-only) — Efficiency challenge<a class="headerlink" href="#optional-stretch-terminal-only-efficiency-challenge" title="Link to this heading">#</a></h3>
+<p>No ✓ — do this one for speed, in your terminal. Take any of the scratch files above
+and redo an edit using <strong>counts, verbs, and motions</strong> rather than retyping: delete
+three words with <code class="docutils literal notranslate"><span class="pre">3dw</span></code>, change a word with <code class="docutils literal notranslate"><span class="pre">cw</span></code>, copy a line with <code class="docutils literal notranslate"><span class="pre">yy</span></code> and paste it
+with <code class="docutils literal notranslate"><span class="pre">p</span></code>, then undo it all with <code class="docutils literal notranslate"><span class="pre">u</span></code>. Then do a one-line <code class="docutils literal notranslate"><span class="pre">:%s/.../.../</span></code> that would
+have taken many manual edits. Feeling <em>where</em> the leverage is — a few keystrokes
+standing in for a lot of typing — is the whole point of learning Vim.</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now create and change text in the terminal — the missing piece before you
+write anything of your own. Next (Notebook 10): <strong>quoting and expansion</strong>, the
+rules that decide how the shell reads what you type. They are quietly responsible
+for most of the subtle bugs people hit once they start writing real commands and
+scripts — so they are worth getting straight before you write much more.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-vim"><code class="bp-cmd-name">vim</code></a> &mdash; open the Vim editor — the modal editor that is on every cluster, and the one git, crontab, and friends drop you into whether you asked or not.</li><li><a href="#cmd-nano"><code class="bp-cmd-name">nano</code></a> &mdash; open the nano editor — modeless, with its key shortcuts shown along the bottom of the screen.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practise&rdquo; box above to do
+    every edit yourself — nothing to install. The published notebooks ship
+    <b>without worked solutions</b>; if you would like the reference solutions —
+    to teach from or to check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/03-scripting"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../02-pipelines/04-redirection-and-pipes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4 Redirection and pipes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-practise-this-notebook">How to practise this notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-modal-model">A. The modal model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-survival-first">B. Survival first</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-moving-around">C. Moving around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-editing-verbs-and-motions">D. Editing — verbs and motions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-visual-mode-select-first-then-operate">E. Visual mode — select first, then operate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-block-mode-power-moves">The block-mode power moves</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-search">F. Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g-search-and-replace-the-power-tool">G. Search and replace — the power tool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h-a-word-on-nano-and-why-vim-anyway">H. A word on <code class="docutils literal notranslate"><span class="pre">nano</span></code> (and why Vim anyway)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-survival-drill">Warm-up — Survival drill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-fix-a-broken-file">Applied 1 — Fix a broken file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-search-and-replace-the-centrepiece">Applied 2 — Search and replace (the centrepiece)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-block-edit-a-column-visual-block">Applied 3 — Block edit a column (visual block)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-author-from-scratch">Composite — putting it together (author from scratch)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-only-efficiency-challenge">Optional stretch (terminal-only) — Efficiency challenge</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

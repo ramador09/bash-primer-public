@@ -65,7 +65,7 @@
     <script src="../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="4 Redirection and pipes" href="../notebooks/02-pipelines/04-redirection-and-pipes.html" />
+    <link rel="prev" title="9 Editing in the terminal: Vim" href="../notebooks/03-scripting/09-editing-in-the-terminal.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -170,6 +170,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -585,6 +589,39 @@ each command links back to the notebook where it was introduced.</p>
 </tbody>
 </table>
 </div>
+<p class="rubric">Part III</p>
+<div class="pst-scrollable-table-container"><table class="bp-compendium table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Job</p></th>
+<th class="head"><p>Workhorse flags</p></th>
+<th class="head"><p>Introduced in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-nano"><span class="std std-ref">nano</span></a></p></td>
+<td><p>open the nano editor — modeless, with its key shortcuts shown along the bottom of the screen.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">^O</span></code>  write the file out (save) — the `^` means the Ctrl key</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">^X</span></code>  exit (it offers to save first)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">^W</span></code>  search (“where is”)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-nano"><span class="std std-ref">9 Editing in the terminal: Vim</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-vim"><span class="std std-ref">vim</span></a></p></td>
+<td><p>open the Vim editor — the modal editor that is on every cluster, and the one git, crontab, and friends drop you into whether you asked or not.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>  open (or create) a file for editing</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">+N</span> <span class="pre">&lt;file&gt;</span></code>  open with the cursor already on line N</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-R</span> <span class="pre">&lt;file&gt;</span></code>  open read-only (the `view` command does the same) so you cannot change it by accident</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-vim"><span class="std std-ref">9 Editing in the terminal: Vim</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -618,12 +655,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/02-pipelines/04-redirection-and-pipes.html"
+       href="../notebooks/03-scripting/09-editing-in-the-terminal.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">4 Redirection and pipes</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
       </div>
     </a>
 </div>
