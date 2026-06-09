@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/bashprimer.css?v=4c0722a5" />
+    <link rel="stylesheet" type="text/css" href="../_static/bashprimer.css?v=ebb97fb0" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -65,7 +65,7 @@
     <script src="../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="2 Navigating the filesystem" href="../notebooks/01-orientation/02-navigating-the-filesystem.html" />
+    <link rel="prev" title="3 Looking at and handling files" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -165,6 +165,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -380,7 +381,15 @@ each command links back to the notebook where it was introduced.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-cd"><span class="std std-ref">cd</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-cat"><span class="std std-ref">cat</span></a></p></td>
+<td><p>print a file’s contents straight to the screen.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  number every line</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-cat"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-cd"><span class="std std-ref">cd</span></a></p></td>
 <td><p>change the working directory — move around the tree.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">&lt;dir&gt;</span></code>  go into a directory (by absolute or relative path)</div>
@@ -392,10 +401,20 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-cd"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">clear</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">clear</span></a></p></td>
 <td><p>wipe the visible screen, giving you a clean prompt.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-clear"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-cp"><span class="std std-ref">cp</span></a></p></td>
+<td><p>copy a file (or, with -r, a directory).</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span></code>  recursive — copy a directory and everything inside it</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  prompt before overwriting an existing file</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-v</span></code>  verbose — print each file as it is copied</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-cp"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-date"><span class="std std-ref">date</span></a></p></td>
 <td><p>print the current date and time.</p></td>
@@ -414,6 +433,20 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-echo"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-file"><span class="std std-ref">file</span></a></p></td>
+<td><p>identify what kind of file something is, before you open it.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-file"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-head"><span class="std std-ref">head</span></a></p></td>
+<td><p>show the first lines of a file.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">N</span></code>  show the first N lines (default 10)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">N</span></code>  show the first N bytes instead of lines</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-head"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">history</span></a></p></td>
 <td><p>list the commands you have run, newest last, each with a number.</p></td>
 <td><div class="line-block">
@@ -422,7 +455,18 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-history"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-ls"><span class="std std-ref">ls</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-less"><span class="std std-ref">less</span></a></p></td>
+<td><p>page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Space</span> <span class="pre">/</span> <span class="pre">b</span></code>  page down / page up</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">/pattern</span> <span class="pre">→</span> <span class="pre">n</span> <span class="pre">/</span> <span class="pre">N</span></code>  search forward, then jump to the next / previous match</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">g</span> <span class="pre">/</span> <span class="pre">G</span></code>  jump to the top / the bottom</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">q</span></code>  quit</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-less"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-ls"><span class="std std-ref">ls</span></a></p></td>
 <td><p>list directory contents.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-l</span></code>  long format: permissions, size, owner, timestamp</div>
@@ -434,7 +478,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-ls"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">man</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">man</span></a></p></td>
 <td><p>open the full manual page for a command.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">word</span></code>  search every manual’s summary line for a keyword (same as `apropos`) — for when you don’t know the command’s name yet</div>
@@ -442,17 +486,64 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-man"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-pwd"><span class="std std-ref">pwd</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-mkdir"><span class="std std-ref">mkdir</span></a></p></td>
+<td><p>make a new directory.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-p</span></code>  create parent directories as needed, and do not error if it already exists</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-mkdir"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-mv"><span class="std std-ref">mv</span></a></p></td>
+<td><p>move a file — or rename it (same command: renaming is just moving within a directory).</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  prompt before overwriting an existing file</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-v</span></code>  verbose — print what was moved</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-mv"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-pwd"><span class="std std-ref">pwd</span></a></p></td>
 <td><p>print the working directory: where you currently are in the filesystem.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-pwd"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-rm"><span class="std std-ref">rm</span></a></p></td>
+<td><p>remove (delete) a file. Permanently.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span></code>  recursive — delete a directory and everything in it</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  prompt before each removal (a good habit)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-f</span></code>  force — never prompt, ignore missing files (dangerous; see the admonition)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-rm"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-rmdir"><span class="std std-ref">rmdir</span></a></p></td>
+<td><p>remove an empty directory — and only an empty one.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-rmdir"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-tail"><span class="std std-ref">tail</span></a></p></td>
+<td><p>show the last lines of a file.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">N</span></code>  show the last N lines (default 10)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">N</span></code>  show the last N bytes instead of lines</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-f</span></code>  follow — keep printing new lines as the file grows (watch a running job’s log live); stop with Ctrl+C</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-tail"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-tldr"><span class="std std-ref">tldr</span></a></p></td>
 <td><p>show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-tldr"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-tree"><span class="std std-ref">tree</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-touch"><span class="std std-ref">touch</span></a></p></td>
+<td><p>create an empty file, or update an existing file’s timestamp.</p></td>
+<td><p>—</p></td>
+<td><p><a class="reference internal" href="../notebooks/01-orientation/03-looking-at-and-handling-files.html#cmd-touch"><span class="std std-ref">3 Looking at and handling files</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-tree"><span class="std std-ref">tree</span></a></p></td>
 <td><p>show a directory and everything beneath it as an indented tree.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">n</span></code>  descend at most n levels (keep deep trees readable)</div>
@@ -461,7 +552,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/02-navigating-the-filesystem.html#cmd-tree"><span class="std std-ref">2 Navigating the filesystem</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">whoami</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">whoami</span></a></p></td>
 <td><p>print the username the shell is running as.</p></td>
 <td><p>—</p></td>
 <td><p><a class="reference internal" href="../notebooks/01-orientation/01-shell-and-terminal.html#cmd-whoami"><span class="std std-ref">1 The shell and the terminal</span></a></p></td>
@@ -502,12 +593,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/01-orientation/02-navigating-the-filesystem.html"
+       href="../notebooks/01-orientation/03-looking-at-and-handling-files.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">2 Navigating the filesystem</p>
+        <p class="prev-next-title">3 Looking at and handling files</p>
       </div>
     </a>
 </div>

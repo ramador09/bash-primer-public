@@ -75,7 +75,11 @@ div.cell[class*="tag_solution"] div.cell_input,
 .bp-solution-hidden div.cell_input { display: none; }
 
 /* ---- Admonitions match the palette ------------------------------------ */
-.admonition { border-left-color: var(--bp-accent) !important; }
+/* Brand the neutral admonitions amber, but let the semantic warning classes keep
+   their own colour (danger = red, etc.) so the rm safety warning reads serious. */
+.admonition:not(.danger):not(.warning):not(.caution):not(.attention):not(.error) {
+  border-left-color: var(--bp-accent) !important;
+}
 
 /* ======================================================================= */
 /*  Course component classes — referenced by the static HTML blocks the    */

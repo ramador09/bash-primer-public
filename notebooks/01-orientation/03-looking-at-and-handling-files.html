@@ -1,0 +1,991 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3 Looking at and handling files &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/01-orientation/03-looking-at-and-handling-files';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="2 Navigating the filesystem" href="02-navigating-the-filesystem.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/01-orientation/03-looking-at-and-handling-files.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/01-orientation/03-looking-at-and-handling-files.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3 Looking at and handling files</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-looking-inside-files">A. Looking inside files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-what-am-i-even-looking-at"><code class="docutils literal notranslate"><span class="pre">file</span></code> — what am I even looking at?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cat-print-the-whole-thing"><code class="docutils literal notranslate"><span class="pre">cat</span></code> — print the whole thing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#head-and-tail-just-the-ends"><code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span></code> — just the ends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#less-page-through-a-big-file"><code class="docutils literal notranslate"><span class="pre">less</span></code> — page through a big file</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-handling-files">B. Handling files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#touch-and-mkdir-make-files-and-folders"><code class="docutils literal notranslate"><span class="pre">touch</span></code> and <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> — make files and folders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cp-copy"><code class="docutils literal notranslate"><span class="pre">cp</span></code> — copy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mv-move-and-rename"><code class="docutils literal notranslate"><span class="pre">mv</span></code> — move and rename</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-and-rmdir-remove"><code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> — remove</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-identify-then-peek">Exercise 1 (worked) — Identify, then peek</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-first-and-last-of-a-trajectory">Exercise 2 (your turn) — First and last of a trajectory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-your-turn-organize-a-results-folder">Exercise 3 (your turn) — Organize a results folder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-your-turn-safe-removal">Exercise 4 (your turn) — Safe removal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-terminal-only-paging-and-following">Exercise 5 (terminal-only) — Paging and following</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="looking-at-and-handling-files">
+<h1>3 Looking at and handling files<a class="headerlink" href="#looking-at-and-handling-files" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part I — Orientation</span>
+    <span class="bp-meta">Notebook&nbsp;3</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Looking inside a file safely, reading big ones without flooding the screen,
+    and creating, copying, moving, and removing files and folders.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Notebook 2 got you <em>to</em> a file: you can find any file in the tree. Now you do the
+two things you actually came for — look <em>inside</em> a file, and move files around.</p>
+<p>As before, the playground is the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> folder: <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
+trajectories and simulation inputs from the Molecular and Materials Modelling
+course. <strong>You do not need to understand any of it.</strong> The only thing that matters
+here is that these are <em>text files</em>, and the skills — viewing them and organising
+them — are the same whether a file holds atomic coordinates or a shopping list.</p>
+<p>One ground rule for this notebook: we treat <code class="docutils literal notranslate"><span class="pre">data/</span></code> as <strong>read-only</strong>. Anything we
+create, copy, or delete happens in a throwaway <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> directory, so there is
+no way to harm the real files. (This is also just good practice.)</p>
+</section>
+<section id="a-looking-inside-files">
+<h2>A. Looking inside files<a class="headerlink" href="#a-looking-inside-files" title="Link to this heading">#</a></h2>
+<section id="file-what-am-i-even-looking-at">
+<h3><code class="docutils literal notranslate"><span class="pre">file</span></code> — what am I even looking at?<a class="headerlink" href="#file-what-am-i-even-looking-at" title="Link to this heading">#</a></h3>
+<p>Before you open something, it is worth knowing <em>what</em> it is. <code class="docutils literal notranslate"><span class="pre">file</span></code> peeks at a
+file’s contents and tells you its type.</p>
+<div class="bp-card" id="cmd-file"><span class="bp-card-cmd">file</span> &mdash; <span class="bp-card-job">identify what kind of file something is, before you open it.</span><div class="bp-card-more">more: <code>man file</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> check first — <code>cat</code>-ing a binary file dumps control characters and can garble your terminal; <code>file</code> tells you whether it is safe text</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>file<span class="w"> </span>data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-relaxed.xyz: ASCII text
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plain text — safe to read. That check matters more than it looks: opening a
+<em>binary</em> file as if it were text can spray control characters across your terminal
+and garble it. <code class="docutils literal notranslate"><span class="pre">file</span></code> is how you avoid that.</p>
+</section>
+<section id="cat-print-the-whole-thing">
+<h3><code class="docutils literal notranslate"><span class="pre">cat</span></code> — print the whole thing<a class="headerlink" href="#cat-print-the-whole-thing" title="Link to this heading">#</a></h3>
+<p>The bluntest way to see a file is <code class="docutils literal notranslate"><span class="pre">cat</span></code>, which dumps its entire contents to the
+screen.</p>
+<div class="bp-card" id="cmd-cat"><span class="bp-card-cmd">cat</span> &mdash; <span class="bp-card-job">print a file&#x27;s contents straight to the screen.</span><table><tr><td>-n</td><td>number every line</td></tr></table><div class="bp-card-more">more: <code>man cat</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>cat</code> prints the WHOLE file — on a huge one it floods your screen (reach for <code>head</code>/<code>tail</code>/<code>less</code>); on a binary it garbles the terminal (run <code>file</code> first)</div><p>On a short file that is exactly what you want. Here is the hidden notes file from
+the data folder:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>data/.dataset-notes
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># .dataset-notes — a hidden file (its name starts with a dot, so `ls` skips it
+# unless you ask with `ls -a`). Nothing secret; just a marker you can practise
+# finding.
+#
+# These files are real Molecular &amp; Materials Modelling (ETH Zürich) outputs,
+# republished as a navigation playground. You never need to understand the
+# physics to practise the shell on them.
+provenance: MMM FS2023
+scrubbed: usernames and cluster hostnames removed (none were present)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">-n</span></code> to number the lines:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>-n<span class="w"> </span>data/.dataset-notes
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     1	# .dataset-notes — a hidden file (its name starts with a dot, so `ls` skips it
+     2	# unless you ask with `ls -a`). Nothing secret; just a marker you can practise
+     3	# finding.
+     4	#
+     5	# These files are real Molecular &amp; Materials Modelling (ETH Zürich) outputs,
+     6	# republished as a navigation playground. You never need to understand the
+     7	# physics to practise the shell on them.
+     8	provenance: MMM FS2023
+     9	scrubbed: usernames and cluster hostnames removed (none were present)
+</pre></div>
+</div>
+</div>
+</div>
+<p>But heed the gotcha on the card. The optimisation trajectory in <code class="docutils literal notranslate"><span class="pre">data/</span></code> is <strong>2,520
+lines</strong> long — <code class="docutils literal notranslate"><span class="pre">cat</span></code>-ing it would bury your screen in coordinates. When a file is
+big, you do not want all of it; you want a <em>piece</em> of it. That is the next two
+commands.</p>
+</section>
+<section id="head-and-tail-just-the-ends">
+<h3><code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span></code> — just the ends<a class="headerlink" href="#head-and-tail-just-the-ends" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">head</span></code> shows the first few lines of a file; <code class="docutils literal notranslate"><span class="pre">tail</span></code> shows the last few. They are how
+you sample a big file without drowning in it.</p>
+<div class="bp-card" id="cmd-head"><span class="bp-card-cmd">head</span> &mdash; <span class="bp-card-job">show the first lines of a file.</span><table><tr><td>-n N</td><td>show the first N lines (default 10)</td></tr><tr><td>-c N</td><td>show the first N bytes instead of lines</td></tr></table><div class="bp-card-more">more: <code>man head</code></div></div><div class="bp-card" id="cmd-tail"><span class="bp-card-cmd">tail</span> &mdash; <span class="bp-card-job">show the last lines of a file.</span><table><tr><td>-n N</td><td>show the last N lines (default 10)</td></tr><tr><td>-c N</td><td>show the last N bytes instead of lines</td></tr><tr><td>-f</td><td>follow — keep printing new lines as the file grows (watch a running job&#x27;s log live); stop with Ctrl+C</td></tr></table><div class="bp-card-more">more: <code>man tail</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>tail -f</code> never returns on its own — it waits for more; press <code>Ctrl+C</code> to get your prompt back</div><p>A one-line motivation, then the release valve: in an <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> trajectory the first
+line is the atom count and the second carries the step and energy — but <strong>you do
+not need to know that</strong>. The point is simply that <code class="docutils literal notranslate"><span class="pre">head</span></code> pulls the top:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span><span class="w"> </span>data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      38
+ i =      28, E =       -0.0621020546
+ Ar         4.5837264705       -2.5298506230        2.8419660895
+</pre></div>
+</div>
+</div>
+</div>
+<p>…and <code class="docutils literal notranslate"><span class="pre">tail</span></code> pulls the bottom, here the last three lines of the 2,520-line
+trajectory, fetched instantly without reading the rest:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span><span class="w"> </span>data/trajectories/lj38-optimization.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Ar         8.2684872923       10.6869340322        9.8193483259
+ Ar        10.3806592580        9.2923533596       12.5676466468
+ Ar         9.5922722829        7.1863024355        9.5820081406
+</pre></div>
+</div>
+</div>
+</div>
+<p>One flag on <code class="docutils literal notranslate"><span class="pre">tail</span></code> is worth singling out: <strong><code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span></code></strong> <em>follows</em> a file, printing
+new lines as they are added. This is how you watch a running job’s log live — an
+everyday move on a cluster. It is interactive (it keeps waiting), so it belongs in
+a real terminal, not a static cell:</p>
+<div class="tip admonition">
+<p class="admonition-title">Practise this in your terminal</p>
+<p>Open the <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
+start writing to a file in one place and <code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span></code> it — watch the new lines appear
+as they are written. Press <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code> to stop following.</p>
+</div>
+</section>
+<section id="less-page-through-a-big-file">
+<h3><code class="docutils literal notranslate"><span class="pre">less</span></code> — page through a big file<a class="headerlink" href="#less-page-through-a-big-file" title="Link to this heading">#</a></h3>
+<p>To actually <em>read</em> a long file (not just its ends), use the pager, <code class="docutils literal notranslate"><span class="pre">less</span></code>. It shows
+one screen at a time and lets you scroll and search.</p>
+<div class="bp-card" id="cmd-less"><span class="bp-card-cmd">less</span> &mdash; <span class="bp-card-job">page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</span><table><tr><td>Space / b</td><td>page down / page up</td></tr><tr><td>/pattern → n / N</td><td>search forward, then jump to the next / previous match</td></tr><tr><td>g / G</td><td>jump to the top / the bottom</td></tr><tr><td>q</td><td>quit</td></tr></table><div class="bp-card-more">more: <code>man less</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>man</code> shows its pages through <code>less</code>, so the same keys work in both — <code>q</code> quits each, <code>/</code> searches each. It is interactive: practise it in the terminal</div><p><code class="docutils literal notranslate"><span class="pre">less</span></code> is interactive — there is nothing to print on a page, only keys to press —
+so this one, too, is for your terminal. There is a payoff for a habit you already
+have: <code class="docutils literal notranslate"><span class="pre">man</span></code> displays its pages <em>through</em> <code class="docutils literal notranslate"><span class="pre">less</span></code>, so every key you learn here works
+in <code class="docutils literal notranslate"><span class="pre">man</span></code> as well. <code class="docutils literal notranslate"><span class="pre">q</span></code> quits both; <code class="docutils literal notranslate"><span class="pre">/</span></code> searches both.</p>
+<div class="tip admonition">
+<p class="admonition-title">Practise this in your terminal</p>
+<p>In the <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
+run <code class="docutils literal notranslate"><span class="pre">less</span> <span class="pre">data/inputs/geo-opt.inp</span></code>. Page with the spacebar, search with <code class="docutils literal notranslate"><span class="pre">/csvr</span></code> (or
+any word), jump around with <code class="docutils literal notranslate"><span class="pre">g</span></code> and <code class="docutils literal notranslate"><span class="pre">G</span></code>, and quit with <code class="docutils literal notranslate"><span class="pre">q</span></code>. Then try <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ls</span></code> and
+notice the keys are identical.</p>
+</div>
+</section>
+</section>
+<section id="b-handling-files">
+<h2>B. Handling files<a class="headerlink" href="#b-handling-files" title="Link to this heading">#</a></h2>
+<p>Now the other half: making, copying, renaming, and removing files and folders.
+Everything here happens in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> directory so the real data stays
+untouched.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<section id="touch-and-mkdir-make-files-and-folders">
+<h3><code class="docutils literal notranslate"><span class="pre">touch</span></code> and <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> — make files and folders<a class="headerlink" href="#touch-and-mkdir-make-files-and-folders" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">touch</span></code> makes an empty file (or updates a file’s timestamp); <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> makes a
+directory.</p>
+<div class="bp-card" id="cmd-touch"><span class="bp-card-cmd">touch</span> &mdash; <span class="bp-card-job">create an empty file, or update an existing file&#x27;s timestamp.</span><div class="bp-card-more">more: <code>man touch</code></div></div><div class="bp-card" id="cmd-mkdir"><span class="bp-card-cmd">mkdir</span> &mdash; <span class="bp-card-job">make a new directory.</span><table><tr><td>-p</td><td>create parent directories as needed, and do not error if it already exists</td></tr></table><div class="bp-card-more">more: <code>man mkdir</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> making a nested path like <code>a/b/c</code> in one go needs <code>-p</code>; without it, <code>mkdir</code> fails unless every parent already exists</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">touch</span></code> printed nothing — like most of these commands, silence means success.
+<code class="docutils literal notranslate"><span class="pre">mkdir</span></code> with <code class="docutils literal notranslate"><span class="pre">-p</span></code> makes a whole nested path at once (and never complains if it
+already exists):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>scratch/results/raw
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us see what we built:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-R<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch:
+notes.txt  results
+scratch/results:
+raw
+scratch/results/raw:
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cp-copy">
+<h3><code class="docutils literal notranslate"><span class="pre">cp</span></code> — copy<a class="headerlink" href="#cp-copy" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cp</span></code> copies a file. To copy a <em>directory</em>, you must add <code class="docutils literal notranslate"><span class="pre">-r</span></code>.</p>
+<div class="bp-card" id="cmd-cp"><span class="bp-card-cmd">cp</span> &mdash; <span class="bp-card-job">copy a file (or, with -r, a directory).</span><table><tr><td>-r</td><td>recursive — copy a directory and everything inside it</td></tr><tr><td>-i</td><td>prompt before overwriting an existing file</td></tr><tr><td>-v</td><td>verbose — print each file as it is copied</td></tr></table><div class="bp-card-more">more: <code>man cp</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> copying a directory needs <code>-r</code>; and <code>cp</code> overwrites the destination SILENTLY unless you add <code>-i</code></div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>scratch/notes.txt<span class="w"> </span>scratch/notes-backup.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>notes-backup.txt  notes.txt  results
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mv-move-and-rename">
+<h3><code class="docutils literal notranslate"><span class="pre">mv</span></code> — move and rename<a class="headerlink" href="#mv-move-and-rename" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">mv</span></code> moves a file somewhere else — and <strong>renaming is the same operation</strong>, just
+moving a file to a new name in the same directory.</p>
+<div class="bp-card" id="cmd-mv"><span class="bp-card-cmd">mv</span> &mdash; <span class="bp-card-job">move a file — or rename it (same command: renaming is just moving within a directory).</span><table><tr><td>-i</td><td>prompt before overwriting an existing file</td></tr><tr><td>-v</td><td>verbose — print what was moved</td></tr></table><div class="bp-card-more">more: <code>man mv</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> like <code>cp</code>, <code>mv</code> overwrites the destination silently — add <code>-i</code> if there is any chance it already exists</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mv<span class="w"> </span>scratch/notes-backup.txt<span class="w"> </span>scratch/notes-v2.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>notes-v2.txt  notes.txt  results
+</pre></div>
+</div>
+</div>
+</div>
+<p>The backup is gone and <code class="docutils literal notranslate"><span class="pre">notes-v2.txt</span></code> is in its place: that was a rename.</p>
+</section>
+<section id="rm-and-rmdir-remove">
+<h3><code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> — remove<a class="headerlink" href="#rm-and-rmdir-remove" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rm</span></code> deletes a file; <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> deletes an <em>empty</em> directory.</p>
+<div class="bp-card" id="cmd-rm"><span class="bp-card-cmd">rm</span> &mdash; <span class="bp-card-job">remove (delete) a file. Permanently.</span><table><tr><td>-r</td><td>recursive — delete a directory and everything in it</td></tr><tr><td>-i</td><td>prompt before each removal (a good habit)</td></tr><tr><td>-f</td><td>force — never prompt, ignore missing files (dangerous; see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man rm</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> there is no undo and no trash. <code>rm -rf</code> is the classic footgun — read the admonition in the notebook before you lean on it</div><div class="bp-card" id="cmd-rmdir"><span class="bp-card-cmd">rmdir</span> &mdash; <span class="bp-card-job">remove an empty directory — and only an empty one.</span><div class="bp-card-more">more: <code>man rmdir</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> it refuses to delete a non-empty directory — that narrowness is the safety; use it when you mean “this should be empty”</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>scratch/notes-v2.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>notes.txt  results
+</pre></div>
+</div>
+</div>
+</div>
+<p>That file is now gone — and here is the thing about “gone”:</p>
+<div class="danger admonition">
+<p class="admonition-title">⚠ rm has no undo, and no trash</p>
+<p>This is the most consequential warning in the course so far, so read it once,
+properly. When <code class="docutils literal notranslate"><span class="pre">rm</span></code> deletes a file, it is <strong>gone</strong> — there is no Recycle Bin, no
+Trash, no “are you sure?”. <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">somedir</span></code> will silently erase an entire directory
+tree, and <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">*</span></code> in the wrong directory has ruined many a day. Three habits
+keep you safe:</p>
+<ul class="simple">
+<li><p><strong>Look before you leap.</strong> Before <code class="docutils literal notranslate"><span class="pre">rm</span></code>-ing with a wildcard, run the same pattern
+through <code class="docutils literal notranslate"><span class="pre">ls</span></code> first — <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">*.tmp</span></code> shows you exactly what <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">*.tmp</span></code> will destroy.</p></li>
+<li><p><strong>Use <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-i</span></code> when it matters.</strong> It prompts before each deletion; the half-second
+pause has saved many files.</p></li>
+<li><p><strong>Reach for <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> when you mean “empty”.</strong> It <em>refuses</em> to delete a non-empty
+directory, so it cannot take anything down with it by surprise.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">rm</span></code> is not to be feared — it is to be respected, like any sharp tool.</p>
+</div>
+</section>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The pattern is unchanged: a task, a place for your answer, an automatic ✓. Reads
+come from <code class="docutils literal notranslate"><span class="pre">data/</span></code>; anything that creates or deletes works in <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, set up
+fresh each time.</p>
+<section id="exercise-1-worked-identify-then-peek">
+<h3>Exercise 1 (worked) — Identify, then peek<a class="headerlink" href="#exercise-1-worked-identify-then-peek" title="Link to this heading">#</a></h3>
+<p>Find out what <code class="docutils literal notranslate"><span class="pre">data/inputs/geo-opt.inp</span></code> is with <code class="docutils literal notranslate"><span class="pre">file</span></code>, then show its first few and
+last few lines with <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/geo-opt.inp: ASCII text
+&amp;GLOBAL                       ! sets general information about the calculation
+   PRINT_LEVEL LOW            ! prints only essential output
+   PROJECT optimization       ! sets name of project
+   RUN_TYPE GEO_OPT           ! type of calculation is a geometry optimization
+      &amp;END
+  &amp;END
+ &amp;END SUBSYS
+&amp;END FORCE_EVAL
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> file reports a text type, and head and tail both produce output
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-2-your-turn-first-and-last-of-a-trajectory">
+<h3>Exercise 2 (your turn) — First and last of a trajectory<a class="headerlink" href="#exercise-2-your-turn-first-and-last-of-a-trajectory" title="Link to this heading">#</a></h3>
+<p>Show the <strong>first 5</strong> lines and the <strong>last 5</strong> lines of the big trajectory
+<code class="docutils literal notranslate"><span class="pre">data/trajectories/lj38-optimization.xyz</span></code>, without reading the 2,510 lines in
+between.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      38
+ i =        1, E =        -0.0231086608
+ Ar        16.8773225351        7.2595905272       13.9246835670
+ Ar         5.1445774260       12.1651706949       12.9335732081
+ Ar         5.2735834035        7.6991362952        4.8232906858
+ Ar        10.9581730448        9.8649271971        7.3611169007
+ Ar        13.0734311384        8.4718065837       10.1062562464
+ Ar         8.2684872923       10.6869340322        9.8193483259
+ Ar        10.3806592580        9.2923533596       12.5676466468
+ Ar         9.5922722829        7.1863024355        9.5820081406
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> head -n 5 and tail -n 5 each return exactly five lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3-your-turn-organize-a-results-folder">
+<h3>Exercise 3 (your turn) — Organize a results folder<a class="headerlink" href="#exercise-3-your-turn-organize-a-results-folder" title="Link to this heading">#</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>: make a directory <code class="docutils literal notranslate"><span class="pre">inputs/</span></code> (use <code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">-p</span></code>), copy
+<code class="docutils literal notranslate"><span class="pre">data/inputs/geo-opt.inp</span></code> into it, rename the copy to <code class="docutils literal notranslate"><span class="pre">run-01.inp</span></code> with <code class="docutils literal notranslate"><span class="pre">mv</span></code>, and
+list the result with <code class="docutils literal notranslate"><span class="pre">ls</span></code>. The original in <code class="docutils literal notranslate"><span class="pre">data/</span></code> must stay put.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run-01.inp
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the copy was renamed to run-01.inp, and the original data file is untouched
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-your-turn-safe-removal">
+<h3>Exercise 4 (your turn) — Safe removal<a class="headerlink" href="#exercise-4-your-turn-safe-removal" title="Link to this heading">#</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>: <code class="docutils literal notranslate"><span class="pre">touch</span></code> two files, <code class="docutils literal notranslate"><span class="pre">keep.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">delete-me.txt</span></code>, then remove only
+<code class="docutils literal notranslate"><span class="pre">delete-me.txt</span></code>. Afterwards <code class="docutils literal notranslate"><span class="pre">keep.txt</span></code> must still be there — removing one thing
+should never take its neighbours with it.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>keep.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> delete-me.txt is gone and keep.txt is untouched
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-5-terminal-only-paging-and-following">
+<h3>Exercise 5 (terminal-only) — Paging and following<a class="headerlink" href="#exercise-5-terminal-only-paging-and-following" title="Link to this heading">#</a></h3>
+<p>No ✓ for this one — it is interactive. In the
+<a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>:
+open <code class="docutils literal notranslate"><span class="pre">less</span> <span class="pre">data/results/sn2-neb.ener</span></code>, search it with <code class="docutils literal notranslate"><span class="pre">/</span></code>, and quit with <code class="docutils literal notranslate"><span class="pre">q</span></code>. Then
+pick a file and <code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span></code> it while you append to it from elsewhere, and watch the
+new lines arrive live. These two habits — paging and following — are everyday moves
+once you are working on real runs.</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now see what is inside a file and move files around the tree — which closes
+out the orientation part of the course. Part II is where it gets powerful. Instead
+of reading a file by eye, you will <strong>extract</strong> from it: feed <code class="docutils literal notranslate"><span class="pre">cat</span></code> or <code class="docutils literal notranslate"><span class="pre">head</span></code> into
+tools that filter and reshape text, starting with <strong>redirection and pipes</strong>, then
+<code class="docutils literal notranslate"><span class="pre">grep</span></code>, the stream toolkit, and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code>. Everything you have built — moving
+through the tree, peeking at files — is the ground that stands on.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-file"><code class="bp-cmd-name">file</code></a> &mdash; identify what kind of file something is, before you open it.</li><li><a href="#cmd-cat"><code class="bp-cmd-name">cat</code></a> &mdash; print a file&#x27;s contents straight to the screen.</li><li><a href="#cmd-head"><code class="bp-cmd-name">head</code></a> &mdash; show the first lines of a file.</li><li><a href="#cmd-tail"><code class="bp-cmd-name">tail</code></a> &mdash; show the last lines of a file.</li><li><a href="#cmd-less"><code class="bp-cmd-name">less</code></a> &mdash; page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</li><li><a href="#cmd-touch"><code class="bp-cmd-name">touch</code></a> &mdash; create an empty file, or update an existing file&#x27;s timestamp.</li><li><a href="#cmd-mkdir"><code class="bp-cmd-name">mkdir</code></a> &mdash; make a new directory.</li><li><a href="#cmd-cp"><code class="bp-cmd-name">cp</code></a> &mdash; copy a file (or, with -r, a directory).</li><li><a href="#cmd-mv"><code class="bp-cmd-name">mv</code></a> &mdash; move a file — or rename it (same command: renaming is just moving within a directory).</li><li><a href="#cmd-rm"><code class="bp-cmd-name">rm</code></a> &mdash; remove (delete) a file. Permanently.</li><li><a href="#cmd-rmdir"><code class="bp-cmd-name">rmdir</code></a> &mdash; remove an empty directory — and only an empty one.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/01-orientation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-navigating-the-filesystem.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2 Navigating the filesystem</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-looking-inside-files">A. Looking inside files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-what-am-i-even-looking-at"><code class="docutils literal notranslate"><span class="pre">file</span></code> — what am I even looking at?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cat-print-the-whole-thing"><code class="docutils literal notranslate"><span class="pre">cat</span></code> — print the whole thing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#head-and-tail-just-the-ends"><code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span></code> — just the ends</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#less-page-through-a-big-file"><code class="docutils literal notranslate"><span class="pre">less</span></code> — page through a big file</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-handling-files">B. Handling files</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#touch-and-mkdir-make-files-and-folders"><code class="docutils literal notranslate"><span class="pre">touch</span></code> and <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> — make files and folders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cp-copy"><code class="docutils literal notranslate"><span class="pre">cp</span></code> — copy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mv-move-and-rename"><code class="docutils literal notranslate"><span class="pre">mv</span></code> — move and rename</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rm-and-rmdir-remove"><code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> — remove</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-worked-identify-then-peek">Exercise 1 (worked) — Identify, then peek</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-your-turn-first-and-last-of-a-trajectory">Exercise 2 (your turn) — First and last of a trajectory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-your-turn-organize-a-results-folder">Exercise 3 (your turn) — Organize a results folder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-your-turn-safe-removal">Exercise 4 (your turn) — Safe removal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-5-terminal-only-paging-and-following">Exercise 5 (terminal-only) — Paging and following</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
