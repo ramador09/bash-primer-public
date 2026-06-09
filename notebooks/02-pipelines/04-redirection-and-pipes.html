@@ -1,0 +1,1085 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4 Redirection and pipes &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/04-redirection-and-pipes';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="3 Looking at and handling files" href="../01-orientation/03-looking-at-and-handling-files.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4 Redirection and pipes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02-pipelines/04-redirection-and-pipes.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/02-pipelines/04-redirection-and-pipes.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>4 Redirection and pipes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-three-streams">A. The three streams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-redirection-steer-a-stream-to-or-from-a-file">B. Redirection — steer a stream to (or from) a file</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steering-errors">Steering errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pipes-the-point-of-it-all">C. Pipes — the point of it all</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-tee-save-a-copy-without-breaking-the-pipe">D. <code class="docutils literal notranslate"><span class="pre">tee</span></code> — save a copy without breaking the pipe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-reference">Operator reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-save-and-read-back">Warm-up 1 (worked) — Save and read back</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-append-safely">Warm-up 2 (your turn) — Append safely</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-your-turn-discard-the-noise">Applied 3 (your turn) — Discard the noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-4-worked-a-first-pipeline">Applied 4 (worked) — A first pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-5-your-turn-tee-in-the-middle">Applied 5 (your turn) — <code class="docutils literal notranslate"><span class="pre">tee</span></code> in the middle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-only-compose-your-own">Optional stretch (terminal-only) — Compose your own</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="redirection-and-pipes">
+<h1>4 Redirection and pipes<a class="headerlink" href="#redirection-and-pipes" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part II — Pipelines and text extraction</span>
+    <span class="bp-meta">Notebook&nbsp;4</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The plumbing of the shell: the three streams, sending output to files,
+    discarding errors, and snapping commands together with the pipe.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Part I got you to a file and let you look inside it. Part II is about <em>processing</em>
+a file without reading it by eye — and this notebook is the plumbing that makes
+that possible.</p>
+<p>Here is the organising idea, and it is worth saying plainly because the rest of
+the course hangs off it. The Unix way is <strong>many small tools that each do one thing
+well</strong>, snapped together so the output of one becomes the input of the next. That
+is <em>why</em> the coming notebooks teach <code class="docutils literal notranslate"><span class="pre">grep</span></code>, <code class="docutils literal notranslate"><span class="pre">cut</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, and <code class="docutils literal notranslate"><span class="pre">awk</span></code> as separate
+little programs rather than one giant Swiss-army command: each is a pipe fitting,
+and this notebook is the pipe.</p>
+<p>We start mining the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> files now — but, as always, <strong>you only
+ever need to see them as text.</strong></p>
+</section>
+<section id="a-the-three-streams">
+<h2>A. The three streams<a class="headerlink" href="#a-the-three-streams" title="Link to this heading">#</a></h2>
+<p>Every command, when it runs, is wired to three <strong>streams</strong>. Picture the command as
+a box:</p>
+<ul class="simple">
+<li><p><strong>stdin</strong> (standard input, stream <code class="docutils literal notranslate"><span class="pre">0</span></code>) — where it reads its input from;</p></li>
+<li><p><strong>stdout</strong> (standard output, stream <code class="docutils literal notranslate"><span class="pre">1</span></code>) — where it writes its <em>results</em>;</p></li>
+<li><p><strong>stderr</strong> (standard error, stream <code class="docutils literal notranslate"><span class="pre">2</span></code>) — where it writes its <em>complaints</em>.</p></li>
+</ul>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">One command, three streams</div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">                          ┌─────────────────┐
+   stdin  (0) ───────────▶ │                 │ ──────▶  stdout (1)   the results
+   a file, a pipe, or      │     command     │
+   what you type           │                 │ ──────▶  stderr (2)   the errors
+                           └─────────────────┘</pre>
+</div>
+<p>Two results land in two different places on purpose: keeping <em>errors</em> (stderr)
+separate from <em>results</em> (stdout) is what lets you, say, save a command’s output to
+a file while its error messages still reach your eyes. The whole notebook is about
+steering these three streams.</p>
+</section>
+<section id="b-redirection-steer-a-stream-to-or-from-a-file">
+<h2>B. Redirection — steer a stream to (or from) a file<a class="headerlink" href="#b-redirection-steer-a-stream-to-or-from-a-file" title="Link to this heading">#</a></h2>
+<p>By default stdout and stderr both go to your screen and stdin comes from the
+keyboard. <strong>Redirection</strong> points a stream somewhere else with a handful of
+operators. The most common: <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> sends stdout into a file.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;the first line&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>That printed nothing to the screen because its output went into the file instead.
+Read it back:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the first line
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> <strong>overwrites</strong>. To <strong>add</strong> to a file instead, use <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;a second line&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the first line
+a second line
+</pre></div>
+</div>
+</div>
+</div>
+<p>The mirror image is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, which feeds a file into a command’s <strong>stdin</strong>. Most
+commands also take a filename directly, so you meet <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> less often — but it is the
+same idea, running backwards:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&lt;<span class="w"> </span>scratch/notes.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the first line
+a second line
+</pre></div>
+</div>
+</div>
+</div>
+<div class="danger admonition">
+<p class="admonition-title">⚠ <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> clobbers — it destroys before it writes</p>
+<p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> does not ask. The instant you run <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">&gt;</span> <span class="pre">file</span></code>, the file’s old contents are
+<strong>gone</strong>, replaced by the new output — even if <code class="docutils literal notranslate"><span class="pre">cmd</span></code> then fails and writes nothing.
+This is the data-loss footgun of the notebook, and <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">important.txt</span></code> in the wrong
+moment has erased many a file. Two habits: when you mean to <em>add</em>, reach for <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>,
+not <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>; and before you <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> onto an existing file, glance at it (<code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cat</span></code>) so you
+know what you are about to overwrite.</p>
+</div>
+<section id="steering-errors">
+<h3>Steering errors<a class="headerlink" href="#steering-errors" title="Link to this heading">#</a></h3>
+<p>Results and complaints travel separately, so you can redirect them separately.
+<code class="docutils literal notranslate"><span class="pre">2&gt;</span></code> sends <strong>stderr</strong> to a file. Here is a command that does two things at once:
+list a directory that exists <em>and</em> one that does not. The listing is stdout; the
+“No such file” message is stderr.</p>
+<p>(One bit of housekeeping: these commands deliberately fail, so we add <code class="docutils literal notranslate"><span class="pre">||</span> <span class="pre">true</span></code> at
+the end to tell this notebook’s checker the error was on purpose. In your own
+terminal you would just run the command.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data<span class="w"> </span>nope-not-here<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ls: cannot access &#39;nope-not-here&#39;: No such file or directory
+data:
+README.md  inputs  results  trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<p>Both streams landed on the screen, mixed together. Now send the errors into a file
+with <code class="docutils literal notranslate"><span class="pre">2&gt;</span></code>, and only the results remain on screen:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data<span class="w"> </span>nope-not-here<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>scratch/errors.txt<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
+README.md  inputs  results  trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<p>The complaint went into the file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/errors.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ls: cannot access &#39;nope-not-here&#39;: No such file or directory
+</pre></div>
+</div>
+</div>
+</div>
+<p>Often you do not want the errors <em>at all</em>. Redirect them to <strong><code class="docutils literal notranslate"><span class="pre">/dev/null</span></code></strong>, the
+system’s black hole — anything sent there simply vanishes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data<span class="w"> </span>nope-not-here<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
+README.md  inputs  results  trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<p>Clean: just the listing. Two more operators round out the set. <code class="docutils literal notranslate"><span class="pre">2&gt;&amp;1</span></code> means “send
+stderr to wherever stdout is currently going” (handy for capturing <em>both</em> into one
+place), and <code class="docutils literal notranslate"><span class="pre">&amp;&gt;</span></code> is the shorthand for “both streams to this file”. They are in the
+reference table below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A subtlety to file away, not to dwell on: in <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">2&gt;&amp;1</span></code> the order matters —
+<code class="docutils literal notranslate"><span class="pre">2&gt;&amp;1</span></code> copies stderr to <em>wherever stdout points at that moment</em>, so stdout must be
+redirected first. Reverse them and stderr still goes to the screen. You will rarely
+need this, but when a captured log is mysteriously missing its errors, this is why.</p>
+</div>
+</section>
+</section>
+<section id="c-pipes-the-point-of-it-all">
+<h2>C. Pipes — the point of it all<a class="headerlink" href="#c-pipes-the-point-of-it-all" title="Link to this heading">#</a></h2>
+<p>Redirection moves a stream to or from a <em>file</em>. The <strong>pipe</strong>, <code class="docutils literal notranslate"><span class="pre">|</span></code>, does something
+better: it wires one command’s <strong>stdout</strong> straight into the next command’s
+<strong>stdin</strong>, with no file in between. That is how small tools become large ones.</p>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">A pipeline: stdout flows into the next stdin</div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">  ┌────────────┐   stdout   ┌────────────┐   stdout   ┌────────────┐
+  │   ls -l    │ ────│────▶ │    head    │ ────│────▶ │    ...     │ ──▶ screen
+  └────────────┘     │      └────────────┘     │      └────────────┘
+                  the pipe │ carries only stdout — errors still go to the screen</pre>
+</div>
+<p>You have already <em>seen</em> a pipe, back in Notebook 1, without it being explained. The
+line that fetched the top of the <code class="docutils literal notranslate"><span class="pre">ls</span></code> manual —</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>man<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>col<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LS(1)				 User Commands				 LS(1)
+NAME
+       ls - list directory contents
+SYNOPSIS
+</pre></div>
+</div>
+</div>
+</div>
+<p>— was a three-stage pipeline all along: <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ls</span></code> produces the manual on stdout,
+<code class="docutils literal notranslate"><span class="pre">col</span> <span class="pre">-b</span></code> cleans up its formatting, and <code class="docutils literal notranslate"><span class="pre">head</span> <span class="pre">-n</span> <span class="pre">6</span></code> keeps the first six lines. Each
+stage hands its stdout to the next. Here is a simpler one — list <code class="docutils literal notranslate"><span class="pre">data/</span></code> in long
+form, but keep only the first few lines:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-l<span class="w"> </span>data<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16
+-rw-r--r-- 1 runner runner 1787 Jun  1  2023 README.md
+drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
+</pre></div>
+</div>
+</div>
+</div>
+<p>And one more, piping a file’s contents straight into <code class="docutils literal notranslate"><span class="pre">head</span></code> — the output of <code class="docutils literal notranslate"><span class="pre">cat</span></code>
+becomes the input of <code class="docutils literal notranslate"><span class="pre">head</span></code>, no temporary file needed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>data/.dataset-notes<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># .dataset-notes — a hidden file (its name starts with a dot, so `ls` skips it
+# unless you ask with `ls -a`). Nothing secret; just a marker you can practise
+# finding.
+</pre></div>
+</div>
+</div>
+</div>
+<p>One caution worth repeating: <strong>only stdout flows through the pipe.</strong> A command’s
+stderr is <em>not</em> piped onward — it leaks straight to your terminal unless you
+redirect it (that is what the earlier <code class="docutils literal notranslate"><span class="pre">2&gt;</span></code> tricks are for). The pipe carries
+results, not complaints.</p>
+<p>Right now these pipelines are modest, because we only have NB1–3 commands to pipe.
+That changes fast: the rest of Part II is nothing but tools built to sit in a
+pipeline — <code class="docutils literal notranslate"><span class="pre">grep</span></code> to filter, <code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code> to reshape, <code class="docutils literal notranslate"><span class="pre">awk</span></code> to compute. The
+pipe is what makes them worth having.</p>
+</section>
+<section id="d-tee-save-a-copy-without-breaking-the-pipe">
+<h2>D. <code class="docutils literal notranslate"><span class="pre">tee</span></code> — save a copy without breaking the pipe<a class="headerlink" href="#d-tee-save-a-copy-without-breaking-the-pipe" title="Link to this heading">#</a></h2>
+<p>Sometimes you want to keep an intermediate result <em>and</em> keep the pipeline flowing.
+<code class="docutils literal notranslate"><span class="pre">tee</span></code> is the T-junction that does both: it writes its input to a file <strong>and</strong> passes
+it through to the next command.</p>
+<div class="bp-card" id="cmd-tee"><span class="bp-card-cmd">tee</span> &mdash; <span class="bp-card-job">copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</span><table><tr><td>-a</td><td>append to the file instead of overwriting it</td></tr></table><div class="bp-card-more">more: <code>man tee</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> without <code>-a</code>, <code>tee</code> overwrites the file — the same clobber lesson as <code>&gt;</code></div><div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>scratch/listing.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>README.md
+inputs
+</pre></div>
+</div>
+</div>
+</div>
+<p>The screen shows only the first two entries (because of <code class="docutils literal notranslate"><span class="pre">head</span></code>), but the <em>full</em>
+listing was saved on the way past:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/listing.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>README.md
+inputs
+results
+trajectories
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="operator-reference">
+<h2>Operator reference<a class="headerlink" href="#operator-reference" title="Link to this heading">#</a></h2>
+<p>These are <strong>shell syntax, not commands</strong> — there is no <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">&gt;</span></code>. They wire commands
+and files together, and they are worth keeping in one place:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Operators</span> — <span class="bp-card-job">redirection and pipes are shell <em>syntax</em>; they steer the three streams between commands and files.</span>
+  <table>
+    <tr><td>&gt;</td><td>send stdout to a file, <b>overwriting</b> it</td></tr>
+    <tr><td>&gt;&gt;</td><td>send stdout to a file, <b>appending</b></td></tr>
+    <tr><td>&lt;</td><td>take stdin from a file</td></tr>
+    <tr><td>|</td><td>pipe: one command's stdout becomes the next command's stdin</td></tr>
+    <tr><td>2&gt;</td><td>send stderr (errors) to a file</td></tr>
+    <tr><td>2&gt;&amp;1</td><td>send stderr wherever stdout is currently going</td></tr>
+    <tr><td>&amp;&gt;</td><td>send both stdout and stderr to a file</td></tr>
+    <tr><td>/dev/null</td><td>the void — discard whatever is redirected here</td></tr>
+  </table>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>From here on the exercises do more of the work — that is where fluency is built.
+They ramp from mechanical warm-ups, through tasks on the real <code class="docutils literal notranslate"><span class="pre">data/</span></code>, to a
+composite that wires the whole notebook together. As in Notebook 3, anything we
+write goes into a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, never into <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p>
+<section id="warm-up-1-worked-save-and-read-back">
+<h3>Warm-up 1 (worked) — Save and read back<a class="headerlink" href="#warm-up-1-worked-save-and-read-back" title="Link to this heading">#</a></h3>
+<p>Send a line of text into a scratch file with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, then read it back with <code class="docutils literal notranslate"><span class="pre">cat</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hello from a redirected stream
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the line was saved to the file and read back unchanged
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-append-safely">
+<h3>Warm-up 2 (your turn) — Append safely<a class="headerlink" href="#warm-up-2-your-turn-append-safely" title="Link to this heading">#</a></h3>
+<p>Create <code class="docutils literal notranslate"><span class="pre">scratch/log.txt</span></code> with a first line using <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, then <strong>append</strong> two more
+lines with <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">cat</span></code> the result. The file should end up holding exactly
+three lines, in order. (Start with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> so re-running the cell does not pile up
+extra lines.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>line 1
+line 2
+line 3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the file holds exactly three lines, line 1 first and line 3 last
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-your-turn-discard-the-noise">
+<h3>Applied 3 (your turn) — Discard the noise<a class="headerlink" href="#applied-3-your-turn-discard-the-noise" title="Link to this heading">#</a></h3>
+<p>Run <code class="docutils literal notranslate"><span class="pre">ls</span></code> on <code class="docutils literal notranslate"><span class="pre">data</span></code> <em>and</em> a file that does not exist, so it produces a valid
+listing <strong>and</strong> an error. Send the error to <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code> so only the listing
+appears. (End the line with <code class="docutils literal notranslate"><span class="pre">||</span> <span class="pre">true</span></code>, as in the lesson.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
+README.md  inputs  results  trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the valid listing is shown and the error text was discarded
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-4-worked-a-first-pipeline">
+<h3>Applied 4 (worked) — A first pipeline<a class="headerlink" href="#applied-4-worked-a-first-pipeline" title="Link to this heading">#</a></h3>
+<p>Pipe a long listing of <code class="docutils literal notranslate"><span class="pre">data/</span></code> into <code class="docutils literal notranslate"><span class="pre">head</span></code> to keep just the first five lines, then
+re-run Notebook 1’s manual pipeline now that you can read it.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16
+-rw-r--r-- 1 runner runner 1787 Jun  1  2023 README.md
+drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
+drwxr-xr-x 2 runner runner 4096 May  1  2023 results
+drwxr-xr-x 2 runner runner 4096 Apr  1  2023 trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LS(1)				 User Commands				 LS(1)
+NAME
+       ls - list directory contents
+SYNOPSIS
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the pipeline runs and head limits the listing to five lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-5-your-turn-tee-in-the-middle">
+<h3>Applied 5 (your turn) — <code class="docutils literal notranslate"><span class="pre">tee</span></code> in the middle<a class="headerlink" href="#applied-5-your-turn-tee-in-the-middle" title="Link to this heading">#</a></h3>
+<p>Pipe a plain listing of <code class="docutils literal notranslate"><span class="pre">data/</span></code> through <code class="docutils literal notranslate"><span class="pre">tee</span></code> into <code class="docutils literal notranslate"><span class="pre">scratch/listing.txt</span></code>, then on
+into <code class="docutils literal notranslate"><span class="pre">head</span></code> so you see only the top of it. Afterwards the file should hold the
+<strong>full</strong> listing even though the screen showed only part.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>README.md
+inputs
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> tee saved the full four-entry listing while head showed only the top
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-capstone">
+<h3>Composite — putting it together (capstone)<a class="headerlink" href="#composite-putting-it-together-capstone" title="Link to this heading">#</a></h3>
+<p>Assemble a small report in <code class="docutils literal notranslate"><span class="pre">scratch/report.txt</span></code>, using everything in this notebook
+in one sequence. Re-create the report with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> at the top so reruns stay clean,
+then append the rest with <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>:</p>
+<ol class="arabic simple">
+<li><p>a header line built from <code class="docutils literal notranslate"><span class="pre">echo</span></code> and <code class="docutils literal notranslate"><span class="pre">date</span></code> (with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>);</p></li>
+<li><p>a listing of <code class="docutils literal notranslate"><span class="pre">data/</span></code> (with <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>), suppressing any error with <code class="docutils literal notranslate"><span class="pre">2&gt;/dev/null</span></code>;</p></li>
+<li><p>the first five lines of <code class="docutils literal notranslate"><span class="pre">data/trajectories/lj38-relaxed.xyz</span></code>, sent through
+<code class="docutils literal notranslate"><span class="pre">tee</span> <span class="pre">-a</span></code> so they are both appended to the report <strong>and</strong> previewed on screen;</p></li>
+<li><p>finally, <code class="docutils literal notranslate"><span class="pre">cat</span></code> the finished report.</p></li>
+</ol>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      38
+ i =      28, E =       -0.0621020546
+ Ar         4.5837264705       -2.5298506230        2.8419660895
+ Ar        -5.0883572196        1.9357723701        2.4184523727
+ Ar        -3.2418290672       -0.9829937359       -3.1034656658
+=== data report — 2026-06-09 ===
+Contents of data/:
+README.md
+inputs
+results
+trajectories
+First frame of lj38-relaxed.xyz:
+      38
+ i =      28, E =       -0.0621020546
+ Ar         4.5837264705       -2.5298506230        2.8419660895
+ Ar        -5.0883572196        1.9357723701        2.4184523727
+ Ar        -3.2418290672       -0.9829937359       -3.1034656658
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the report holds its header, the data/ listing, and the trajectory&#39;s first frame
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-terminal-only-compose-your-own">
+<h3>Optional stretch (terminal-only) — Compose your own<a class="headerlink" href="#optional-stretch-terminal-only-compose-your-own" title="Link to this heading">#</a></h3>
+<p>No ✓ for this one. In the
+<a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
+build a <strong>three-stage pipeline</strong> from commands you already know — for example
+<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">data</span> <span class="pre">|</span> <span class="pre">head</span> <span class="pre">-n</span> <span class="pre">4</span> <span class="pre">|</span> <span class="pre">tail</span> <span class="pre">-n</span> <span class="pre">2</span></code> — and <strong>predict its output before you run
+it</strong>. Then add a <code class="docutils literal notranslate"><span class="pre">tee</span></code> in the middle so you also save the intermediate result to a
+file, and check the file matches what you expected. Predicting first, then
+verifying, is how you build real confidence with pipes.</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You now have the plumbing: the three streams, redirection to and from files, and
+the pipe that snaps commands together. What is still missing is <em>tools worth
+piping</em> — and that is the rest of Part II. Next (Notebook 5): <strong>globbing and brace
+expansion</strong>, so a single command can act on many files at once; then <code class="docutils literal notranslate"><span class="pre">grep</span></code>, the
+stream toolkit (<code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code>/<code class="docutils literal notranslate"><span class="pre">wc</span></code>/<code class="docutils literal notranslate"><span class="pre">tr</span></code>), and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code> — each a small,
+sharp tool built to live inside a pipeline.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-tee"><code class="bp-cmd-name">tee</code></a> &mdash; copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/02-pipelines"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../01-orientation/03-looking-at-and-handling-files.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3 Looking at and handling files</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-three-streams">A. The three streams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-redirection-steer-a-stream-to-or-from-a-file">B. Redirection — steer a stream to (or from) a file</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#steering-errors">Steering errors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pipes-the-point-of-it-all">C. Pipes — the point of it all</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-tee-save-a-copy-without-breaking-the-pipe">D. <code class="docutils literal notranslate"><span class="pre">tee</span></code> — save a copy without breaking the pipe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-reference">Operator reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-save-and-read-back">Warm-up 1 (worked) — Save and read back</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-append-safely">Warm-up 2 (your turn) — Append safely</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-your-turn-discard-the-noise">Applied 3 (your turn) — Discard the noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-4-worked-a-first-pipeline">Applied 4 (worked) — A first pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-5-your-turn-tee-in-the-middle">Applied 5 (your turn) — <code class="docutils literal notranslate"><span class="pre">tee</span></code> in the middle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-only-compose-your-own">Optional stretch (terminal-only) — Compose your own</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
