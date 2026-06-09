@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=cc6f8bd1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=0b6cb2a9" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -523,7 +523,6 @@ up — which is the next section’s whole subject.</p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello from the shell!&quot;</span>
-<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;two\tcolumns\nand a second line&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -531,10 +530,17 @@ up — which is the next section’s whole subject.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from the shell!
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>two	columns
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;two\tcolumns\nand a second line&quot;</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>and a second line
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>two	columns
+and a second line
 </pre></div>
 </div>
 </div>
@@ -581,15 +587,23 @@ up — which is the next section’s whole subject.</p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date
-date<span class="w"> </span>+<span class="s2">&quot;%F %T&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun  9 05:42:11 UTC 2026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun  9 11:54:53 UTC 2026
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09 05:42:11
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>date<span class="w"> </span>+<span class="s2">&quot;%F %T&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09 11:54:53
 </pre></div>
 </div>
 </div>
@@ -625,31 +639,21 @@ character):</p>
 </div>
 <p>In your own shell, <code class="docutils literal notranslate"><span class="pre">history</span></code> fills up as you type. Here we seed it with a couple
 of entries so there is something to show:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">history</span><span class="w"> </span>-c
-<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;echo &quot;Hello from the shell!&quot;&#39;</span>
-<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;pwd&#39;</span>
-<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;whoami&#39;</span>
-<span class="nb">history</span><span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;date +&quot;%F&quot;&#39;</span>
-<span class="nb">history</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">history</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    1  echo &quot;Hello from the shell!&quot;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    2  pwd
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    3  whoami
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    4  date +&quot;%F&quot;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    5  history
+    2  pwd
+    3  whoami
+    4  date +&quot;%F&quot;
+    5  { echo $?; } 2&gt;/dev/null
+    6  history
 </pre></div>
 </div>
 </div>
@@ -682,27 +686,10 @@ with <code class="docutils literal notranslate"><span class="pre">col</span> <sp
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LS(1)				 User Commands				 LS(1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NAME
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       ls - list directory contents
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SYNOPSIS
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       ls [OPTION]... [FILE]...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+NAME
+       ls - list directory contents
+SYNOPSIS
+       ls [OPTION]... [FILE]...
 </pre></div>
 </div>
 </div>
@@ -719,18 +706,9 @@ with <code class="docutils literal notranslate"><span class="pre">col</span> <sp
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage: date [OPTION]... [+FORMAT]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  or:  date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Display date and time in the given FORMAT.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>With -s, or with [MMDDhhmm[[CC]YY][.ss]], set the date and time.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+  or:  date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+Display date and time in the given FORMAT.
+With -s, or with [MMDDhhmm[[CC]YY][.ss]], set the date and time.
 </pre></div>
 </div>
 </div>
@@ -766,9 +744,7 @@ notebook).</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from the shell!
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09
+2026-06-09
 </pre></div>
 </div>
 </div>
@@ -815,9 +791,7 @@ and <strong><code class="docutils literal notranslate"><span class="pre">-a</spa
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  -a, --all                  do not ignore entries starting with .
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  -l                         use a long listing format
+  -l                         use a long listing format
 </pre></div>
 </div>
 </div>
@@ -825,9 +799,7 @@ and <strong><code class="docutils literal notranslate"><span class="pre">-a</spa
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-l  long format: one entry per line, with permissions, owner, size, and date
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-a  all: include hidden entries (those whose names begin with a dot)
+-a  all: include hidden entries (those whose names begin with a dot)
 </pre></div>
 </div>
 </div>
@@ -849,12 +821,8 @@ flag exists — find it. Because <code class="docutils literal notranslate"><spa
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>echo: echo [-neE] [arg ...]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      -n	do not append a newline
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>no trailing newline here
+      -n	do not append a newline
+no trailing newline here
 </pre></div>
 </div>
 </div>
@@ -875,15 +843,9 @@ flag exists — find it. Because <code class="docutils literal notranslate"><spa
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    1  pwd
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    2  ls -la
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    3  date +&quot;%F&quot;
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    4  history
+    2  ls -la
+    3  date +&quot;%F&quot;
+    4  history
 </pre></div>
 </div>
 </div>

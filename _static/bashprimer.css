@@ -117,32 +117,48 @@ div.cell[class*="tag_solution"] div.cell_input,
 .bp-banner, .bp-banner .bp-title { color: var(--bp-ink) !important; }
 .bp-banner a { color: var(--bp-accent); border-bottom: 1px solid var(--bp-accent); text-decoration: none; }
 
-/* Command card: the structural unit for every command introduced. A titled
-   panel — the command + its one-line job, then its workhorse flags, then a
-   pointer to man/--help/tldr. Defined here so the notebook HTML is just
-   semantic structure. */
+/* Command card: the structural unit for every command introduced. Rendered as a
+   DARK lifted panel (same ink-navy family as the console code cells), so the
+   amber command name is the highest-contrast token on it — not the dull
+   amber-on-grey of the first draft. Tokens follow the colour spec: bright
+   on-dark amber command name (≈7:1 on the panel), light-grey gloss, accent-blue
+   flag names, pink inline tokens, amber left rule. */
 .bp-card {
   font-family: var(--bp-body);
-  border: 1px solid var(--bp-hairline);
-  border-left: 4px solid var(--bp-accent);
+  background: #222a3d;                      /* dark lifted panel, ink-navy family */
+  border: 1px solid #2f3a52;
+  border-left: 4px solid var(--bp-accent);  /* keep the amber left rule */
   border-radius: 6px;
   padding: 14px 18px;
   margin: 18px 0;
-  background: color-mix(in srgb, var(--bp-panel) 55%, transparent);
+  color: #c8ccd4;                           /* gloss / body text: light grey (AA) */
 }
 .bp-card .bp-card-cmd {
-  font-family: var(--bp-mono); font-weight: 600; font-size: 15px;
-  color: var(--bp-accent);
+  font-family: var(--bp-mono); font-weight: 700; font-size: 15px;
+  color: #e8b04a;                           /* bright on-dark amber (~7:1 on #222a3d) */
 }
-.bp-card .bp-card-job { font-style: italic; }
+.bp-card .bp-card-job { color: #c8ccd4; font-style: italic; }
 .bp-card table { margin: 8px 0 4px 0; font-size: 0.95rem; }
-.bp-card td:first-child {
+.bp-card td { color: #c8ccd4; }
+.bp-card td:first-child {                    /* flag names: accent blue, mono */
   font-family: var(--bp-mono); white-space: nowrap; padding-right: 1.2em;
-  color: var(--bp-ink-soft);
+  color: #6cb6ff;
+}
+/* inline tokens (\n, help echo, ...): pink, on a faint pink wash. !important to
+   beat the sphinx-book-theme inline-code colour/background. */
+.bp-card code, .bp-card code .pre {
+  color: #f2a8c4 !important;
+  background: rgba(242, 168, 196, .10) !important;
+  border: 0 !important;
 }
 .bp-card .bp-card-more {
   font-family: var(--bp-mono); font-size: 11px; letter-spacing: .04em;
-  color: var(--bp-ink-soft); margin-top: 6px;
+  color: #9aa2b1; margin-top: 6px;
+}
+.bp-card kbd {
+  font-family: var(--bp-mono); font-size: 0.8em;
+  color: #e6e8ee; background: #2f3a52;
+  border: 1px solid #3d4a66; border-radius: 3px; padding: 0 .35em;
 }
 
 /* "Watch out" beat for gotcha flags (rm -r, sort -n, grep -F, …): a short
@@ -165,3 +181,93 @@ figcaption .caption-number,
 figcaption .caption-number::after { content: "."; }
 html[data-theme="light"] figcaption .caption-number { color: var(--bp-accent); }
 html[data-theme="dark"] figcaption .caption-number { color: var(--bp-accent-bright); }
+
+/* ======================================================================= */
+/*  Console-block rendering — each executed cell is ONE dark terminal frame */
+/*  (Clause 1). myst-nb gives .cell > .cell_input + .cell_output; we theme   */
+/*  the whole cell as a single dark, rounded, contiguous terminal in BOTH    */
+/*  site modes (a terminal is always dark): input is $-prompted with a green */
+/*  left accent, output is one continuous screen (never one box per line).   */
+/* ======================================================================= */
+
+:root {
+  --bp-term-bg: #1b2233;      /* terminal screen, ink-navy family */
+  --bp-term-fg: #e6e8ee;      /* typed command text (uniform, like a real shell) */
+  --bp-term-out: #cdd2db;     /* output text */
+  --bp-term-prompt: #8aa0b4;  /* muted $ prompt */
+  --bp-term-accent: #3fb950;  /* green "this is input" left accent */
+}
+
+/* The frame: one rounded dark box wrapping input + output. */
+.bd-article div.cell {
+  background: var(--bp-term-bg);
+  border: 1px solid #0e1422;
+  border-radius: 8px;
+  margin: 18px 0;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 8px 24px -18px rgba(0, 0, 0, .65);
+}
+/* Hide cells with neither visible input nor any output (the hidden setup cell:
+   input removed, no stdout) so they do not render as empty frames. */
+.bd-article div.cell:not(:has(.cell_input)):not(:has(.output)) { display: none; }
+
+/* Input region: green left accent, flush with the output below it. */
+.bd-article div.cell .cell_input {
+  background: transparent;
+  border: 0; border-left: 3px solid var(--bp-term-accent);
+  margin: 0; padding: 10px 16px 6px 16px;
+}
+.bd-article div.cell .cell_input div.highlight,
+.bd-article div.cell .cell_input div.highlight pre {
+  background: transparent !important; margin: 0; border: 0;
+}
+/* Uniform light command text (a real shell does not syntax-colour what you type),
+   overriding the light-mode pygments tokens that would be invisible on dark. */
+.bd-article div.cell .cell_input div.highlight pre,
+.bd-article div.cell .cell_input div.highlight pre * {
+  color: var(--bp-term-fg) !important;
+  font-weight: 400;
+}
+/* The muted $ prompt: a non-copyable pseudo-element (so copying the command does
+   not pick up the prompt). One command per teaching cell keeps this correct. */
+.bd-article div.cell .cell_input div.highlight pre::before {
+  content: "$ "; color: var(--bp-term-prompt); font-weight: 600;
+}
+
+/* Output region: one continuous screen. All output children are transparent and
+   marginless, so even if a stream arrives in fragments they read as one block
+   (with nb_merge_streams there is a single <pre>; this also defangs residual
+   fragmentation — fix B). Blank lines are just blank lines inside the <pre>. */
+.bd-article div.cell .cell_output {
+  background: transparent;
+  border: 0; border-left: 3px solid transparent;  /* align text under the input */
+  margin: 0; padding: 2px 16px 12px 16px;
+}
+.bd-article div.cell .cell_output .output,
+.bd-article div.cell .cell_output .output pre,
+.bd-article div.cell .cell_output > div {
+  background: transparent !important;
+  border: 0 !important; border-radius: 0 !important;
+  margin: 0 !important; padding: 0 !important;
+  color: var(--bp-term-out);   /* base output colour; ANSI spans (green ✓) keep theirs */
+}
+.bd-article div.cell .cell_output pre { white-space: pre; }
+
+/* No spurious scrollbars. The theme caps output height and adds overflow; undo
+   that so short output never shows a vertical bar. Genuinely wide output (a
+   columnar listing, a long path) gets a horizontal scroll only — terminals do
+   that — never a vertical one. */
+.bd-article div.cell .cell_output,
+.bd-article div.cell .cell_output .output {
+  max-height: none !important;
+  overflow: visible !important;
+}
+.bd-article div.cell .cell_output pre {
+  overflow-x: auto; overflow-y: hidden;
+}
+/* Long input commands wrap inside the frame rather than forcing a scrollbar
+   (a wrapped command line is still one command — the $ prompt leads it). */
+.bd-article div.cell .cell_input div.highlight pre {
+  white-space: pre-wrap; word-break: break-word;
+}
