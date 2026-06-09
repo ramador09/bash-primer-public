@@ -65,7 +65,7 @@
     <script src="../../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="9 Editing in the terminal: Vim" href="../03-scripting/09-editing-in-the-terminal.html" />
+    <link rel="next" title="6 grep and regular expressions" href="06-grep-and-regular-expressions.html" />
     <link rel="prev" title="4 Redirection and pipes" href="04-redirection-and-pipes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -172,6 +172,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -547,7 +548,7 @@ Second, globs <strong>skip dotfiles</strong> — <code class="docutils literal n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/README.md data/inputs data/results data/trajectories
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/README.md data/inputs data/logs data/results data/trajectories
 </pre></div>
 </div>
 </div>
@@ -657,8 +658,8 @@ underneath <code class="docutils literal notranslate"><span class="pre">data/</s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz
-data/trajectories/lj38-optimization.xyz
 data/trajectories/lj38-relaxed.xyz
+data/trajectories/lj38-optimization.xyz
 </pre></div>
 </div>
 </div>
@@ -676,9 +677,10 @@ wrong thing. Quoting hands the pattern to <code class="docutils literal notransl
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
-data/inputs
 data/results
+data/inputs
 data/trajectories
+data/logs
 </pre></div>
 </div>
 </div>
@@ -706,8 +708,8 @@ that is <em>not</em> under <code class="docutils literal notranslate"><span clas
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-optimization.xyz
-data/trajectories/lj38-relaxed.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-relaxed.xyz
+data/trajectories/lj38-optimization.xyz
 </pre></div>
 </div>
 </div>
@@ -739,9 +741,9 @@ trajectory <code class="docutils literal notranslate"><span class="pre">find</sp
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -762,9 +764,9 @@ The <code class="docutils literal notranslate"><span class="pre">{}</span></code
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -834,17 +836,19 @@ inside <code class="docutils literal notranslate"><span class="pre">data/</span>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/production-md.inp
-data/inputs/geo-opt.inp
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/geo-opt.inp
+data/inputs/production-md.inp
 data
-data/inputs
 data/results
-data/trajectories
-data
 data/inputs
+data/trajectories
+data/logs
+data
+data/results
+data/inputs
+data/trajectories
 data/README.md
-data/results
-data/trajectories
+data/logs
 data/.dataset-notes
 </pre></div>
 </div>
@@ -852,7 +856,7 @@ data/.dataset-notes
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> find matched both .inp inputs and all four directories
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> find matched both .inp inputs and all five directories
 </pre></div>
 </div>
 </div>
@@ -868,9 +872,9 @@ data/.dataset-notes
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -880,9 +884,9 @@ data/.dataset-notes
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -905,9 +909,9 @@ to copy every <code class="docutils literal notranslate"><span class="pre">.xyz<
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-optimization.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-relaxed.xyz
 scratch/sorted/R/pt-slab.xyz
-scratch/sorted/R/lj38-relaxed.xyz
+scratch/sorted/R/lj38-optimization.xyz
 </pre></div>
 </div>
 </div>
@@ -1005,11 +1009,11 @@ search-and-replace you saw in Notebook 9, all share.</p>
       </div>
     </a>
     <a class="right-next"
-       href="../03-scripting/09-editing-in-the-terminal.html"
+       href="06-grep-and-regular-expressions.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+        <p class="prev-next-title">6 grep and regular expressions</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -171,6 +171,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -592,7 +593,22 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">5 Selecting files: globbing, brace expansion, and find</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">tee</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">grep</span></a></p></td>
+<td><p>print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  match case-insensitively</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-v</span></code>  invert — print the lines that do NOT match</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  prefix each match with its line number</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span></code>  print only a count of matching lines</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span></code>  recurse through a directory tree</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-l</span></code>  print only the names of files that contain a match</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-o</span></code>  print only the matched part of each line, not the whole line</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-E</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-F</span></code>  `-E` extended regex (the sane quantifiers/grouping); `-F` fixed string (the pattern is taken literally)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">6 grep and regular expressions</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">tee</span></a></p></td>
 <td><p>copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span></code>  append to the file instead of overwriting it</div>
@@ -600,7 +616,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">4 Redirection and pipes</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">xargs</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">xargs</span></a></p></td>
 <td><p>read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-0</span></code>  items are NUL-separated, not whitespace — pair with `find -print0` to survive spaces and newlines in names</div>

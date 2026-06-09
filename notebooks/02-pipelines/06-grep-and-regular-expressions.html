@@ -1,0 +1,1009 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6 grep and regular expressions &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/06-grep-and-regular-expressions';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9 Editing in the terminal: Vim" href="../03-scripting/09-editing-in-the-terminal.html" />
+    <link rel="prev" title="5 Selecting files: globbing, brace expansion, and find" href="05-selecting-files.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6 grep and regular expressions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02-pipelines/06-grep-and-regular-expressions.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/02-pipelines/06-grep-and-regular-expressions.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6 grep and regular expressions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-grep-with-literal-patterns">A. <code class="docutils literal notranslate"><span class="pre">grep</span></code> with literal patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-regular-expressions">B. Regular expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pattern-and-flag-together-on-a-real-log">C. Pattern and flag together, on a real log</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-grep-r-and-how-it-differs-from-find">D. <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code>, and how it differs from <code class="docutils literal notranslate"><span class="pre">find</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-match-count-locate">Warm-up 1 (worked) — Match, count, locate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-invert">Warm-up 2 (your turn) — Invert</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-anchors-and-classes">Applied 1 (your turn) — Anchors and classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-quantifiers-and-alternation">Applied 2 (your turn) — Quantifiers and alternation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-extract-the-matched-part">Applied 3 (worked) — Extract the matched part</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discovery-your-turn-find-the-flag-yourself">Discovery (your turn) — Find the flag yourself</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-recurse-and-contrast-with-find">Optional stretch (your turn) — Recurse, and contrast with find</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="grep-and-regular-expressions">
+<h1>6 grep and regular expressions<a class="headerlink" href="#grep-and-regular-expressions" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part II — Pipelines and text extraction</span>
+    <span class="bp-meta">Notebook&nbsp;6</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Finding lines by pattern, not by literal string — and the pattern language,
+    regular expressions, that you will reuse for the rest of the course.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Notebook 5 found <em>files</em> by their names. This notebook looks <em>inside</em> them, for
+<strong>text</strong> — and it does so by <strong>pattern</strong>, not by exact string. The tool is <code class="docutils literal notranslate"><span class="pre">grep</span></code>;
+the pattern language is <strong>regular expressions</strong>.</p>
+<p>Those two are not equally important. <code class="docutils literal notranslate"><span class="pre">grep</span></code> is one command among many. Regular
+expressions are <em>the</em> most reusable text skill in this whole course: the same
+patterns drive <code class="docutils literal notranslate"><span class="pre">sed</span></code> in Notebook 8 and the Vim search-and-replace from Notebook 9.
+Learn them once here and they pay off everywhere. So we teach both — the tool, and
+the language behind it.</p>
+<p>The files are real CP2K run logs now living in <code class="docutils literal notranslate"><span class="pre">data/logs/</span></code>. Matching <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">energy</span></code> or a warning in one of them needs <strong>no physics</strong> — it is just pattern on
+text.</p>
+</section>
+<section id="a-grep-with-literal-patterns">
+<h2>A. <code class="docutils literal notranslate"><span class="pre">grep</span></code> with literal patterns<a class="headerlink" href="#a-grep-with-literal-patterns" title="Link to this heading">#</a></h2>
+<p>At its simplest, <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">PATTERN</span> <span class="pre">FILE</span></code> prints every line of the file that contains
+the pattern. Start literal: find the total-energy lines in a run log.</p>
+<div class="bp-card" id="cmd-grep"><span class="bp-card-cmd">grep</span> &mdash; <span class="bp-card-job">print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</span><table><tr><td>-i</td><td>match case-insensitively</td></tr><tr><td>-v</td><td>invert — print the lines that do NOT match</td></tr><tr><td>-n</td><td>prefix each match with its line number</td></tr><tr><td>-c</td><td>print only a count of matching lines</td></tr><tr><td>-r</td><td>recurse through a directory tree</td></tr><tr><td>-l</td><td>print only the names of files that contain a match</td></tr><tr><td>-o</td><td>print only the matched part of each line, not the whole line</td></tr><tr><td>-E  /  -F</td><td><code>-E</code> extended regex (the sane quantifiers/grouping); <code>-F</code> fixed string (the pattern is taken literally)</td></tr></table><div class="bp-card-more">more: <code>man grep</code> — it has more flags than fit here; this is also where you find <code>-A</code>/<code>-B</code>/<code>-C</code> (context)</div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the pattern (<code>grep &#x27;^Total&#x27; file</code>) so the shell does not expand <code>$</code>, <code>*</code>, etc. before grep sees it (the same shell-expands-first lesson as globs); and grep&#x27;s DEFAULT is the quirky Basic regex, where <code>+ ? ( ) | { }</code> are literal — reach for <code>-E</code> to get the Extended regex this notebook teaches</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.246533543175843
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.438732194981611
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.878629961526173
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -143.350064790371448
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -144.026841371125641
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<p>Six lines — the energy after each step of the run. Note the <strong>single quotes</strong>
+around the pattern: get into that habit now. They stop the shell from touching the
+pattern (expanding a <code class="docutils literal notranslate"><span class="pre">$</span></code>, a <code class="docutils literal notranslate"><span class="pre">*</span></code>, and so on) before <code class="docutils literal notranslate"><span class="pre">grep</span></code> ever sees it — exactly
+the “the shell goes first” lesson from globbing, and a habit that becomes essential
+the moment your patterns contain regex characters.</p>
+<p>The workhorse flags turn a match into an answer. Just <em>count</em> the matches with
+<code class="docutils literal notranslate"><span class="pre">-c</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6
+</pre></div>
+</div>
+</div>
+</div>
+<p>Number the matches with <code class="docutils literal notranslate"><span class="pre">-n</span></code>, case-fold with <code class="docutils literal notranslate"><span class="pre">-i</span></code> (the log shouts <code class="docutils literal notranslate"><span class="pre">WARNING</span></code> in
+capitals; <code class="docutils literal notranslate"><span class="pre">-i</span></code> catches it however it is spelled):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;warning&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> *** WARNING in motion/simpar_methods.F:223 :: A temperature tolerance ***
+ *** WARNING in dbcsr_mm.F:295 :: Using a non-square number of MPI ranks ***
+ The number of warnings for this run is : 2
+</pre></div>
+</div>
+</div>
+</div>
+<p>And <code class="docutils literal notranslate"><span class="pre">-l</span></code> answers “<strong>which files</strong> contain this?” without printing the matches —
+indispensable across a directory of logs:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/*.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/logs/gr2hno3-nvt.log
+data/logs/gr2hno3-restart.log
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-regular-expressions">
+<h2>B. Regular expressions<a class="headerlink" href="#b-regular-expressions" title="Link to this heading">#</a></h2>
+<p>A literal pattern is the floor. The ceiling is a <strong>regular expression</strong>: a small
+language for describing <em>shapes</em> of text — “a line starting with <code class="docutils literal notranslate"><span class="pre">ENERGY</span></code>”, “a
+signed decimal number”, “either <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code>”. We teach the <strong>Extended</strong>
+flavour (ERE), which you reach with <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>. Here is the workhorse set.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Regular expressions (ERE)</span> — <span class="bp-card-job">the pattern language, used with <code>grep -E</code> (and later <code>sed -E</code> and Vim). Curated essentials, not a dictionary.</span>
+  <table>
+    <tr><td>^   $</td><td>anchor to the start / end of the line</td></tr>
+    <tr><td>.</td><td>any single character</td></tr>
+    <tr><td>[abc] [^abc]</td><td>one character in / not in the set; ranges like <code>[0-9]</code></td></tr>
+    <tr><td>[[:digit:]] [[:space:]]</td><td>named POSIX classes (a digit; whitespace)</td></tr>
+    <tr><td>* + ?</td><td>the preceding item: zero-or-more / one-or-more / zero-or-one</td></tr>
+    <tr><td>{n,m}</td><td>between n and m repetitions</td></tr>
+    <tr><td>a|b</td><td>alternation: match a <b>or</b> b</td></tr>
+    <tr><td>( … )</td><td>group, e.g. to apply a quantifier or alternation to several characters</td></tr>
+    <tr><td>\.</td><td>backslash escapes a metacharacter to mean it literally (a real dot)</td></tr>
+  </table>
+</div>
+<p>Read one slowly, piece by piece — the pattern that matches a signed decimal like
+the energies above:</p>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Anatomy of one pattern: a signed decimal</div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">    -?  [0-9]+  \.  [0-9]+        matches e.g.   -142.246533
+    │     │     │     │
+    │     │     │     └─ [0-9]+  one or more digits   (the decimals)
+    │     │     └─────── \.      a literal dot        (escaped — not "any char")
+    │     └───────────── [0-9]+  one or more digits   (before the dot)
+    └─────────────────── -?      an optional minus    ( ? = zero or one )</pre>
+</div>
+<p>Watch it work. Anchored to the line start, “<code class="docutils literal notranslate"><span class="pre">ENERGY</span></code> after any leading spaces”
+finds the energy lines (<code class="docutils literal notranslate"><span class="pre">^</span></code>, the POSIX space class, and a quantifier together):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;^[[:space:]]*ENERGY&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.246533543175843
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.438732194981611
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.878629961526173
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -143.350064790371448
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -144.026841371125641
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternation pulls warnings <em>or</em> errors in one pass — the everyday log-triage move:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;warning|error&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> *** WARNING in motion/simpar_methods.F:223 :: A temperature tolerance ***
+ *** WARNING in dbcsr_mm.F:295 :: Using a non-square number of MPI ranks ***
+ The number of warnings for this run is : 2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">ERE vs BRE, and what we are skipping</p>
+<p>Reach for <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>. Without it, grep uses the older <strong>Basic</strong> regex (BRE), in
+which <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">?</span> <span class="pre">{</span> <span class="pre">}</span> <span class="pre">(</span> <span class="pre">)</span> <span class="pre">|</span></code> are <em>literal characters</em> unless you backslash them — a
+reliable source of “why doesn’t my pattern work”. <code class="docutils literal notranslate"><span class="pre">-E</span></code> gives the Extended syntax
+above, and the same <code class="docutils literal notranslate"><span class="pre">-E</span></code> works for <code class="docutils literal notranslate"><span class="pre">sed</span></code> later. Two things we deliberately leave
+out as beyond a prerequisite course: Perl-style <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-P</span></code> (PCRE), and
+backreferences / lookaround. They exist; you do not need them yet.</p>
+</div>
+</section>
+<section id="c-pattern-and-flag-together-on-a-real-log">
+<h2>C. Pattern and flag together, on a real log<a class="headerlink" href="#c-pattern-and-flag-together-on-a-real-log" title="Link to this heading">#</a></h2>
+<p>The power is in combining a regex with the flags. The signed-decimal pattern, fed
+the energy lines, and then <code class="docutils literal notranslate"><span class="pre">-o</span></code> to print <strong>only the matched part</strong> — the numbers
+themselves, stripped of the surrounding text:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-142.246533543175843
+-142.438732194981611
+-142.878629961526173
+-143.350064790371448
+-144.026841371125641
+-145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is a first taste of <strong>extraction</strong> — turning lines into values. Mind the
+scope boundary, though: <code class="docutils literal notranslate"><span class="pre">grep</span></code> <em>selects</em> (and with <code class="docutils literal notranslate"><span class="pre">-o</span></code>, clips) text; it does not
+do columns or arithmetic. When you want “the third field of every line”, that is
+<code class="docutils literal notranslate"><span class="pre">awk</span></code>, in Notebook 8. Here, <code class="docutils literal notranslate"><span class="pre">grep</span></code> finds; it does not transform.</p>
+</section>
+<section id="d-grep-r-and-how-it-differs-from-find">
+<h2>D. <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code>, and how it differs from <code class="docutils literal notranslate"><span class="pre">find</span></code><a class="headerlink" href="#d-grep-r-and-how-it-differs-from-find" title="Link to this heading">#</a></h2>
+<p>Everything so far searched one file. <code class="docutils literal notranslate"><span class="pre">-r</span></code> searches a whole <strong>tree</strong>, descending
+into every file under a directory. “Which logs mention a warning, and how often?”</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-rc<span class="w"> </span><span class="s1">&#39;WARNING&#39;</span><span class="w"> </span>data/logs
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/logs/gr2hno3-restart.log:2
+data/logs/gr2hno3-nvt.log:2
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the natural place to draw a line you have been circling since Notebook 5.
+Both <code class="docutils literal notranslate"><span class="pre">find</span></code> and <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code> walk a directory tree, but they look for different
+things:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">find</span></code></strong> locates <strong>files</strong>, by their name and metadata (<code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">data</span> <span class="pre">-name</span> <span class="pre">&quot;*.log&quot;</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code></strong> locates <strong>text</strong>, by what is <em>inside</em> the files (<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span> <span class="pre">'WARNING'</span> <span class="pre">data</span></code>).</p></li>
+</ul>
+<p>And, being good Unix citizens, they compose: <code class="docutils literal notranslate"><span class="pre">find</span></code> the files you care about, then
+<code class="docutils literal notranslate"><span class="pre">grep</span></code> their contents — a pairing you will reach for constantly.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>Regular expressions reward practice, so this is a full set: literal <code class="docutils literal notranslate"><span class="pre">grep</span></code> to warm
+up, then ERE on the real logs, the course’s dedicated <em>look-it-up</em> exercise, and a
+capstone that mines a log end to end. <code class="docutils literal notranslate"><span class="pre">grep</span></code> only reads; the one exercise that
+<em>saves</em> its results writes into a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
+<section id="warm-up-1-worked-match-count-locate">
+<h3>Warm-up 1 (worked) — Match, count, locate<a class="headerlink" href="#warm-up-1-worked-match-count-locate" title="Link to this heading">#</a></h3>
+<p>Find the total-energy lines in the run log, count them with <code class="docutils literal notranslate"><span class="pre">-c</span></code>, and use <code class="docutils literal notranslate"><span class="pre">-l</span></code> to
+see which of the two logs contain them.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6
+data/logs/gr2hno3-nvt.log
+data/logs/gr2hno3-restart.log
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> six energy lines counted, and both logs contain them
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-invert">
+<h3>Warm-up 2 (your turn) — Invert<a class="headerlink" href="#warm-up-2-your-turn-invert" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">-v</span></code> to print the lines that do <strong>not</strong> match. Count the <strong>non-blank</strong> lines of
+the log by inverting a pattern that matches blank lines (<code class="docutils literal notranslate"><span class="pre">'^[[:space:]]*$'</span></code> — start,
+any spaces, end).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>571
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the inverted count is exactly the non-blank lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-anchors-and-classes">
+<h3>Applied 1 (your turn) — Anchors and classes<a class="headerlink" href="#applied-1-your-turn-anchors-and-classes" title="Link to this heading">#</a></h3>
+<p>Write ERE patterns (<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>) for two things in
+<code class="docutils literal notranslate"><span class="pre">data/trajectories/lj38-optimization.xyz</span></code>: the comment lines, which <strong>start</strong> with
+whitespace then <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span></code> (use <code class="docutils literal notranslate"><span class="pre">^</span></code> and a POSIX class), and count them — there is one
+per frame.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> i =        1, E =        -0.0231086608
+ i =        4, E =        -0.0279588737
+ i =        7, E =        -0.0287650150
+63
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the anchored pattern matched all 63 frame-comment lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-quantifiers-and-alternation">
+<h3>Applied 2 (your turn) — Quantifiers and alternation<a class="headerlink" href="#applied-2-your-turn-quantifiers-and-alternation" title="Link to this heading">#</a></h3>
+<p>Two patterns on the run log: count the lines that are a <strong>warning or an error</strong>
+(<code class="docutils literal notranslate"><span class="pre">-iE</span> <span class="pre">'warning|error'</span></code>), and confirm the signed-decimal pattern
+<code class="docutils literal notranslate"><span class="pre">-?[0-9]+\.[0-9]+</span></code> appears on the energy lines.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.246533543175843
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.438732194981611
+ ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):             -142.878629961526173
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> three warning/error lines, and the signed-decimal pattern matched all six energy lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-extract-the-matched-part">
+<h3>Applied 3 (worked) — Extract the matched part<a class="headerlink" href="#applied-3-worked-extract-the-matched-part" title="Link to this heading">#</a></h3>
+<p>Pull <em>just the numbers</em> out of the energy lines with <code class="docutils literal notranslate"><span class="pre">-o</span></code> — a first taste of
+extraction (the full version, with fields, is <code class="docutils literal notranslate"><span class="pre">awk</span></code> in Notebook 8).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-142.246533543175843
+-142.438732194981611
+-142.878629961526173
+-143.350064790371448
+-144.026841371125641
+-145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> six numbers extracted, one per energy line
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="discovery-your-turn-find-the-flag-yourself">
+<h3>Discovery (your turn) — Find the flag yourself<a class="headerlink" href="#discovery-your-turn-find-the-flag-yourself" title="Link to this heading">#</a></h3>
+<p>This is the course’s standing skill: needing a flag you were never handed, and
+<em>finding</em> it. Your task: print <strong>three lines of context around</strong> each <code class="docutils literal notranslate"><span class="pre">WARNING</span></code> in
+the log — the warning <em>and</em> its neighbours. That flag is not on the card. Consult
+<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">grep</span></code>, find the context option (<code class="docutils literal notranslate"><span class="pre">-C</span></code>, or <code class="docutils literal notranslate"><span class="pre">-A</span></code>/<code class="docutils literal notranslate"><span class="pre">-B</span></code>), and use
+it.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> MD| Dump                1000                              gr2hno3_nvt-1.restart
+ *** WARNING in motion/simpar_methods.F:223 :: A temperature tolerance ***
+ *** (TEMP_TOL) is used during the MD. Due to the velocity rescaling   ***
+ *** algorithm jumps may appear in the conserved quantity.             ***
+--
+  ... [further MD steps elided for the course excerpt] ...
+ -------------------------------------------------------------------------------
+ *** WARNING in dbcsr_mm.F:295 :: Using a non-square number of MPI ranks ***
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the context flag printed more than just the matching lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-capstone">
+<h3>Composite — putting it together (capstone)<a class="headerlink" href="#composite-putting-it-together-capstone" title="Link to this heading">#</a></h3>
+<p>Mine the run log end to end and save a small report, using regex, flags, a pipe
+(Notebook 4), and redirection (Notebook 4). In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>: write the <strong>count</strong> of
+SCF steps, the list of <strong>energy values</strong>, and the <strong>warnings with context</strong> into
+three files.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6
+-142.246533543175843
+-142.438732194981611
+-142.878629961526173
+-143.350064790371448
+-144.026841371125641
+-145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the report has 6 SCF steps, 6 energy values, and a non-empty warnings file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-recurse-and-contrast-with-find">
+<h3>Optional stretch (your turn) — Recurse, and contrast with find<a class="headerlink" href="#optional-stretch-your-turn-recurse-and-contrast-with-find" title="Link to this heading">#</a></h3>
+<p>Search <strong>across the tree</strong> with <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code>, then reach the same logs via <code class="docutils literal notranslate"><span class="pre">find</span></code>
+(Notebook 5) and grep them — two routes to one answer. Here: count the energy lines
+in every log under <code class="docutils literal notranslate"><span class="pre">data/</span></code>, recursively, then do it by piping <code class="docutils literal notranslate"><span class="pre">find</span></code> into <code class="docutils literal notranslate"><span class="pre">grep</span></code>.
+<em>(Aside, for Part IV: a big recursive grep is one of the jobs <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code> can run in
+parallel.)</em></p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/logs/gr2hno3-restart.log:3
+data/logs/gr2hno3-nvt.log:6
+data/logs/gr2hno3-restart.log:3
+data/logs/gr2hno3-nvt.log:6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the two routes — grep -r and find | grep — reach the same matches
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now find and pattern-match text — and you have the regular-expression
+foundation that the rest of the course leans on. Next (Notebook 7): the <strong>stream
+toolkit</strong> — <code class="docutils literal notranslate"><span class="pre">cut</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, <code class="docutils literal notranslate"><span class="pre">uniq</span></code>, <code class="docutils literal notranslate"><span class="pre">wc</span></code>, <code class="docutils literal notranslate"><span class="pre">tr</span></code> — the small tools that <em>reshape</em> the
+lines <code class="docutils literal notranslate"><span class="pre">grep</span></code> selects, turning a pile of matches into counts, columns, and ordered
+tables.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-grep"><code class="bp-cmd-name">grep</code></a> &mdash; print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/02-pipelines"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-selecting-files.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5 Selecting files: globbing, brace expansion, and find</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03-scripting/09-editing-in-the-terminal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-grep-with-literal-patterns">A. <code class="docutils literal notranslate"><span class="pre">grep</span></code> with literal patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-regular-expressions">B. Regular expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pattern-and-flag-together-on-a-real-log">C. Pattern and flag together, on a real log</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-grep-r-and-how-it-differs-from-find">D. <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code>, and how it differs from <code class="docutils literal notranslate"><span class="pre">find</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-match-count-locate">Warm-up 1 (worked) — Match, count, locate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-invert">Warm-up 2 (your turn) — Invert</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-anchors-and-classes">Applied 1 (your turn) — Anchors and classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-quantifiers-and-alternation">Applied 2 (your turn) — Quantifiers and alternation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-extract-the-matched-part">Applied 3 (worked) — Extract the matched part</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discovery-your-turn-find-the-flag-yourself">Discovery (your turn) — Find the flag yourself</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-recurse-and-contrast-with-find">Optional stretch (your turn) — Recurse, and contrast with find</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

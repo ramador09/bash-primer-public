@@ -172,6 +172,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -457,6 +458,9 @@ files live. Here is the patch of tree we are about to explore:</p>
         ├── results/
         │   ├── sn2-neb.ener
         │   └── pt-slab.xyz
+        ├── logs/
+        │   ├── gr2hno3-nvt.log
+        │   └── gr2hno3-restart.log
         └── .dataset-notes     <span style="color:#8aa0b4;">(hidden — see ls -a, below)</span></pre>
 </div>
 </section>
@@ -646,7 +650,7 @@ file is invisible:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.  ..  .dataset-notes  README.md  inputs  results  trajectories
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>.  ..  .dataset-notes  README.md  inputs  logs	results  trajectories
 </pre></div>
 </div>
 </div>
@@ -670,13 +674,16 @@ within folders — use <code class="docutils literal notranslate"><span class="p
 │   ├── geo-opt.inp
 │   ├── production-md.inp
 │   └── replica-exchange.lammps
+├── logs
+│   ├── gr2hno3-nvt.log
+│   └── gr2hno3-restart.log
 ├── results
 │   ├── pt-slab.xyz
 │   └── sn2-neb.ener
 └── trajectories
     ├── lj38-optimization.xyz
     └── lj38-relaxed.xyz
-4 directories, 8 files
+5 directories, 10 files
 </pre></div>
 </div>
 </div>
@@ -723,11 +730,11 @@ LICENSE-CONTENT    _static	   manifest.yml		     templates
 NOTEBOOK_STYLE.md  _toc.yml	   notebooks		     tools
 README.md	   commands.yml    postBuild
 total 80
-drwxr-x---  15 runner runner 4096 Jun  9 21:29 .
-drwxr-xr-x+  5 root   root   4096 Jun  7 22:22 ..
--rw-------   1 runner runner 1549 Jun  9 21:29 .bash_history
+drwxr-x---  15 runner runner 4096 Jun  9 22:14 .
+drwxr-xr-x+  5 root   root   4096 May 25 22:22 ..
+-rw-------   1 runner runner 1549 Jun  9 22:14 .bash_history
 -rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
--rw-r--r--   1 runner runner   67 Jun  7 21:47 .bash_profile
+-rw-r--r--   1 runner runner   67 May 25 21:44 .bash_profile
 </pre></div>
 </div>
 </div>
@@ -748,9 +755,10 @@ form with <code class="docutils literal notranslate"><span class="pre">ls</span>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16K
--rw-r--r-- 1 runner runner 1.8K Jun  1  2023 README.md
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20K
+-rw-r--r-- 1 runner runner 2.0K Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4.0K Mar  1  2023 inputs
+drwxr-xr-x 2 runner runner 4.0K Feb  1  2023 logs
 drwxr-xr-x 2 runner runner 4.0K May  1  2023 results
 drwxr-xr-x 2 runner runner 4.0K Apr  1  2023 trajectories
 </pre></div>
@@ -800,13 +808,16 @@ its <strong>absolute</strong> path (hint: <code class="docutils literal notransl
 │   ├── geo-opt.inp
 │   ├── production-md.inp
 │   └── replica-exchange.lammps
+├── logs
+│   ├── gr2hno3-nvt.log
+│   └── gr2hno3-restart.log
 ├── results
 │   ├── pt-slab.xyz
 │   └── sn2-neb.ener
 └── trajectories
     ├── lj38-optimization.xyz
     └── lj38-relaxed.xyz
-4 directories, 8 files
+5 directories, 10 files
 </pre></div>
 </div>
 </div>
@@ -828,14 +839,15 @@ is newest? (The flags <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 28K
-drwxr-xr-x 11 runner runner 4.0K Jun  9 21:29 ..
-drwxr-xr-x  5 runner runner 4.0K Jun  9 21:28 .
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 32K
+drwxr-xr-x 11 runner runner 4.0K Jun  9 22:14 ..
+drwxr-xr-x  6 runner runner 4.0K Jun  9 22:13 .
 -rw-r--r--  1 runner runner  460 Jun 15  2023 .dataset-notes
--rw-r--r--  1 runner runner 1.8K Jun  1  2023 README.md
+-rw-r--r--  1 runner runner 2.0K Jun  1  2023 README.md
 drwxr-xr-x  2 runner runner 4.0K May  1  2023 results
 drwxr-xr-x  2 runner runner 4.0K Apr  1  2023 trajectories
 drwxr-xr-x  2 runner runner 4.0K Mar  1  2023 inputs
+drwxr-xr-x  2 runner runner 4.0K Feb  1  2023 logs
 </pre></div>
 </div>
 </div>

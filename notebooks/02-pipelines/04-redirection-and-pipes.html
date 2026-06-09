@@ -172,6 +172,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">4 Redirection and pipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -549,7 +550,7 @@ terminal you would just run the command.)</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ls: cannot access &#39;nope-not-here&#39;: No such file or directory
 data:
-README.md  inputs  results  trajectories
+README.md  inputs  logs  results  trajectories
 </pre></div>
 </div>
 </div>
@@ -564,7 +565,7 @@ with <code class="docutils literal notranslate"><span class="pre">2&gt;</span></
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  results  trajectories
+README.md  inputs  logs  results  trajectories
 </pre></div>
 </div>
 </div>
@@ -592,7 +593,7 @@ system’s black hole — anything sent there simply vanishes:</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  results  trajectories
+README.md  inputs  logs  results  trajectories
 </pre></div>
 </div>
 </div>
@@ -650,8 +651,8 @@ form, but keep only the first few lines:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16
--rw-r--r-- 1 runner runner 1787 Jun  1  2023 README.md
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20
+-rw-r--r-- 1 runner runner 2030 Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
 </pre></div>
 </div>
@@ -713,6 +714,7 @@ listing was saved on the way past:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>README.md
 inputs
+logs
 results
 trajectories
 </pre></div>
@@ -799,7 +801,7 @@ appears. (End the line with <code class="docutils literal notranslate"><span cla
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  results  trajectories
+README.md  inputs  logs  results  trajectories
 </pre></div>
 </div>
 </div>
@@ -820,11 +822,11 @@ re-run Notebook 1’s manual pipeline now that you can read it.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 16
--rw-r--r-- 1 runner runner 1787 Jun  1  2023 README.md
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20
+-rw-r--r-- 1 runner runner 2030 Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
+drwxr-xr-x 2 runner runner 4096 Feb  1  2023 logs
 drwxr-xr-x 2 runner runner 4096 May  1  2023 results
-drwxr-xr-x 2 runner runner 4096 Apr  1  2023 trajectories
 </pre></div>
 </div>
 </div>
@@ -864,7 +866,7 @@ inputs
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> tee saved the full four-entry listing while head showed only the top
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> tee saved the full five-entry listing while head showed only the top
 </pre></div>
 </div>
 </div>
@@ -895,6 +897,7 @@ then append the rest with <code class="docutils literal notranslate"><span class
 Contents of data/:
 README.md
 inputs
+logs
 results
 trajectories
 First frame of lj38-relaxed.xyz:
