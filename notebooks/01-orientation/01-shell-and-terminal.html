@@ -214,37 +214,6 @@
 
 
 
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/main?urlpath=tree/notebooks/01-orientation/01-shell-and-terminal.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch on Binder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
-  </span>
-<span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-
-
 <div class="dropdown dropdown-source-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
     <i class="fab fa-github"></i>
@@ -479,11 +448,14 @@ processes or kernels; you can drive a car without a theory of combustion.</p>
 </section>
 <section id="getting-a-shell">
 <h2>Getting a shell<a class="headerlink" href="#getting-a-shell" title="Link to this heading">#</a></h2>
-<p>The fastest way to follow along, with nothing to install: click the <strong>launch
-button (Binder)</strong> in the toolbar at the top of this page. It opens a real,
-throwaway bash session in your browser — a genuine shell, with this course’s
-files already in place. When you close the tab it vanishes, so you can type
-freely and break nothing.</p>
+<p>This page is for <strong>reading</strong>: every grey cell below is a real command and its
+real output. To <strong>practise</strong>, you want a shell of your own to type into — and the
+fastest one needs nothing installed at all.</p>
+<div class="tip admonition">
+<p class="admonition-title">Practice here → open a live terminal</p>
+<p><strong><a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">▶ Launch a live bash terminal</a></strong> — a real, full-screen bash session in your browser, with this course’s files already in place. Nothing to install. The first launch takes a minute to warm up; the session is temporary, so type freely and break nothing.</p>
+<p>If the terminal ever fails to load, <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=lab">open JupyterLab instead</a> and start a <strong>Terminal</strong> from its launcher.</p>
+</div>
 <p>If you would rather use your own machine, you already have a terminal:</p>
 <ul class="simple">
 <li><p><strong>macOS</strong> — open <em>Terminal</em> (Applications → Utilities, or Spotlight “Terminal”).</p></li>
@@ -492,9 +464,9 @@ freely and break nothing.</p>
 real bash.</p></li>
 </ul>
 <p>And here is the quiet point of this whole notebook: <strong>the grey cells below are a
-live bash session.</strong> Every command in them was really run, and the text beneath
-each one is really what bash printed. Reading down the page, you are already
-watching a shell work.</p>
+live bash session too.</strong> Every command in them was really run, and the text
+beneath each one is really what bash printed. Reading down the page, you are
+already watching a shell work.</p>
 </section>
 <section id="the-prompt-and-the-anatomy-of-a-command">
 <h2>The prompt and the anatomy of a command<a class="headerlink" href="#the-prompt-and-the-anatomy-of-a-command" title="Link to this heading">#</a></h2>
@@ -614,10 +586,10 @@ date<span class="w"> </span>+<span class="s2">&quot;%F %T&quot;</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun  8 23:50:59 UTC 2026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun  9 05:42:11 UTC 2026
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-08 23:50:59
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09 05:42:11
 </pre></div>
 </div>
 </div>
@@ -796,7 +768,7 @@ notebook).</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from the shell!
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-08
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-09
 </pre></div>
 </div>
 </div>
@@ -937,11 +909,11 @@ stands on.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
-    Use the launch button (Binder) in the toolbar above to open a real bash
-    session and run everything yourself — nothing to install. The published
-    notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
-    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box above to
+    run everything yourself — nothing to install. The published notebooks ship
+    <b>without worked solutions</b>; if you would like the reference solutions —
+    to teach from or to check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>
 </section>
