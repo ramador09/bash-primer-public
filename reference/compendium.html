@@ -170,6 +170,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -578,13 +579,36 @@ each command links back to the notebook where it was introduced.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">tee</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">find</span></a></p></td>
+<td><p>search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-name</span> <span class="pre">&quot;PAT&quot;</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-iname</span></code>  match the filename against a quoted glob (`-iname` ignores case)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-type</span> <span class="pre">f</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-type</span> <span class="pre">d</span></code>  match only files / only directories</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-maxdepth</span> <span class="pre">N</span></code>  descend at most N levels deep</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-size</span> <span class="pre">+Nk</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-mtime</span> <span class="pre">-N</span></code>  by size (larger than N kB) or age (changed within N days)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-exec</span> <span class="pre">CMD</span> <span class="pre">{}</span> <span class="pre">+</span></code>  run CMD on the matches — `{}` is each path, `+` batches them into few calls</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-print</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-delete</span></code>  print the matches (the safe default) / delete them (dangerous — see the admonition)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">5 Selecting files: globbing, brace expansion, and find</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">tee</span></a></p></td>
 <td><p>copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span></code>  append to the file instead of overwriting it</div>
 </div>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">4 Redirection and pipes</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">xargs</span></a></p></td>
+<td><p>read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-0</span></code>  items are NUL-separated, not whitespace — pair with `find -print0` to survive spaces and newlines in names</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">N</span></code>  use at most N items per command line</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-I</span> <span class="pre">{}</span></code>  place each item where `{}` appears, instead of appending it at the end</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">5 Selecting files: globbing, brace expansion, and find</span></a></p></td>
 </tr>
 </tbody>
 </table>

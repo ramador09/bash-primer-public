@@ -1,0 +1,1103 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5 Selecting files: globbing, brace expansion, and find &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/05-selecting-files';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9 Editing in the terminal: Vim" href="../03-scripting/09-editing-in-the-terminal.html" />
+    <link rel="prev" title="4 Redirection and pipes" href="04-redirection-and-pipes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5 Selecting files: globbing, brace expansion, and find</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02-pipelines/05-selecting-files.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/02-pipelines/05-selecting-files.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5 Selecting files: globbing, brace expansion, and find</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-globbing-match-files-that-are-here">A. Globbing — match files that are here</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-brace-expansion-generate-names-and-sequences">B. Brace expansion — generate names and sequences</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-find-search-the-whole-tree-by-criteria">C. <code class="docutils literal notranslate"><span class="pre">find</span></code> — search the whole tree by criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-xargs-act-on-a-list">D. <code class="docutils literal notranslate"><span class="pre">xargs</span></code> — act on a list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-globs">Warm-up 1 (worked) — Globs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-brace-expansion">Warm-up 2 (your turn) — Brace expansion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-find-by-criteria">Applied 1 (your turn) — find by criteria</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-find-xargs">Applied 2 (worked) — find | xargs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-boolean-find">Optional stretch (your turn) — Boolean find</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="selecting-files-globbing-brace-expansion-and-find">
+<h1>5 Selecting files: globbing, brace expansion, and find<a class="headerlink" href="#selecting-files-globbing-brace-expansion-and-find" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part II — Pipelines and text extraction</span>
+    <span class="bp-meta">Notebook&nbsp;5</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Referring to many files at once — by pattern, by generation, or by searching
+    the tree — and then acting on the whole set.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Notebook 2 got you <em>to</em> a directory; Notebook 4 gave you pipes. But a real project
+has <em>hundreds</em> of files, and you are not going to name them one at a time. So this
+notebook answers a single question: <strong>how do you refer to many files at once, and
+act on the whole set?</strong></p>
+<p>There are three ways to select, and one way to act, and they share one idea:</p>
+<ul class="simple">
+<li><p><strong>glob</strong> — match files that already exist, <em>here</em> (<code class="docutils literal notranslate"><span class="pre">*.xyz</span></code>);</p></li>
+<li><p><strong>brace expansion</strong> — <em>generate</em> names and sequences, exist or not (<code class="docutils literal notranslate"><span class="pre">run_{1..10}</span></code>);</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">find</span></code></strong> — search the whole <em>tree</em> by criteria (every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>, anywhere);</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">xargs</span></code></strong> — take any of those lists and <em>run a command</em> over all of it.</p></li>
+</ul>
+<p>The files are the real <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> trajectories and simulation logs from before; as
+ever, <strong>selecting them needs no physics.</strong> Let us take the four in turn, simplest
+first.</p>
+</section>
+<section id="a-globbing-match-files-that-are-here">
+<h2>A. Globbing — match files that are here<a class="headerlink" href="#a-globbing-match-files-that-are-here" title="Link to this heading">#</a></h2>
+<p>A <strong>glob</strong> is a pattern the shell expands into a list of matching filenames. The
+pieces:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Globs</span> — <span class="bp-card-job">wildcards the shell expands into matching filenames (shell syntax, not a command).</span>
+  <table>
+    <tr><td>*</td><td>any run of characters (including none)</td></tr>
+    <tr><td>?</td><td>exactly one character</td></tr>
+    <tr><td>[abc]</td><td>one character from the set</td></tr>
+    <tr><td>[1-5]</td><td>one character from the range</td></tr>
+    <tr><td>[!abc]</td><td>one character <b>not</b> in the set</td></tr>
+  </table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">*</span></code> is the workhorse. Here it matches every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> one level down in <code class="docutils literal notranslate"><span class="pre">data/</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data/*/*.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz		 data/trajectories/lj38-relaxed.xyz
+data/trajectories/lj38-optimization.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the load-bearing idea, and it is worth stopping on because it explains
+half of bash’s surprises. <strong>The shell expands the glob <em>before the command runs</em>.</strong>
+<code class="docutils literal notranslate"><span class="pre">ls</span></code> never sees <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code>; it sees the three real filenames the shell already
+substituted. You can watch that substitution directly with <code class="docutils literal notranslate"><span class="pre">echo</span></code>, which just
+prints whatever it is handed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>data/*/*.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz data/trajectories/lj38-optimization.xyz data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>The other wildcards need a batch of similarly-named files to show off, so let us
+make one in <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> (a stand-in for a project’s worth of numbered runs):</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch/runs
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run_1.log  run_1.xyz  run_10.log  run_2.log  run_2.xyz	run_3.log  run_3.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">?</span></code> matches exactly one character — so <code class="docutils literal notranslate"><span class="pre">run_?.log</span></code> catches <code class="docutils literal notranslate"><span class="pre">run_1</span></code> through <code class="docutils literal notranslate"><span class="pre">run_9</span></code>
+but <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">run_10</span></code>, which has two digits:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>scratch/runs/run_?.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/runs/run_1.log scratch/runs/run_2.log scratch/runs/run_3.log
+</pre></div>
+</div>
+</div>
+</div>
+<p>A bracket matches one character from a set or range:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch/runs/run_<span class="o">[</span><span class="m">1</span>-2<span class="o">]</span>.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/runs/run_1.log	scratch/runs/run_2.log
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two gotchas worth carrying forward. First, a glob that matches <strong>nothing</strong> is, by
+bash’s default, passed through to the command <em>literally</em> — the pattern itself,
+unexpanded:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>scratch/runs/*.dat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/runs/*.dat
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is no <code class="docutils literal notranslate"><span class="pre">.dat</span></code> file, so <code class="docutils literal notranslate"><span class="pre">*.dat</span></code> arrived verbatim. (Bash has a <code class="docutils literal notranslate"><span class="pre">nullglob</span></code>
+option that makes a non-match expand to nothing instead; just know it exists.)
+Second, globs <strong>skip dotfiles</strong> — <code class="docutils literal notranslate"><span class="pre">data/*</span></code> quietly passed over the hidden
+<code class="docutils literal notranslate"><span class="pre">.dataset-notes</span></code> from Notebook 2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>data/*
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/README.md data/inputs data/results data/trajectories
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-brace-expansion-generate-names-and-sequences">
+<h2>B. Brace expansion — generate names and sequences<a class="headerlink" href="#b-brace-expansion-generate-names-and-sequences" title="Link to this heading">#</a></h2>
+<p>Globbing <em>matches</em> files that exist. <strong>Brace expansion</strong> is its complement: it
+<em>generates</em> strings whether or not any file exists, and the shell does it even
+earlier than globbing.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Brace expansion</span> — <span class="bp-card-job">generate lists and sequences of strings (shell syntax). Runs before globbing; the files need not exist.</span>
+  <table>
+    <tr><td>{a,b,c}</td><td>each item in turn (no spaces inside!)</td></tr>
+    <tr><td>{1..10}</td><td>a numeric range</td></tr>
+    <tr><td>{1..10..2}</td><td>a range with a step</td></tr>
+    <tr><td>pre{a,b}post</td><td>a shared prefix/suffix is distributed over each item</td></tr>
+    <tr><td>file{,.bak}</td><td>the empty item gives <code>file</code> and <code>file.bak</code> — the backup idiom</td></tr>
+  </table>
+</div>
+<p>Watch the generation with <code class="docutils literal notranslate"><span class="pre">echo</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>run_<span class="o">{</span><span class="m">1</span>..5<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run_1 run_2 run_3 run_4 run_5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>frame_<span class="o">{</span><span class="m">0</span>..10..2<span class="o">}</span>.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>frame_0.xyz frame_2.xyz frame_4.xyz frame_6.xyz frame_8.xyz frame_10.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the strings are generated regardless of what exists, braces are how you
+<em>create</em> a structured set in one stroke. <code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">-p</span> <span class="pre">run_{1..5}</span></code> makes five
+directories at once:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>scratch/run_<span class="o">{</span><span class="m">1</span>..5<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run_1  run_2  run_3  run_4  run_5
+</pre></div>
+</div>
+</div>
+</div>
+<p>And the <code class="docutils literal notranslate"><span class="pre">file{,.bak}</span></code> idiom expands <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">config.txt{,.bak}</span></code> into
+<code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">config.txt</span> <span class="pre">config.txt.bak</span></code> — an instant backup in nine keystrokes:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>scratch/config.txt<span class="o">{</span>,.bak<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>config.txt  config.txt.bak
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="c-find-search-the-whole-tree-by-criteria">
+<h2>C. <code class="docutils literal notranslate"><span class="pre">find</span></code> — search the whole tree by criteria<a class="headerlink" href="#c-find-search-the-whole-tree-by-criteria" title="Link to this heading">#</a></h2>
+<p>Globs and braces work on names in <em>one</em> directory. <code class="docutils literal notranslate"><span class="pre">find</span></code> makes the leap from
+“names here” to “<strong>criteria anywhere in the tree</strong>”: walk a directory and
+everything under it, keep the files that match a set of tests, and (optionally)
+run a command on each.</p>
+<div class="bp-card" id="cmd-find"><span class="bp-card-cmd">find</span> &mdash; <span class="bp-card-job">search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</span><table><tr><td>-name &quot;PAT&quot;  /  -iname</td><td>match the filename against a quoted glob (<code>-iname</code> ignores case)</td></tr><tr><td>-type f  /  -type d</td><td>match only files / only directories</td></tr><tr><td>-maxdepth N</td><td>descend at most N levels deep</td></tr><tr><td>-size +Nk  /  -mtime -N</td><td>by size (larger than N kB) or age (changed within N days)</td></tr><tr><td>-exec CMD {} +</td><td>run CMD on the matches — <code>{}</code> is each path, <code>+</code> batches them into few calls</td></tr><tr><td>-print  /  -delete</td><td>print the matches (the safe default) / delete them (dangerous — see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man find</code> — its options are many; you consult it, you do not memorise it</div></div><div class="bp-watchout"><strong>Watch out:</strong> quote the <code>-name</code> glob (<code>find data -name &quot;*.xyz&quot;</code>) or the shell expands it before find ever sees it; and <code>-delete</code> is <code>rm</code> at scale — read the admonition first</div><p>The shape is <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">&lt;where&gt;</span> <span class="pre">&lt;tests&gt;</span> <span class="pre">&lt;action&gt;</span></code>. Start simple — every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
+underneath <code class="docutils literal notranslate"><span class="pre">data/</span></code>, wherever it lives:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.xyz&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz
+data/trajectories/lj38-optimization.xyz
+data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>It reached into both <code class="docutils literal notranslate"><span class="pre">trajectories/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/</span></code> — something no single glob can
+do. <strong>Quote the pattern</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;*.xyz&quot;</span></code>): that is the payoff of §A. If you leave it
+bare, the <em>shell</em> expands <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> before <code class="docutils literal notranslate"><span class="pre">find</span></code> ever runs, and <code class="docutils literal notranslate"><span class="pre">find</span></code> gets the
+wrong thing. Quoting hands the pattern to <code class="docutils literal notranslate"><span class="pre">find</span></code> intact.</p>
+<p>Tests combine. Only directories:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-type<span class="w"> </span>d
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
+data/inputs
+data/results
+data/trajectories
+</pre></div>
+</div>
+</div>
+</div>
+<p>Keep it shallow with <code class="docutils literal notranslate"><span class="pre">-maxdepth</span></code>, and select by size — here, files bigger than 50
+kilobytes, which finds the one large trajectory:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-size<span class="w"> </span>+50k
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-optimization.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Tests can be negated with <code class="docutils literal notranslate"><span class="pre">!</span></code> and combined with <code class="docutils literal notranslate"><span class="pre">-o</span></code> (or). This finds every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
+that is <em>not</em> under <code class="docutils literal notranslate"><span class="pre">results/</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.xyz&quot;</span><span class="w"> </span>!<span class="w"> </span>-path<span class="w"> </span><span class="s2">&quot;*/results/*&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-optimization.xyz
+data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="danger admonition">
+<p class="admonition-title">⚠ find can delete at scale — dry-run first, always</p>
+<p><code class="docutils literal notranslate"><span class="pre">find</span></code> has a <code class="docutils literal notranslate"><span class="pre">-delete</span></code> action and an <code class="docutils literal notranslate"><span class="pre">-exec</span> <span class="pre">rm</span></code> action, and they are the Notebook
+3 <code class="docutils literal notranslate"><span class="pre">rm</span></code> footgun multiplied by <em>every file in the tree</em>. One wrong test — a <code class="docutils literal notranslate"><span class="pre">-name</span></code>
+that is broader than you meant, a stray <code class="docutils literal notranslate"><span class="pre">-o</span></code> — and an entire subtree is gone, with
+no undo and no trash. The habit that saves you is simple and non-negotiable:
+<strong>run the <code class="docutils literal notranslate"><span class="pre">find</span></code> with <code class="docutils literal notranslate"><span class="pre">-print</span></code> first and read the list</strong>, every time. Only once you
+have <em>seen</em> exactly what it matches do you swap <code class="docutils literal notranslate"><span class="pre">-print</span></code> for <code class="docutils literal notranslate"><span class="pre">-delete</span></code>. Never pipe
+a <code class="docutils literal notranslate"><span class="pre">find</span></code> you have not eyeballed into anything that removes files.</p>
+</div>
+</section>
+<section id="d-xargs-act-on-a-list">
+<h2>D. <code class="docutils literal notranslate"><span class="pre">xargs</span></code> — act on a list<a class="headerlink" href="#d-xargs-act-on-a-list" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">find</span></code> <em>selects</em> files; <code class="docutils literal notranslate"><span class="pre">xargs</span></code> <em>acts</em> on them. It reads a list of items on
+standard input and turns them into arguments for a command — which means it is, at
+heart, just a pipe (Notebook 4): a list flows in, command lines come out.</p>
+<div class="bp-card" id="cmd-xargs"><span class="bp-card-cmd">xargs</span> &mdash; <span class="bp-card-job">read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</span><table><tr><td>-0</td><td>items are NUL-separated, not whitespace — pair with <code>find -print0</code> to survive spaces and newlines in names</td></tr><tr><td>-n N</td><td>use at most N items per command line</td></tr><tr><td>-I {}</td><td>place each item where <code>{}</code> appears, instead of appending it at the end</td></tr></table><div class="bp-card-more">more: <code>man xargs</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> filenames with spaces or newlines break the default whitespace splitting — use <code>find -print0 | xargs -0</code>. (It also has <code>-P</code> to run jobs in parallel; we return to that in Part IV.)</div><p>The classic pairing pulls the first line — the atom count — out of <em>every</em>
+trajectory <code class="docutils literal notranslate"><span class="pre">find</span></code> can reach:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.xyz&quot;</span><span class="w"> </span>-print0<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-0<span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
+180
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two details carry the safety lesson. <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">…</span> <span class="pre">-print0</span></code> separates names with an
+invisible NUL character instead of whitespace, and <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-0</span></code> reads them the same
+way — so a filename with a space or newline in it cannot be split in two and
+mangled. Make <code class="docutils literal notranslate"><span class="pre">-print0</span> <span class="pre">|</span> <span class="pre">xargs</span> <span class="pre">-0</span></code> your default pairing.</p>
+<p><code class="docutils literal notranslate"><span class="pre">find</span></code> also has its own built-in way to act, <code class="docutils literal notranslate"><span class="pre">-exec</span></code>, which needs no pipe at all.
+The <code class="docutils literal notranslate"><span class="pre">{}</span></code> stands for each match and the trailing <code class="docutils literal notranslate"><span class="pre">+</span></code> batches them efficiently:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>find<span class="w"> </span>data<span class="w"> </span>-name<span class="w"> </span><span class="s2">&quot;*.xyz&quot;</span><span class="w"> </span>-exec<span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
+180
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+</pre></div>
+</div>
+</div>
+</div>
+<p>Same result, two routes: lead with <code class="docutils literal notranslate"><span class="pre">xargs</span></code> when you want a general “list →
+arguments” tool that composes with <em>any</em> producer, and reach for <code class="docutils literal notranslate"><span class="pre">-exec</span></code> when the
+list is coming from <code class="docutils literal notranslate"><span class="pre">find</span></code> anyway. (One more thing <code class="docutils literal notranslate"><span class="pre">xargs</span></code> can do, for later: it
+will run those command lines <em>in parallel</em> with <code class="docutils literal notranslate"><span class="pre">-P</span></code>. We come back to that when we
+talk about speed in Part IV.)</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>A fuller set this time — selection is a theme worth practising from several angles.
+Reads over <code class="docutils literal notranslate"><span class="pre">data/</span></code> are fine; anything that creates or deletes works in a fresh
+<code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, set up at the top of each exercise so reruns are identical.</p>
+<section id="warm-up-1-worked-globs">
+<h3>Warm-up 1 (worked) — Globs<a class="headerlink" href="#warm-up-1-worked-globs" title="Link to this heading">#</a></h3>
+<p>Match files with globs and watch a non-match pass through literally.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/runs/sweep_1.xyz  scratch/runs/sweep_2.xyz  scratch/runs/sweep_3.xyz
+scratch/runs/sweep_1.log  scratch/runs/sweep_3.log  scratch/runs/sweep_5.log
+scratch/runs/sweep_2.log  scratch/runs/sweep_4.log
+scratch/runs/*.dat
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the .xyz glob matched 3, sweep_?.log matched 5, and the non-match passed through literally
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-brace-expansion">
+<h3>Warm-up 2 (your turn) — Brace expansion<a class="headerlink" href="#warm-up-2-your-turn-brace-expansion" title="Link to this heading">#</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, make five run directories <code class="docutils literal notranslate"><span class="pre">run_1</span></code> … <code class="docutils literal notranslate"><span class="pre">run_5</span></code> in one <code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">-p</span></code>, and
+make a backup of a file with the <code class="docutils literal notranslate"><span class="pre">file{,.bak}</span></code> idiom.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>input.txt  input.txt.bak  run_1  run_2	run_3  run_4  run_5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> five run_ directories exist and the .bak backup was made
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-find-by-criteria">
+<h3>Applied 1 (your turn) — find by criteria<a class="headerlink" href="#applied-1-your-turn-find-by-criteria" title="Link to this heading">#</a></h3>
+<p>Using <code class="docutils literal notranslate"><span class="pre">find</span></code> on <code class="docutils literal notranslate"><span class="pre">data/</span></code> (read-only): find every <code class="docutils literal notranslate"><span class="pre">.inp</span></code> input file (quote the
+pattern!), and separately every directory. Then list only what is <em>directly</em>
+inside <code class="docutils literal notranslate"><span class="pre">data/</span></code> with <code class="docutils literal notranslate"><span class="pre">-maxdepth</span> <span class="pre">1</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/production-md.inp
+data/inputs/geo-opt.inp
+data
+data/inputs
+data/results
+data/trajectories
+data
+data/inputs
+data/README.md
+data/results
+data/trajectories
+data/.dataset-notes
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> find matched both .inp inputs and all four directories
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-worked-find-xargs">
+<h3>Applied 2 (worked) — find | xargs<a class="headerlink" href="#applied-2-worked-find-xargs" title="Link to this heading">#</a></h3>
+<p>Pull the first line out of every trajectory in <code class="docutils literal notranslate"><span class="pre">data/</span></code>, two ways: piped through
+<code class="docutils literal notranslate"><span class="pre">xargs</span></code>, and with <code class="docutils literal notranslate"><span class="pre">find</span></code>’s own <code class="docutils literal notranslate"><span class="pre">-exec</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
+180
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
+180
+==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
+      38
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> all three trajectories were found and their first lines pulled
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-capstone">
+<h3>Composite — putting it together (capstone)<a class="headerlink" href="#composite-putting-it-together-capstone" title="Link to this heading">#</a></h3>
+<p>Build a small sorted archive in <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, exercising the whole notebook at once.
+Make three brace-generated bins <code class="docutils literal notranslate"><span class="pre">scratch/sorted/{R,S,M}</span></code>, then use <code class="docutils literal notranslate"><span class="pre">find</span></code> + <code class="docutils literal notranslate"><span class="pre">xargs</span></code>
+to copy every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> from <code class="docutils literal notranslate"><span class="pre">data/</span></code> into the <code class="docutils literal notranslate"><span class="pre">R</span></code> bin, and verify with <code class="docutils literal notranslate"><span class="pre">find</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-optimization.xyz
+scratch/sorted/R/pt-slab.xyz
+scratch/sorted/R/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the three brace-made bins exist and all three .xyz were copied into R/
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-boolean-find">
+<h3>Optional stretch (your turn) — Boolean find<a class="headerlink" href="#optional-stretch-your-turn-boolean-find" title="Link to this heading">#</a></h3>
+<p>Compose a single <code class="docutils literal notranslate"><span class="pre">find</span></code> with combined tests: every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> under <code class="docutils literal notranslate"><span class="pre">data/</span></code> that is
+<strong>not</strong> in <code class="docutils literal notranslate"><span class="pre">results/</span></code> <strong>and</strong> is larger than 1 kilobyte, then count them with
+<code class="docutils literal notranslate"><span class="pre">xargs</span></code>. (Aside: <code class="docutils literal notranslate"><span class="pre">xargs</span></code> could run the action in parallel with <code class="docutils literal notranslate"><span class="pre">-P</span></code> — a thread we
+pick up in Part IV.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 155K Apr  1  2023 data/trajectories/lj38-optimization.xyz
+-rw-r--r-- 1 runner runner 2.5K Apr  1  2023 data/trajectories/lj38-relaxed.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the boolean find selected exactly the two large trajectories outside results/
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now select files at scale — by pattern, by generation, by searching the
+tree — and act on the whole set at once. Next (Notebook 6): instead of finding
+<em>files</em>, you will find matching <strong>text inside</strong> them with <code class="docutils literal notranslate"><span class="pre">grep</span></code>, and meet
+<strong>regular expressions</strong> — the pattern language that <code class="docutils literal notranslate"><span class="pre">sed</span></code>, and the Vim
+search-and-replace you saw in Notebook 9, all share.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-find"><code class="bp-cmd-name">find</code></a> &mdash; search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</li><li><a href="#cmd-xargs"><code class="bp-cmd-name">xargs</code></a> &mdash; read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/02-pipelines"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-redirection-and-pipes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4 Redirection and pipes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03-scripting/09-editing-in-the-terminal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-globbing-match-files-that-are-here">A. Globbing — match files that are here</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-brace-expansion-generate-names-and-sequences">B. Brace expansion — generate names and sequences</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-find-search-the-whole-tree-by-criteria">C. <code class="docutils literal notranslate"><span class="pre">find</span></code> — search the whole tree by criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-xargs-act-on-a-list">D. <code class="docutils literal notranslate"><span class="pre">xargs</span></code> — act on a list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-globs">Warm-up 1 (worked) — Globs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-brace-expansion">Warm-up 2 (your turn) — Brace expansion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-find-by-criteria">Applied 1 (your turn) — find by criteria</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-find-xargs">Applied 2 (worked) — find | xargs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-capstone">Composite — putting it together (capstone)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-boolean-find">Optional stretch (your turn) — Boolean find</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
