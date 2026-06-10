@@ -1,0 +1,1018 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7 The stream toolkit &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/07-the-stream-toolkit';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9 Editing in the terminal: Vim" href="../03-scripting/09-editing-in-the-terminal.html" />
+    <link rel="prev" title="6 grep and regular expressions" href="06-grep-and-regular-expressions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7 The stream toolkit</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02-pipelines/07-the-stream-toolkit.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/02-pipelines/07-the-stream-toolkit.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>7 The stream toolkit</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wc-how-much-is-there">A. <code class="docutils literal notranslate"><span class="pre">wc</span></code> — how much is there?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-cut-pick-a-column">B. <code class="docutils literal notranslate"><span class="pre">cut</span></code> — pick a column</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-sort-put-it-in-order">C. <code class="docutils literal notranslate"><span class="pre">sort</span></code> — put it in order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-uniq-collapse-duplicates">D. <code class="docutils literal notranslate"><span class="pre">uniq</span></code> — collapse duplicates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-tr-transform-characters">E. <code class="docutils literal notranslate"><span class="pre">tr</span></code> — transform characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-count">Warm-up 1 (worked) — Count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-cut-a-column">Warm-up 2 (your turn) — Cut a column</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-sort-numerically">Applied 1 (your turn) — Sort numerically</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-dedup-and-count">Applied 2 (your turn) — Dedup and count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-tr-cleanup">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">tr</span></code> cleanup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-frequency-idiom">Composite — putting it together (the frequency idiom)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-a-deeper-pipeline">Optional stretch (your turn) — A deeper pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="the-stream-toolkit">
+<h1>7 The stream toolkit<a class="headerlink" href="#the-stream-toolkit" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part II — Pipelines and text extraction</span>
+    <span class="bp-meta">Notebook&nbsp;7</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The small single-purpose filters — wc, cut, sort, uniq, tr — that reshape the
+    lines you select into counts, columns, and ordered tables.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">grep</span></code> handed you the matching lines. These five tools <strong>reshape</strong> them — turning a
+pile of lines into a count, a single column, an ordered list, a tally. Each does
+exactly one thing, reads from stdin and writes to stdout, and is built to sit in a
+pipe. (A column of energies is just a column of numbers, as ever — <strong>no physics
+needed.</strong>)</p>
+<p>This is the notebook where the Unix philosophy finally pays off in full. Until now
+the pipelines were short, because there was little to chain. With five reshaping
+filters in hand, real multi-stage pipelines arrive — and the chapter ends on the
+single most useful one in all of shell work.</p>
+</section>
+<section id="a-wc-how-much-is-there">
+<h2>A. <code class="docutils literal notranslate"><span class="pre">wc</span></code> — how much is there?<a class="headerlink" href="#a-wc-how-much-is-there" title="Link to this heading">#</a></h2>
+<p>The simplest question: how big? <code class="docutils literal notranslate"><span class="pre">wc</span></code> counts lines, words, and bytes.</p>
+<div class="bp-card" id="cmd-wc"><span class="bp-card-cmd">wc</span> &mdash; <span class="bp-card-job">count the lines, words, and bytes of its input.</span><table><tr><td>-l</td><td>count lines</td></tr><tr><td>-w</td><td>count words</td></tr><tr><td>-c</td><td>count bytes</td></tr></table><div class="bp-card-more">more: <code>man wc</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>-l</code> counts *newlines*, so a file whose last line has no trailing newline is counted one short</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wc<span class="w"> </span>-l<span class="w"> </span>data/trajectories/lj38-optimization.xyz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2520 data/trajectories/lj38-optimization.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two and a half thousand lines — far too many to read, which is the whole reason we
+filter. Give <code class="docutils literal notranslate"><span class="pre">wc</span></code> a file and no flag and it prints all three counts at once:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wc<span class="w"> </span>data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  721  3336 42963 data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-cut-pick-a-column">
+<h2>B. <code class="docutils literal notranslate"><span class="pre">cut</span></code> — pick a column<a class="headerlink" href="#b-cut-pick-a-column" title="Link to this heading">#</a></h2>
+<p>Lines are often columns of data. <code class="docutils literal notranslate"><span class="pre">cut</span></code> keeps the columns you want. Those CP2K log
+lines are conveniently <code class="docutils literal notranslate"><span class="pre">TOKEN|</span> <span class="pre">…</span></code>, so the <code class="docutils literal notranslate"><span class="pre">|</span></code> is a clean delimiter: <code class="docutils literal notranslate"><span class="pre">-d'|'</span></code> sets it,
+<code class="docutils literal notranslate"><span class="pre">-f1</span></code> keeps the first field — the section name on each line.</p>
+<div class="bp-card" id="cmd-cut"><span class="bp-card-cmd">cut</span> &mdash; <span class="bp-card-job">pick out columns from each line — by delimited field, or by character position.</span><table><tr><td>-d C</td><td>use C as the field delimiter (default is TAB)</td></tr><tr><td>-f N</td><td>keep field N (or a list/range like <code>1,3</code> or <code>2-4</code>); use with <code>-d</code></td></tr><tr><td>-c N</td><td>keep character positions N instead of fields (e.g. <code>1-6</code>)</td></tr></table><div class="bp-card-more">more: <code>man cut</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the delimiter is a SINGLE character; <code>cut</code> cannot cope with runs of variable whitespace — that is exactly where <code>awk</code> takes over (Notebook 8)</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> DBCSR
+ DBCSR
+ DBCSR
+ DBCSR
+ DBCSR
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cut</span></code> can also slice by character position with <code class="docutils literal notranslate"><span class="pre">-c</span></code>, ignoring fields entirely:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cut<span class="w"> </span>-c1-9<span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> DBCSR| C
+ DBCSR| M
+ DBCSR| M
+ DBCSR| M
+ DBCSR| M
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the wall, though, and it matters because it points straight at the next
+notebook. <code class="docutils literal notranslate"><span class="pre">cut</span></code>’s delimiter is a <strong>single character</strong>. The energy lines are padded
+with <em>runs</em> of spaces, so splitting on a single space gives empty fields and
+nonsense:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-m1<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f2-4
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ENERGY| Total FORCE_EVAL
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is <code class="docutils literal notranslate"><span class="pre">cut</span></code> reaching its limit. The moment columns are separated by <em>variable</em>
+whitespace, you want <code class="docutils literal notranslate"><span class="pre">awk</span></code> — which is the first half of Notebook 8.</p>
+</section>
+<section id="c-sort-put-it-in-order">
+<h2>C. <code class="docutils literal notranslate"><span class="pre">sort</span></code> — put it in order<a class="headerlink" href="#c-sort-put-it-in-order" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sort</span></code> orders lines. Pull the energies out (the Notebook 6 way), and order them:</p>
+<div class="bp-card" id="cmd-sort"><span class="bp-card-cmd">sort</span> &mdash; <span class="bp-card-job">order the lines of its input.</span><table><tr><td>-n</td><td>numeric order (treat the field as a number, not text)</td></tr><tr><td>-r</td><td>reverse the order</td></tr><tr><td>-k N</td><td>sort by field N (with <code>-t</code> to set the separator)</td></tr><tr><td>-t C</td><td>use C as the field separator for <code>-k</code></td></tr><tr><td>-u</td><td>drop duplicate lines, keeping one of each</td></tr></table><div class="bp-card-more">more: <code>man sort</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the DEFAULT is lexical (dictionary) order, so <code>10</code> sorts before <code>2</code> and <code>-9</code> before <code>-10</code> — reach for <code>-n</code> whenever the column is numbers</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-n
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-145.725465772527684
+-144.026841371125641
+-143.350064790371448
+-142.878629961526173
+-142.438732194981611
+-142.246533543175843
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">-n</span></code>. Leave it off and you meet the flagship trap of this notebook. By
+default <code class="docutils literal notranslate"><span class="pre">sort</span></code> compares lines as <em>text</em>, character by character — so it puts the
+energies in the wrong order, because lexically <code class="docutils literal notranslate"><span class="pre">-142…</span></code> comes before <code class="docutils literal notranslate"><span class="pre">-145…</span></code> (the
+<code class="docutils literal notranslate"><span class="pre">2</span></code> beats the <code class="docutils literal notranslate"><span class="pre">5</span></code>), even though <code class="docutils literal notranslate"><span class="pre">-145</span></code> is the <em>smaller</em> number:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-142.246533543175843
+-142.438732194981611
+-142.878629961526173
+-143.350064790371448
+-144.026841371125641
+-145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<p>The two orders are reversed. The textbook version of the same bug: lexically, <code class="docutils literal notranslate"><span class="pre">10</span></code>
+sorts before <code class="docutils literal notranslate"><span class="pre">2</span></code> (because <code class="docutils literal notranslate"><span class="pre">1</span></code> beats <code class="docutils literal notranslate"><span class="pre">2</span></code>). Whenever a column is numbers, reach for
+<code class="docutils literal notranslate"><span class="pre">-n</span></code>.</p>
+</section>
+<section id="d-uniq-collapse-duplicates">
+<h2>D. <code class="docutils literal notranslate"><span class="pre">uniq</span></code> — collapse duplicates<a class="headerlink" href="#d-uniq-collapse-duplicates" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">uniq</span></code> folds repeated lines into one, and with <code class="docutils literal notranslate"><span class="pre">-c</span></code> counts how many there were.
+Counting how often each section appears in the log is a natural fit — but watch
+what happens if we forget one thing:</p>
+<div class="bp-card" id="cmd-uniq"><span class="bp-card-cmd">uniq</span> &mdash; <span class="bp-card-job">collapse adjacent duplicate lines, and optionally count them.</span><table><tr><td>-c</td><td>prefix each line with the number of times it occurred</td></tr><tr><td>-d</td><td>print only the lines that were duplicated</td></tr><tr><td>-u</td><td>print only the lines that were never repeated</td></tr></table><div class="bp-card-more">more: <code>man uniq</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>uniq</code> only compares *adjacent* lines, so duplicates scattered through the file are missed — almost always run <code>sort | uniq</code></div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     23 DBCSR
+     10 CP2K
+     19 GLOBAL
+      9 MEMORY
+      5 EWALD
+     14 MD
+</pre></div>
+</div>
+</div>
+</div>
+<p>Those counts are wrong, and this is the number-one <code class="docutils literal notranslate"><span class="pre">uniq</span></code> confusion: <strong>it only
+looks at <em>adjacent</em> lines.</strong> A section that appears in two different places in the
+log shows up as two separate runs, each counted on its own. The fix is to <code class="docutils literal notranslate"><span class="pre">sort</span></code>
+first, so all the identical lines are brought together:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     10 CP2K
+     23 DBCSR
+      6 ENERGY
+      5 EWALD
+     19 GLOBAL
+     14 MD
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now each section is counted once, correctly. <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">|</span> <span class="pre">uniq</span></code> is one of the most
+common two-command phrases in the shell — almost any time you reach for <code class="docutils literal notranslate"><span class="pre">uniq</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sort</span></code> comes just before it.</p>
+</section>
+<section id="e-tr-transform-characters">
+<h2>E. <code class="docutils literal notranslate"><span class="pre">tr</span></code> — transform characters<a class="headerlink" href="#e-tr-transform-characters" title="Link to this heading">#</a></h2>
+<p>The last filter works on <em>characters</em>, not lines. <code class="docutils literal notranslate"><span class="pre">tr</span></code> translates one set of
+characters to another, deletes a set, or squeezes runs of a character to one.</p>
+<div class="bp-card" id="cmd-tr"><span class="bp-card-cmd">tr</span> &mdash; <span class="bp-card-job">translate, delete, or squeeze characters in a stream (it reads standard input, so pipe into it).</span><table><tr><td>SET1 SET2</td><td>translate each character of SET1 to the matching one of SET2 (e.g. <code>&#x27;a-z&#x27; &#x27;A-Z&#x27;</code> upper-cases)</td></tr><tr><td>-d SET</td><td>delete every character in SET (e.g. <code>-d &#x27;\r&#x27;</code> strips carriage returns)</td></tr><tr><td>-s SET</td><td>squeeze runs of a SET character down to one (e.g. <code>-s &#x27; &#x27;</code> collapses spaces)</td></tr></table><div class="bp-card-more">more: <code>man tr</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>tr</code> works on character SETS, not strings or patterns — string and regex replacement is <code>sed</code> (Notebook 8)</div><p>Upper-casing is the textbook example — translate the lowercase range to the
+uppercase one:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;total energy&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39;a-z&#39;</span><span class="w"> </span><span class="s1">&#39;A-Z&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOTAL ENERGY
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">-s</span></code> squeezes runs down to one, which tidies the ragged whitespace <code class="docutils literal notranslate"><span class="pre">cut</span></code> choked on
+earlier (a workaround, not a replacement for <code class="docutils literal notranslate"><span class="pre">awk</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-m1<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39; &#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.): -142.246533543175843
+</pre></div>
+</div>
+</div>
+</div>
+<p>And <code class="docutils literal notranslate"><span class="pre">-d</span></code> deletes — the everyday use is stripping the stray carriage returns that
+Windows leaves on line ends (<code class="docutils literal notranslate"><span class="pre">\r</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;a line\r\n&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;\r&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cat<span class="w"> </span>-A
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a line$
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">^M</span></code> is gone, leaving a clean <code class="docutils literal notranslate"><span class="pre">$</span></code> line end. Note the scope boundary, the twin
+of <code class="docutils literal notranslate"><span class="pre">cut</span></code>’s: <code class="docutils literal notranslate"><span class="pre">tr</span></code> maps character <em>sets</em>. It cannot replace a <em>string</em> or a pattern —
+that is <code class="docutils literal notranslate"><span class="pre">sed</span></code>, the other half of Notebook 8.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>A pipeline-heavy set, because that is the point of these tools. All reads are
+read-only and deterministic; the one exercise that saves a result writes into a
+fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
+<section id="warm-up-1-worked-count">
+<h3>Warm-up 1 (worked) — Count<a class="headerlink" href="#warm-up-1-worked-count" title="Link to this heading">#</a></h3>
+<p>Count the lines of a trajectory and of a log with <code class="docutils literal notranslate"><span class="pre">wc</span> <span class="pre">-l</span></code>, and the words of the log
+with <code class="docutils literal notranslate"><span class="pre">-w</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2520 data/trajectories/lj38-optimization.xyz
+721 data/logs/gr2hno3-nvt.log
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the trajectory is 2520 lines and the log is 721
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-cut-a-column">
+<h3>Warm-up 2 (your turn) — Cut a column<a class="headerlink" href="#warm-up-2-your-turn-cut-a-column" title="Link to this heading">#</a></h3>
+<p>The log’s lines are <code class="docutils literal notranslate"><span class="pre">TOKEN|</span> <span class="pre">…</span></code>. Use <code class="docutils literal notranslate"><span class="pre">cut</span></code> with <code class="docutils literal notranslate"><span class="pre">-d</span></code> and <code class="docutils literal notranslate"><span class="pre">-f</span></code> to keep just the
+section token on every <code class="docutils literal notranslate"><span class="pre">|</span></code> line, and count how many <em>distinct</em> sections there are
+(pipe through <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-u</span></code>).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CP2K
+DBCSR
+ENERGY
+EWALD
+GLOBAL
+MD
+MD_ENERGIES
+MEMORY
+ROT
+THERMOSTAT
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> cut pulled the token column; there are 10 distinct sections
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-sort-numerically">
+<h3>Applied 1 (your turn) — Sort numerically<a class="headerlink" href="#applied-1-your-turn-sort-numerically" title="Link to this heading">#</a></h3>
+<p>Extract the energy column (<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-oE</span></code>, from Notebook 6) and order it with <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-n</span></code>. The first line is then the lowest (most negative) energy. Try it once without
+<code class="docutils literal notranslate"><span class="pre">-n</span></code> to watch the lexical mangling.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-145.725465772527684
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> sort -n found the lowest energy, -145.72…
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-dedup-and-count">
+<h3>Applied 2 (your turn) — Dedup and count<a class="headerlink" href="#applied-2-your-turn-dedup-and-count" title="Link to this heading">#</a></h3>
+<p>Count how many lines belong to each log section: <code class="docutils literal notranslate"><span class="pre">sort</span></code> the token column, then
+<code class="docutils literal notranslate"><span class="pre">uniq</span> <span class="pre">-c</span></code>. Confirm that the <strong>DBCSR</strong> section is the busiest. (Remember: <code class="docutils literal notranslate"><span class="pre">sort</span></code>
+<em>before</em> <code class="docutils literal notranslate"><span class="pre">uniq</span></code>.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     10 CP2K
+     23 DBCSR
+      6 ENERGY
+      5 EWALD
+     19 GLOBAL
+     14 MD
+      1 MD_ENERGIES
+      9 MEMORY
+      8 ROT
+      9 THERMOSTAT
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> sort | uniq -c counted DBCSR&#39;s 23 lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-tr-cleanup">
+<h3>Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">tr</span></code> cleanup<a class="headerlink" href="#applied-3-worked-tr-cleanup" title="Link to this heading">#</a></h3>
+<p>Three character transforms: squeeze the ragged spaces of an energy line, strip a
+carriage return, and lower-case a stream.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.): -142.246533543175843
+value$
+warning
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> spaces squeezed, carriage return stripped, and the line lower-cased
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-the-frequency-idiom">
+<h3>Composite — putting it together (the frequency idiom)<a class="headerlink" href="#composite-putting-it-together-the-frequency-idiom" title="Link to this heading">#</a></h3>
+<p>The payoff. Build the single most useful pipeline in shell text-work, the
+<strong>ranked-frequency idiom</strong>, to rank the log’s sections from busiest to quietest:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>grep &#39;|&#39; … | cut -d&#39;|&#39; -f1 | tr -d &#39; &#39; | sort | uniq -c | sort -rn
+</pre></div>
+</div>
+<p>It chains <code class="docutils literal notranslate"><span class="pre">grep</span></code> (Notebook 6) with four of this notebook’s filters and the pipe
+(Notebook 4): select the <code class="docutils literal notranslate"><span class="pre">|</span></code> lines, cut the token, tidy it, sort so duplicates are
+adjacent, count them with <code class="docutils literal notranslate"><span class="pre">uniq</span> <span class="pre">-c</span></code>, and finally <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-rn</span></code> to rank by count,
+biggest first. Save the ranking to <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     23 DBCSR
+     19 GLOBAL
+     14 MD
+     10 CP2K
+      9 THERMOSTAT
+      9 MEMORY
+      8 ROT
+      6 ENERGY
+      5 EWALD
+      1 MD_ENERGIES
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the ranking puts DBCSR (23 lines) at the top
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-a-deeper-pipeline">
+<h3>Optional stretch (your turn) — A deeper pipeline<a class="headerlink" href="#optional-stretch-your-turn-a-deeper-pipeline" title="Link to this heading">#</a></h3>
+<p>Go one stage further. Take the energy column, <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-n</span></code>, and keep the <strong>three
+lowest</strong> with <code class="docutils literal notranslate"><span class="pre">head</span> <span class="pre">-n</span> <span class="pre">3</span></code> — the three most-bound configurations. Then, for the
+boundary lesson: try to pull the second <em>numeric</em> column out of an energy line with
+<code class="docutils literal notranslate"><span class="pre">cut</span></code> and watch the ragged whitespace defeat it. That failure is precisely the case
+for <code class="docutils literal notranslate"><span class="pre">awk</span></code>, next notebook.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-145.725465772527684
+-144.026841371125641
+-143.350064790371448
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the three lowest energies were selected in numeric order
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now reshape streams into counts, columns, and ordered tables — and you have
+hit two walls on purpose. <code class="docutils literal notranslate"><span class="pre">cut</span></code> cannot handle ragged whitespace, and <code class="docutils literal notranslate"><span class="pre">tr</span></code> cannot
+replace strings. Next (Notebook 8): <strong><code class="docutils literal notranslate"><span class="pre">awk</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code></strong> — field-aware processing and
+stream editing — which clear both walls at once and carry the regular-expression
+thread from Notebook 6 right through to the end of Part II.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-wc"><code class="bp-cmd-name">wc</code></a> &mdash; count the lines, words, and bytes of its input.</li><li><a href="#cmd-cut"><code class="bp-cmd-name">cut</code></a> &mdash; pick out columns from each line — by delimited field, or by character position.</li><li><a href="#cmd-sort"><code class="bp-cmd-name">sort</code></a> &mdash; order the lines of its input.</li><li><a href="#cmd-uniq"><code class="bp-cmd-name">uniq</code></a> &mdash; collapse adjacent duplicate lines, and optionally count them.</li><li><a href="#cmd-tr"><code class="bp-cmd-name">tr</code></a> &mdash; translate, delete, or squeeze characters in a stream (it reads standard input, so pipe into it).</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/02-pipelines"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06-grep-and-regular-expressions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">6 grep and regular expressions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03-scripting/09-editing-in-the-terminal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-wc-how-much-is-there">A. <code class="docutils literal notranslate"><span class="pre">wc</span></code> — how much is there?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-cut-pick-a-column">B. <code class="docutils literal notranslate"><span class="pre">cut</span></code> — pick a column</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-sort-put-it-in-order">C. <code class="docutils literal notranslate"><span class="pre">sort</span></code> — put it in order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-uniq-collapse-duplicates">D. <code class="docutils literal notranslate"><span class="pre">uniq</span></code> — collapse duplicates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-tr-transform-characters">E. <code class="docutils literal notranslate"><span class="pre">tr</span></code> — transform characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-count">Warm-up 1 (worked) — Count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-cut-a-column">Warm-up 2 (your turn) — Cut a column</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-sort-numerically">Applied 1 (your turn) — Sort numerically</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-dedup-and-count">Applied 2 (your turn) — Dedup and count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-tr-cleanup">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">tr</span></code> cleanup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-frequency-idiom">Composite — putting it together (the frequency idiom)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-a-deeper-pipeline">Optional stretch (your turn) — A deeper pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -172,6 +172,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -580,7 +581,17 @@ each command links back to the notebook where it was introduced.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">find</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-cut"><span class="std std-ref">cut</span></a></p></td>
+<td><p>pick out columns from each line — by delimited field, or by character position.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">C</span></code>  use C as the field delimiter (default is TAB)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">N</span></code>  keep field N (or a list/range like `1,3` or `2-4`); use with `-d`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">N</span></code>  keep character positions N instead of fields (e.g. `1-6`)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-cut"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">find</span></a></p></td>
 <td><p>search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-name</span> <span class="pre">&quot;PAT&quot;</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-iname</span></code>  match the filename against a quoted glob (`-iname` ignores case)</div>
@@ -593,7 +604,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">5 Selecting files: globbing, brace expansion, and find</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">grep</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">grep</span></a></p></td>
 <td><p>print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  match case-insensitively</div>
@@ -608,6 +619,18 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">6 grep and regular expressions</span></a></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-sort"><span class="std std-ref">sort</span></a></p></td>
+<td><p>order the lines of its input.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  numeric order (treat the field as a number, not text)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span></code>  reverse the order</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">N</span></code>  sort by field N (with `-t` to set the separator)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">C</span></code>  use C as the field separator for `-k`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-u</span></code>  drop duplicate lines, keeping one of each</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-sort"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">tee</span></a></p></td>
 <td><p>copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</p></td>
 <td><div class="line-block">
@@ -616,7 +639,37 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/04-redirection-and-pipes.html#cmd-tee"><span class="std std-ref">4 Redirection and pipes</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">xargs</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-tr"><span class="std std-ref">tr</span></a></p></td>
+<td><p>translate, delete, or squeeze characters in a stream (it reads standard input, so pipe into it).</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SET1</span> <span class="pre">SET2</span></code>  translate each character of SET1 to the matching one of SET2 (e.g. `’a-z’ ‘A-Z’` upper-cases)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">SET</span></code>  delete every character in SET (e.g. `-d ‘\r’` strips carriage returns)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">SET</span></code>  squeeze runs of a SET character down to one (e.g. `-s ‘ ‘` collapses spaces)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-tr"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-uniq"><span class="std std-ref">uniq</span></a></p></td>
+<td><p>collapse adjacent duplicate lines, and optionally count them.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span></code>  prefix each line with the number of times it occurred</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span></code>  print only the lines that were duplicated</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-u</span></code>  print only the lines that were never repeated</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-uniq"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-wc"><span class="std std-ref">wc</span></a></p></td>
+<td><p>count the lines, words, and bytes of its input.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-l</span></code>  count lines</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-w</span></code>  count words</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-c</span></code>  count bytes</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-wc"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-xargs"><span class="std std-ref">xargs</span></a></p></td>
 <td><p>read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-0</span></code>  items are NUL-separated, not whitespace — pair with `find -print0` to survive spaces and newlines in names</div>
