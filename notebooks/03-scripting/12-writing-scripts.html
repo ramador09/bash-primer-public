@@ -1,0 +1,1240 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12 Writing scripts &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03-scripting/12-writing-scripts';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="11 Permissions and execution" href="11-permissions-and-execution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">12 Writing scripts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03-scripting/12-writing-scripts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/03-scripting/12-writing-scripts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>12 Writing scripts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-anatomy-a-script-is-commands-in-a-file-with-a-safe-header">A. Anatomy: a script is commands in a file, with a safe header</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-variables-naming-your-data">B. Variables: naming your data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-positional-parameters-acting-on-what-you-pass">C. Positional parameters: acting on what you pass</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-flags-via-getopts-options-the-standard-way">D. Flags via <code class="docutils literal notranslate"><span class="pre">getopts</span></code>: options, the standard way</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-functions-naming-a-piece-of-work">E. Functions: naming a piece of work</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-printf-clean-formatted-output">F. <code class="docutils literal notranslate"><span class="pre">printf</span></code>: clean, formatted output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g-heredocs-generating-multi-line-text-and-files">G. Heredocs: generating multi-line text and files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h-robustness-failing-early-and-loudly">H. Robustness: failing early and loudly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-a-first-script-with-variables">Warm-up 1 (worked) — A first script with variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-act-on-an-argument">Warm-up 2 (your turn) — Act on an argument</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-add-a-flag-with-getopts">Applied 1 (your turn) — Add a flag with <code class="docutils literal notranslate"><span class="pre">getopts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-factor-a-function">Applied 2 (your turn) — Factor a function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-printf-and-a-heredoc">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">printf</span></code> and a heredoc</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-a-complete-analysis-tool">Composite — putting it together (a complete analysis tool)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-make-it-fail-loudly">Optional stretch (your turn) — Make it fail loudly</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="writing-scripts">
+<h1>12 Writing scripts<a class="headerlink" href="#writing-scripts" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part III — From commands to scripts</span>
+    <span class="bp-meta">Notebook&nbsp;12</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Turning a runnable file into a proper, reusable tool: inputs and variables,
+    flags, functions, clean formatted output, and failing safely.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>In Notebook 11 you made a file <em>runnable</em> — a shebang, the executable bit, <code class="docutils literal notranslate"><span class="pre">./</span></code>.
+But that script did one fixed thing. A real tool is different: you hand it an
+input, it names its data in readable variables, organizes its work into functions,
+prints clean output, and — when something is wrong — fails early and loudly instead
+of limping on with garbage.</p>
+<p>This notebook grows exactly that. We start from “a few commands in a file” and, one
+idea at a time, build up to <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> — a script that takes a trajectory file
+and a flag, extracts and averages its energies, prints a formatted result, and
+writes a summary file, all under a header that makes it fail safely. Everything you
+have learned in Part III converges here.</p>
+<p>One boundary, stated up front. This notebook’s script is <strong>linear</strong>: one input →
+process → output. Making a script <em>decide</em> (with <code class="docutils literal notranslate"><span class="pre">if</span></code>) and <em>repeat</em> (loop over many
+files) is the next notebook. So our capstone processes <strong>one</strong> trajectory; Notebook
+13 will make it sweep a whole directory of them. (As ever — the data is a
+playground, <strong>no physics required.</strong>)</p>
+</section>
+<section id="a-anatomy-a-script-is-commands-in-a-file-with-a-safe-header">
+<h2>A. Anatomy: a script is commands in a file, with a safe header<a class="headerlink" href="#a-anatomy-a-script-is-commands-in-a-file-with-a-safe-header" title="Link to this heading">#</a></h2>
+<p>A script is nothing mysterious: it is the same commands you type at the prompt,
+saved in a file so you can re-run them (Notebook 11). From the very first one,
+though, we give every script the same two-line header:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+</pre></div>
+</div>
+<p>The first line is the shebang from Notebook 11. The second, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code>, is
+the single most valuable habit in script-writing: it makes the script <strong>fail
+safely</strong> — stop the moment something goes wrong, rather than barrel on. We unpack
+exactly what it does in §H; for now, treat it as boilerplate that every script
+wears, and we will model it throughout. Here is a first script under that header:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<span class="nv">system</span><span class="o">=</span><span class="s2">&quot;lj38&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;analysis script for: </span><span class="nv">$system</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>scratch<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./first.sh<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>analysis script for: lj38
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is the shape of every script below: the header, then the work.</p>
+</section>
+<section id="b-variables-naming-your-data">
+<h2>B. Variables: naming your data<a class="headerlink" href="#b-variables-naming-your-data" title="Link to this heading">#</a></h2>
+<p>A variable gives a name to a value, so the script reads like a description of what
+it does instead of a wall of literals. Assignment has one famous trap — <strong>no spaces
+around the <code class="docutils literal notranslate"><span class="pre">=</span></code></strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">system</span><span class="o">=</span><span class="s2">&quot;lj38&quot;</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;running analysis for </span><span class="nv">$system</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>running analysis for lj38
+</pre></div>
+</div>
+</div>
+</div>
+<p>Put a space around the <code class="docutils literal notranslate"><span class="pre">=</span></code> and the shell reads the first word as a <em>command</em> name,
+not an assignment — a confusing error the first time you meet it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lj38&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;with spaces, bash thinks &#39;system&#39; is a command to run — assignment needs NONE around =&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>with spaces, bash thinks &#39;system&#39; is a command to run — assignment needs NONE around =
+</pre></div>
+</div>
+</div>
+</div>
+<p>You <em>use</em> a variable by writing <code class="docutils literal notranslate"><span class="pre">$name</span></code> — and, per Notebook 10, you <strong>quote it on
+use</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;$name&quot;</span></code>. The everyday forms:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Variables</span> — <span class="bp-card-job">naming values (shell syntax, not a command). Quote on use; assign with no spaces around <code>=</code>.</span>
+  <table>
+    <tr><td>name=value</td><td>assign — <b>no spaces</b> around the <code>=</code></td></tr>
+    <tr><td>"$name"</td><td>use the value — always quote on use (Notebook 10)</td></tr>
+    <tr><td>"${name:-default}"</td><td>use <i>default</i> if name is unset or empty (Notebook 10)</td></tr>
+    <tr><td>local name=value</td><td>a variable confined to its function (§E)</td></tr>
+    <tr><td>name="$(cmd)"</td><td>capture a command's output into the value (Notebook 10)</td></tr>
+  </table>
+</div>
+<p>(These are <em>script-local</em> variables. Making a variable part of the <strong>environment</strong>,
+so other programs see it — <code class="docutils literal notranslate"><span class="pre">export</span></code> — belongs to Notebook 14.)</p>
+</section>
+<section id="c-positional-parameters-acting-on-what-you-pass">
+<h2>C. Positional parameters: acting on what you pass<a class="headerlink" href="#c-positional-parameters-acting-on-what-you-pass" title="Link to this heading">#</a></h2>
+<p>A tool earns its keep by working on <em>whatever you give it</em>. The arguments after the
+script’s name arrive as the <strong>positional parameters</strong> <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, and so on — with
+<code class="docutils literal notranslate"><span class="pre">$#</span></code> counting them and <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code> standing for all of them:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Positional parameters</span> — <span class="bp-card-job">the arguments a script (or function) was called with.</span>
+  <table>
+    <tr><td>$0</td><td>the script's own name</td></tr>
+    <tr><td>$1&nbsp;&nbsp;$2&nbsp;…</td><td>the first, second, … argument</td></tr>
+    <tr><td>$#</td><td>how many arguments were passed</td></tr>
+    <tr><td>"$@"</td><td><b>all</b> arguments, each kept as a separate word — quote it (Notebook 10)</td></tr>
+    <tr><td>$*</td><td>all arguments mashed into <b>one</b> word — rarely what you want</td></tr>
+    <tr><td>shift</td><td>drop <code>$1</code>; <code>$2</code> becomes <code>$1</code>, and so on</td></tr>
+  </table>
+</div>
+<p>Here is a script that simply reports what it received:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;script name: </span><span class="nv">$0</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;first arg:   </span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;arg count:   </span><span class="nv">$#</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;all args:    </span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>scratch<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./args.sh<span class="w"> </span>lj38.xyz<span class="w"> </span>pt-slab.xyz<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>script name: ./args.sh
+first arg:   lj38.xyz
+arg count:   2
+all args:    lj38.xyz pt-slab.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<p>The script now does different work depending on its input — the difference between a
+one-off and a tool.</p>
+</section>
+<section id="d-flags-via-getopts-options-the-standard-way">
+<h2>D. Flags via <code class="docutils literal notranslate"><span class="pre">getopts</span></code>: options, the standard way<a class="headerlink" href="#d-flags-via-getopts-options-the-standard-way" title="Link to this heading">#</a></h2>
+<p>Arguments are positional; <strong>flags</strong> (<code class="docutils literal notranslate"><span class="pre">-v</span></code>, <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">5</span></code>) let a caller switch behaviour on
+and off by name. Bash has a dedicated helper, <strong><code class="docutils literal notranslate"><span class="pre">getopts</span></code></strong>, and it is almost always
+written as the same copy-me skeleton:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">verbose</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">n</span><span class="o">=</span><span class="m">3</span>
+<span class="k">while</span><span class="w"> </span><span class="nb">getopts</span><span class="w"> </span><span class="s2">&quot;vn:&quot;</span><span class="w"> </span>opt<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$opt</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">in</span>
+<span class="w">    </span>v<span class="o">)</span><span class="w"> </span><span class="nv">verbose</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="p">;;</span><span class="w">          </span><span class="c1"># a plain flag</span>
+<span class="w">    </span>n<span class="o">)</span><span class="w"> </span><span class="nv">n</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPTARG</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">;;</span><span class="w">        </span><span class="c1"># a flag that takes a value</span>
+<span class="w">    </span>*<span class="o">)</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;usage: show.sh [-v] [-n N] FILE&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">;;</span>
+<span class="w">  </span><span class="k">esac</span>
+<span class="k">done</span>
+<span class="nb">shift</span><span class="w"> </span><span class="k">$((</span><span class="w"> </span><span class="nv">OPTIND</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="k">))</span><span class="w">       </span><span class="c1"># drop the parsed flags; &quot;$1&quot; is now the first real argument</span>
+</pre></div>
+</div>
+<p>The option string <code class="docutils literal notranslate"><span class="pre">&quot;vn:&quot;</span></code> says: accept <code class="docutils literal notranslate"><span class="pre">-v</span></code> (no value) and <code class="docutils literal notranslate"><span class="pre">-n</span></code> (the trailing
+<strong><code class="docutils literal notranslate"><span class="pre">:</span></code></strong> means it takes a value). For each flag, <code class="docutils literal notranslate"><span class="pre">getopts</span></code> puts the letter in <code class="docutils literal notranslate"><span class="pre">opt</span></code>,
+and any value in <strong><code class="docutils literal notranslate"><span class="pre">OPTARG</span></code></strong>; <strong><code class="docutils literal notranslate"><span class="pre">OPTIND</span></code></strong> tracks how far it got, so the final
+<code class="docutils literal notranslate"><span class="pre">shift</span></code> discards the flags and leaves your real arguments as <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, …</p>
+<div class="note admonition">
+<p class="admonition-title">On the while/case machinery</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">…</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code> loop and the <code class="docutils literal notranslate"><span class="pre">case</span> <span class="pre">…</span> <span class="pre">esac</span></code> choice are <strong>control flow</strong> —
+the subject of Notebook 13. Here, treat the skeleton above as boilerplate to copy
+and fill in; you will understand its mechanics fully next notebook. Two curation
+notes: <code class="docutils literal notranslate"><span class="pre">getopts</span></code> handles <strong>short</strong> options only — long ones like <code class="docutils literal notranslate"><span class="pre">--verbose</span></code> need
+more than it offers, and we leave them out of scope.</p>
+</div>
+<p>Here that skeleton is, wired into a small script that shows the first <em>N</em> lines of a
+file, with <code class="docutils literal notranslate"><span class="pre">-v</span></code> relabelling the output:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>scratch<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./show.sh<span class="w"> </span>-v<span class="w"> </span>-n<span class="w"> </span><span class="m">2</span><span class="w"> </span>notes.txt<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[verbose] first 2 lines of notes.txt:
+line one
+line two
+</pre></div>
+</div>
+</div>
+</div>
+<p>Both flags took effect: <code class="docutils literal notranslate"><span class="pre">-v</span></code> switched the label to <code class="docutils literal notranslate"><span class="pre">verbose</span></code>, and <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">2</span></code> showed two
+lines instead of the default three.</p>
+</section>
+<section id="e-functions-naming-a-piece-of-work">
+<h2>E. Functions: naming a piece of work<a class="headerlink" href="#e-functions-naming-a-piece-of-work" title="Link to this heading">#</a></h2>
+<p>When a script repeats a step — or just grows long enough to need sections — you give
+that piece of work a name. A <strong>function</strong> is a mini-script inside your script, with
+its <strong>own</strong> <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, and its own <code class="docutils literal notranslate"><span class="pre">local</span></code> variables:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Functions</span> — <span class="bp-card-job">name a reusable piece of work; it gets its own arguments.</span>
+  <table>
+    <tr><td>name() { …; }</td><td>define a function</td></tr>
+    <tr><td>name arg1 arg2</td><td>call it — inside, <code>$1</code> <code>$2</code> are <b>its</b> arguments</td></tr>
+    <tr><td>local v=…</td><td>a variable local to the function, not leaking out</td></tr>
+    <tr><td>return N</td><td>set the function's <b>exit code</b> (0–255) — not a value</td></tr>
+    <tr><td>echo … → "$(name)"</td><td>to hand back <b>data</b>, echo it and capture with <code>$( )</code></td></tr>
+  </table>
+</div>
+<p>The one thing that trips newcomers: a function’s <code class="docutils literal notranslate"><span class="pre">return</span></code> is an <strong>exit code</strong>, not a
+return value. <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">0</span></code> means “success,” not “the answer is zero”:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>is_even<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="nb">local</span><span class="w"> </span><span class="nv">n</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">$((</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="k">))</span><span class="p">;</span><span class="w"> </span><span class="o">}</span>
+is_even<span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;exit code from is_even 4: </span><span class="nv">$?</span><span class="s2">  (0 = success = yes, even)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>exit code from is_even 4: 0  (0 = success = yes, even)
+</pre></div>
+</div>
+</div>
+</div>
+<p>So to hand <strong>data</strong> back from a function, you <code class="docutils literal notranslate"><span class="pre">echo</span></code> it and <strong>capture</strong> it with
+<code class="docutils literal notranslate"><span class="pre">$(…)</span></code> at the call site — exactly the command-substitution idea from Notebook 10.
+Here is a function that averages a log’s energies (the <code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code> from Notebooks 6
+and 8) and returns the number:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>energy_mean<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="nb">local</span><span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="w">  </span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ s += $1; n++ } END { printf &quot;%.4f\n&quot;, s/n }&#39;</span>
+<span class="o">}</span>
+<span class="nv">m</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>energy_mean<span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;captured mean = </span><span class="nv">$m</span><span class="s2"> eV&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>captured mean = -143.4444 eV
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">local</span> <span class="pre">file</span></code> stays inside the function; the result comes back through <code class="docutils literal notranslate"><span class="pre">echo</span></code> +
+<code class="docutils literal notranslate"><span class="pre">$(…)</span></code>. That is the pattern for every “compute something and give it back.”</p>
+</section>
+<section id="f-printf-clean-formatted-output">
+<h2>F. <code class="docutils literal notranslate"><span class="pre">printf</span></code>: clean, formatted output<a class="headerlink" href="#f-printf-clean-formatted-output" title="Link to this heading">#</a></h2>
+<p>Scripts report results, and for that <code class="docutils literal notranslate"><span class="pre">printf</span></code> beats <code class="docutils literal notranslate"><span class="pre">echo</span></code>. It takes a <strong>format
+string</strong> with placeholders, then the values to drop in — so columns line up and
+numbers carry the precision you choose.</p>
+<div class="bp-card" id="cmd-printf"><span class="bp-card-cmd">printf</span> &mdash; <span class="bp-card-job">print formatted output from a template — the dependable, portable way a script reports its results.</span><table><tr><td>%s</td><td>insert a string argument as-is (e.g. a name or a path)</td></tr><tr><td>%d  /  %.3f</td><td>an integer / a float to 3 decimals — <code>%.Nf</code> sets the precision, <code>%-8s</code> / <code>%8.3f</code> set a field width</td></tr><tr><td>\n  /  \t</td><td>a newline / a tab in the template — printf adds NO trailing newline of its own (unlike echo), so you write <code>\n</code> yourself</td></tr></table><div class="bp-card-more">more: <code>help printf</code> (bash has its own builtin) · <code>man printf</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the format string is REUSED for any leftover arguments — <code>printf &#x27;%s\n&#x27; a b c</code> prints three lines, not one; surprising until you expect it, then handy. Prefer <code>printf</code> over <code>echo</code> in scripts: no <code>-e</code>/<code>-n</code> portability ambiguity</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;%-8s %8.3f eV\n&#39;</span><span class="w"> </span><span class="s2">&quot;lj38&quot;</span><span class="w"> </span><span class="m">3</span>.14159
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38        3.142 eV
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">%-8s</span></code> is a string left-justified in an 8-wide field; <code class="docutils literal notranslate"><span class="pre">%8.3f</span></code> is a float right-
+justified in 8 columns, three decimals; <code class="docutils literal notranslate"><span class="pre">\n</span></code> is the newline you add yourself. The
+one behaviour that surprises everyone: the format string is <strong>reused</strong> for any
+extra arguments, which makes printing a list a one-liner:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;%s\n&#39;</span><span class="w"> </span>alpha<span class="w"> </span>beta<span class="w"> </span>gamma
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha
+beta
+gamma
+</pre></div>
+</div>
+</div>
+</div>
+<p>Three arguments, one <code class="docutils literal notranslate"><span class="pre">%s\n</span></code> template, three lines. (This is <em>why</em> <code class="docutils literal notranslate"><span class="pre">printf</span></code> is the
+scripting choice over <code class="docutils literal notranslate"><span class="pre">echo</span></code>: no <code class="docutils literal notranslate"><span class="pre">-e</span></code>/<code class="docutils literal notranslate"><span class="pre">-n</span></code> portability guesswork — the format string
+says exactly what you get.)</p>
+</section>
+<section id="g-heredocs-generating-multi-line-text-and-files">
+<h2>G. Heredocs: generating multi-line text and files<a class="headerlink" href="#g-heredocs-generating-multi-line-text-and-files" title="Link to this heading">#</a></h2>
+<p>Sometimes a script needs to emit a whole block — a config file, a report, a
+submission script. A <strong>here-document</strong> feeds an inline block to a command, and is
+the cleanest way to write a multi-line file:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Heredocs &amp; here-strings</span> — <span class="bp-card-job">feed an inline block (or one line) to a command's input.</span>
+  <table>
+    <tr><td>cmd &lt;&lt;EOF … EOF</td><td>feed the block to <i>cmd</i>; <code>$vars</code> and <code>$(…)</code> <b>are</b> expanded</td></tr>
+    <tr><td>cmd &lt;&lt;'EOF' … EOF</td><td>quoted delimiter: the block is <b>literal</b> — no expansion</td></tr>
+    <tr><td>cmd &lt;&lt;-EOF … EOF</td><td>the <code>-</code> strips leading <b>tabs</b>, so you can indent the block</td></tr>
+    <tr><td>cmd &lt;&lt;&lt; "text"</td><td>here-<i>string</i>: feed a single line as input</td></tr>
+  </table>
+</div>
+<p>With a plain <code class="docutils literal notranslate"><span class="pre">EOF</span></code>, the block behaves like a double-quoted string — variables and
+command substitutions expand:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">proj</span><span class="o">=</span><span class="s2">&quot;lj38&quot;</span><span class="p">;</span><span class="w"> </span>cat<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">project: $proj</span>
+<span class="s">built:   $(date +%F)</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>project: lj38
+built:   2026-06-10
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Quote</strong> the delimiter — <code class="docutils literal notranslate"><span class="pre">&lt;&lt;'EOF'</span></code> — and the block is taken literally, expanding
+nothing (just like single quotes, Notebook 10) — what you want when the text itself
+contains <code class="docutils literal notranslate"><span class="pre">$</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">literal: $proj and $(date +%F) are NOT expanded here</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>literal: $proj and $(date +%F) are NOT expanded here
+</pre></div>
+</div>
+</div>
+</div>
+<p>The “killer app” is writing a file: redirect the heredoc and you have generated a
+config in place. This is exactly how you will produce input decks and (Notebook 16)
+cluster submission scripts:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">proj</span><span class="o">=</span><span class="s2">&quot;lj38&quot;</span><span class="p">;</span><span class="w"> </span>cat<span class="w"> </span>&gt;<span class="w"> </span>scratch/run.inp<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s">&amp;GLOBAL</span>
+<span class="s">  PROJECT $proj</span>
+<span class="s">  RUN_TYPE ENERGY</span>
+<span class="s">&amp;END</span>
+<span class="s">EOF</span>
+cat<span class="w"> </span>scratch/run.inp
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&amp;GLOBAL
+  PROJECT lj38
+  RUN_TYPE ENERGY
+&amp;END
+</pre></div>
+</div>
+</div>
+</div>
+<p>And the one-line cousin, the <strong>here-string</strong> <code class="docutils literal notranslate"><span class="pre">&lt;&lt;&lt;</span></code>, feeds a single string to a
+command’s input — handy for piping a variable in without an <code class="docutils literal notranslate"><span class="pre">echo</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wc<span class="w"> </span>-w<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="s2">&quot;one two three four&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="h-robustness-failing-early-and-loudly">
+<h2>H. Robustness: failing early and loudly<a class="headerlink" href="#h-robustness-failing-early-and-loudly" title="Link to this heading">#</a></h2>
+<p>Now we can open up the header we have used all along. <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code> is three
+switches that turn silent, limping failure into an immediate, visible stop:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">set — the safety switches</span> — <span class="bp-card-job">put <code>set -euo pipefail</code> at the top of every script.</span>
+  <table>
+    <tr><td>set -e</td><td>exit immediately if any command fails</td></tr>
+    <tr><td>set -u</td><td>treat use of an <b>unset</b> variable as an error (pair with <code>"${v:-default}"</code>)</td></tr>
+    <tr><td>set -o pipefail</td><td>a pipeline fails if <b>any</b> stage fails, not only the last</td></tr>
+    <tr><td>set -euo pipefail</td><td>the standard one-line header — all three at once</td></tr>
+    <tr><td>bash -x script&nbsp;&nbsp;/&nbsp;&nbsp;set -x</td><td>trace each command as it runs (debugging)</td></tr>
+  </table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-u</span></code> is the one with a direct line back to Notebook 10: a typo’d or never-set
+variable is no longer silently empty — it stops the script. Watch a script die the
+instant it reaches an unset variable (the <code class="docutils literal notranslate"><span class="pre">||</span> <span class="pre">echo</span></code> is only so this page keeps
+running):</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>scratch<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./strict.sh<span class="o">)</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;↳ set -u stopped the script: &#39;label&#39; was never set (note &#39;finishing&#39; never printed)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>starting
+./strict.sh: line 4: label: unbound variable
+↳ set -u stopped the script: &#39;label&#39; was never set (note &#39;finishing&#39; never printed)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It printed <code class="docutils literal notranslate"><span class="pre">starting</span></code>, hit the unset <code class="docutils literal notranslate"><span class="pre">label</span></code>, and <strong>stopped</strong> — it never reached
+<code class="docutils literal notranslate"><span class="pre">finishing</span></code>. That is the whole point: a broken run ends where it broke, loudly,
+instead of producing a wrong answer. The fix is the Notebook-10 default value:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>scratch<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./strict-ok.sh<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>starting
+label is: default
+finishing
+</pre></div>
+</div>
+</div>
+</div>
+<p>And when a script misbehaves and you want to <em>see</em> what it is doing, <strong><code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">-x</span></code></strong>
+traces every line (each <code class="docutils literal notranslate"><span class="pre">+</span></code> is a command as the shell runs it):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>-x<span class="w"> </span>scratch/strict-ok.sh<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">7</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+ set -euo pipefail
++ echo starting
+starting
++ echo &#39;label is: default&#39;
+label is: default
++ echo finishing
+finishing
+</pre></div>
+</div>
+</div>
+</div>
+<p>The principle behind the whole header: <strong>fail early and loudly.</strong> A script that
+stops at the first sign of trouble is far kinder than one that quietly writes a
+corrupt file you discover three weeks later.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>One script grows across this set, from a fixed greeting to a real analysis tool.
+Everything is created and run in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; <code class="docutils literal notranslate"><span class="pre">data/</span></code> stays read-only. (On
+this page the scripts are written with here-documents so they are reproducible; in
+your own terminal you would type them into Vim from Notebook 9 — the result is the
+same file.)</p>
+<section id="warm-up-1-worked-a-first-script-with-variables">
+<h3>Warm-up 1 (worked) — A first script with variables<a class="headerlink" href="#warm-up-1-worked-a-first-script-with-variables" title="Link to this heading">#</a></h3>
+<p>Under the safe header, assign a couple of variables and use them, then run with
+<code class="docutils literal notranslate"><span class="pre">./</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system: lj38 (binding-energy run)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the script runs under ./ and prints the variables it was given
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-act-on-an-argument">
+<h3>Warm-up 2 (your turn) — Act on an argument<a class="headerlink" href="#warm-up-2-your-turn-act-on-an-argument" title="Link to this heading">#</a></h3>
+<p>Write a script that takes a filename as <code class="docutils literal notranslate"><span class="pre">$1</span></code>, and reports both how many arguments it
+got (<code class="docutils literal notranslate"><span class="pre">$#</span></code>) and the name it was handed (<code class="docutils literal notranslate"><span class="pre">&quot;$1&quot;</span></code>).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>you passed 1 argument(s)
+the file is: sample.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the script acted on its argument: one passed, and its name reported
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-add-a-flag-with-getopts">
+<h3>Applied 1 (your turn) — Add a flag with <code class="docutils literal notranslate"><span class="pre">getopts</span></code><a class="headerlink" href="#applied-1-your-turn-add-a-flag-with-getopts" title="Link to this heading">#</a></h3>
+<p>Extend a script with the <code class="docutils literal notranslate"><span class="pre">getopts</span></code> skeleton: a <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag that changes a label, and a
+<code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">N</span></code> flag that sets how many lines of the file to show. Run it on a scratch file
+with <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">-n</span> <span class="pre">2</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[verbose] first 2 lines of notes.txt:
+line one
+line two
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> both flags took effect: -v relabelled the output and -n 2 showed two lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-factor-a-function">
+<h3>Applied 2 (your turn) — Factor a function<a class="headerlink" href="#applied-2-your-turn-factor-a-function" title="Link to this heading">#</a></h3>
+<p>Move the energy-averaging step into a <strong>function</strong> with a <code class="docutils literal notranslate"><span class="pre">local</span></code> variable, and have
+it return the number via <code class="docutils literal notranslate"><span class="pre">echo</span></code> + <code class="docutils literal notranslate"><span class="pre">$(…)</span></code>. The script takes the log as <code class="docutils literal notranslate"><span class="pre">$1</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean energy: -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the function computed the mean and handed it back through echo + $( )
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-printf-and-a-heredoc">
+<h3>Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">printf</span></code> and a heredoc<a class="headerlink" href="#applied-3-worked-printf-and-a-heredoc" title="Link to this heading">#</a></h3>
+<p>Format a result line with <code class="docutils literal notranslate"><span class="pre">printf</span></code>, then generate a small summary file with a
+heredoc (note the inner delimiter is unquoted, so the variables expand into the
+file).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38     mean = -143.4444 eV
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/summary.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system: lj38
+mean energy: -143.4444 eV
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> printf formatted the line and the heredoc wrote the summary file with the values expanded
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-a-complete-analysis-tool">
+<h3>Composite — putting it together (a complete analysis tool)<a class="headerlink" href="#composite-putting-it-together-a-complete-analysis-tool" title="Link to this heading">#</a></h3>
+<p>The capstone, and the payoff of all of Part III. Write <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> that takes a
+trajectory log as <code class="docutils literal notranslate"><span class="pre">$1</span></code> and an optional <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag; uses a <strong>function</strong> to extract and
+average its energies (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>); prints a <code class="docutils literal notranslate"><span class="pre">printf</span></code>-formatted result; writes a
+heredoc <strong>summary file</strong>; and runs under the <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code> header — invoked
+with <code class="docutils literal notranslate"><span class="pre">./</span></code>. It composes Notebooks 9–11 (write, quote, run) with 6 and 8 (extract) and
+everything in this notebook. It still processes <strong>one</strong> file — looping over many is
+the next notebook.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>verbose result mean energy = -143.4444 eV
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/summary.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>file: run.log
+mean energy (eV): -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> analyze.sh ran end to end: flag, function, printf result, and a written summary file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-make-it-fail-loudly">
+<h3>Optional stretch (your turn) — Make it fail loudly<a class="headerlink" href="#optional-stretch-your-turn-make-it-fail-loudly" title="Link to this heading">#</a></h3>
+<p>Feel the safety net. Write a script that references an <strong>unset</strong> variable through a
+<code class="docutils literal notranslate"><span class="pre">&quot;${var:-default}&quot;</span></code>, so it survives <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-u</span></code>; then trace a run with <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">-x</span></code> to
+watch each step.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+ set -euo pipefail
++ echo &#39;temperature: 300 K&#39;
+temperature: 300 K
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the default value filled in for the unset variable, so the script survived set -u
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>Your script now takes inputs, names its data, factors work into functions, prints
+clean output, generates files, and fails safely — a real, reusable tool. But it
+still does one thing, once. Next (Notebook 13): <strong>control flow</strong> — <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">case</span></code>, exit
+codes and <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>/<code class="docutils literal notranslate"><span class="pre">||</span></code>, and loops — so a script can <strong>decide</strong> and <strong>repeat</strong>. That is
+what turns <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> from a one-file tool into one that sweeps an entire directory
+of trajectories in a single run.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-printf"><code class="bp-cmd-name">printf</code></a> &mdash; print formatted output from a template — the dependable, portable way a script reports its results.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to write and run these scripts yourself — nothing to install. The
+    published notebooks ship <b>without worked solutions</b>; if you would like
+    the reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/03-scripting"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="11-permissions-and-execution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">11 Permissions and execution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-anatomy-a-script-is-commands-in-a-file-with-a-safe-header">A. Anatomy: a script is commands in a file, with a safe header</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-variables-naming-your-data">B. Variables: naming your data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-positional-parameters-acting-on-what-you-pass">C. Positional parameters: acting on what you pass</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-flags-via-getopts-options-the-standard-way">D. Flags via <code class="docutils literal notranslate"><span class="pre">getopts</span></code>: options, the standard way</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-functions-naming-a-piece-of-work">E. Functions: naming a piece of work</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-printf-clean-formatted-output">F. <code class="docutils literal notranslate"><span class="pre">printf</span></code>: clean, formatted output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g-heredocs-generating-multi-line-text-and-files">G. Heredocs: generating multi-line text and files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h-robustness-failing-early-and-loudly">H. Robustness: failing early and loudly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-a-first-script-with-variables">Warm-up 1 (worked) — A first script with variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-act-on-an-argument">Warm-up 2 (your turn) — Act on an argument</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-add-a-flag-with-getopts">Applied 1 (your turn) — Add a flag with <code class="docutils literal notranslate"><span class="pre">getopts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-factor-a-function">Applied 2 (your turn) — Factor a function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-printf-and-a-heredoc">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">printf</span></code> and a heredoc</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-a-complete-analysis-tool">Composite — putting it together (a complete analysis tool)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-make-it-fail-loudly">Optional stretch (your turn) — Make it fail loudly</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -65,7 +65,7 @@
     <script src="../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="11 Permissions and execution" href="../notebooks/03-scripting/11-permissions-and-execution.html" />
+    <link rel="prev" title="12 Writing scripts" href="../notebooks/03-scripting/12-writing-scripts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -180,6 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -734,7 +735,17 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-nano"><span class="std std-ref">9 Editing in the terminal: Vim</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html#cmd-type"><span class="std std-ref">type</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html#cmd-printf"><span class="std std-ref">printf</span></a></p></td>
+<td><p>print formatted output from a template — the dependable, portable way a script reports its results.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">%s</span></code>  insert a string argument as-is (e.g. a name or a path)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">%d</span>&#160; <span class="pre">/</span>&#160; <span class="pre">%.3f</span></code>  an integer / a float to 3 decimals — `%.Nf` sets the precision, `%-8s` / `%8.3f` set a field width</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">\n</span>&#160; <span class="pre">/</span>&#160; <span class="pre">\t</span></code>  a newline / a tab in the template — printf adds NO trailing newline of its own (unlike echo), so you write `\n` yourself</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html#cmd-printf"><span class="std std-ref">12 Writing scripts</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html#cmd-type"><span class="std std-ref">type</span></a></p></td>
 <td><p>tell you what a name actually runs — a shell builtin, a function, an alias, or the path to a program — by searching exactly as the shell would.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span></code>  show ALL matches, not just the first one the shell would use</div>
@@ -743,7 +754,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html#cmd-type"><span class="std std-ref">11 Permissions and execution</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-vim"><span class="std std-ref">vim</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/03-scripting/09-editing-in-the-terminal.html#cmd-vim"><span class="std std-ref">vim</span></a></p></td>
 <td><p>open the Vim editor — the modal editor that is on every cluster, and the one git, crontab, and friends drop you into whether you asked or not.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">&lt;file&gt;</span></code>  open (or create) a file for editing</div>
@@ -789,12 +800,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/03-scripting/11-permissions-and-execution.html"
+       href="../notebooks/03-scripting/12-writing-scripts.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">11 Permissions and execution</p>
+        <p class="prev-next-title">12 Writing scripts</p>
       </div>
     </a>
 </div>
