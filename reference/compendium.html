@@ -65,7 +65,7 @@
     <script src="../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="12 Writing scripts" href="../notebooks/03-scripting/12-writing-scripts.html" />
+    <link rel="prev" title="13 Control flow" href="../notebooks/03-scripting/13-control-flow.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -181,6 +181,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html">13 Control flow</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -745,6 +746,26 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html#cmd-printf"><span class="std std-ref">12 Writing scripts</span></a></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html#cmd-seq"><span class="std std-ref">seq</span></a></p></td>
+<td><p>print a sequence of numbers — for counting, and for driving loops and sweeps.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">N</span></code>  print 1 up to N (`seq 5` → 1 2 3 4 5)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FIRST</span> <span class="pre">LAST</span></code>  count from FIRST to LAST (`seq 2 6` → 2 3 4 5 6)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FIRST</span> <span class="pre">STEP</span> <span class="pre">LAST</span></code>  count in steps of STEP (`seq 0 2 10` → the even numbers)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-w</span></code>  equal width: zero-pad so the numbers line up (`seq -w 8 10` → 08 09 10)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html#cmd-seq"><span class="std std-ref">13 Control flow</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html#cmd-time"><span class="std std-ref">time</span></a></p></td>
+<td><p>measure how long a command takes — real (wall-clock), user, and system time — by prefixing it.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">CMD</span></code>  run CMD, then report its timing — `real` is the wall-clock time you actually waited for</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">{</span> <span class="pre">…;</span> <span class="pre">}</span>&#160; <span class="pre">/</span>&#160; <span class="pre">time</span> <span class="pre">pipe</span> <span class="pre">|</span> <span class="pre">line</span></code>  as a shell keyword it can also time a whole pipeline, group, or loop, not just one program</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html#cmd-time"><span class="std std-ref">13 Control flow</span></a></p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html#cmd-type"><span class="std std-ref">type</span></a></p></td>
 <td><p>tell you what a name actually runs — a shell builtin, a function, an alias, or the path to a program — by searching exactly as the shell would.</p></td>
 <td><div class="line-block">
@@ -800,12 +821,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/03-scripting/12-writing-scripts.html"
+       href="../notebooks/03-scripting/13-control-flow.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">12 Writing scripts</p>
+        <p class="prev-next-title">13 Control flow</p>
       </div>
     </a>
 </div>
