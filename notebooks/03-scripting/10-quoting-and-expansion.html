@@ -1,0 +1,1014 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>10 Quoting and expansion &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/03-scripting/10-quoting-and-expansion';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="9 Editing in the terminal: Vim" href="09-editing-in-the-terminal.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10 Quoting and expansion</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/03-scripting/10-quoting-and-expansion.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/03-scripting/10-quoting-and-expansion.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>10 Quoting and expansion</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-a-bug-to-start">A. A bug, to start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-the-model-the-shell-rewrites-your-line">B. The model: the shell rewrites your line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-quoting-the-control">C. Quoting — the control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-the-one-habit-and-the-traps">D. The one habit, and the traps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-the-workhorse-forms">E. The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-the-three-quote-types">Warm-up 1 (worked) — The three quote types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-command-substitution">Warm-up 2 (your turn) — Command substitution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-the-word-splitting-bug-then-the-fix">Applied 1 (your turn) — The word-splitting bug, then the fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-the-workhorse-forms">Applied 2 (your turn) — The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-arithmetic-and-its-limit">Applied 3 (worked) — Arithmetic and its limit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-build-commands-safely">Composite — putting it together (build commands safely)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-an-expansion-order-puzzle">Optional stretch (your turn) — An expansion-order puzzle</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="quoting-and-expansion">
+<h1>10 Quoting and expansion<a class="headerlink" href="#quoting-and-expansion" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part III — From commands to scripts</span>
+    <span class="bp-meta">Notebook&nbsp;10</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    How the shell rewrites your command line before it runs — and how quoting
+    lets you control that rewriting. The most common source of subtle bugs.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>You have met this idea three times already and never named it. In Notebook 5 the
+shell expanded <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> before <code class="docutils literal notranslate"><span class="pre">ls</span></code> ran. In Notebooks 6 and 8 you single-quoted
+your <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs so the shell would leave the <code class="docutils literal notranslate"><span class="pre">$1</span></code> alone. Both are
+the same fact: <strong>before any command runs, the shell rewrites your command line.</strong></p>
+<p>This notebook names that fact, lays out the full rewriting, and — most usefully —
+shows how <strong>quoting</strong> lets you control it. Getting this wrong is the single most
+common subtle bug in the shell, so it earns a whole notebook here at the start of
+Part III, right before you begin writing scripts of your own. (As ever: this is all
+filenames and values, <strong>no physics.</strong>)</p>
+</section>
+<section id="a-a-bug-to-start">
+<h2>A. A bug, to start<a class="headerlink" href="#a-a-bug-to-start" title="Link to this heading">#</a></h2>
+<p>Make a file whose name contains a space, and put its name in a variable:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">f</span><span class="o">=</span><span class="s2">&quot;scratch/my run.xyz&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now look closely. We pass <code class="docutils literal notranslate"><span class="pre">$f</span></code> — unquoted — to a command, and print each argument
+the command actually receives:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;argument: [%s]\n&#39;</span><span class="w"> </span><span class="nv">$f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>argument: [scratch/my]
+argument: [run.xyz]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The command received <strong>two</strong> arguments, not one. The space in the filename tore
+<code class="docutils literal notranslate"><span class="pre">$f</span></code> into <code class="docutils literal notranslate"><span class="pre">scratch/my</span></code> and <code class="docutils literal notranslate"><span class="pre">run.xyz</span></code>. Try to use it and it breaks — <code class="docutils literal notranslate"><span class="pre">cat</span></code> goes
+looking for two files that do not exist:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span><span class="nv">$f</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;(failed — the unquoted variable split into two names)&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(failed — the unquoted variable split into two names)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hold that bug in mind. By the end of the notebook it will be a one-character fix
+you never forget.</p>
+</section>
+<section id="b-the-model-the-shell-rewrites-your-line">
+<h2>B. The model: the shell rewrites your line<a class="headerlink" href="#b-the-model-the-shell-rewrites-your-line" title="Link to this heading">#</a></h2>
+<p>Here is what really happens. When you press Enter, the shell does <strong>not</strong> hand your
+line to the command as you typed it. It first rewrites the line through a fixed
+sequence of <strong>expansions</strong>, each one substituting something in, and only then runs
+the command on the <em>result</em>. You have already met most of them:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">The expansions, in order</span> — <span class="bp-card-job">the shell applies these to your line before the command runs; the command sees only the result.</span>
+  <table>
+    <tr><td>{a,b}  {1..9}</td><td>brace expansion — generate strings (Notebook 5)</td></tr>
+    <tr><td>~</td><td>tilde — your home directory (Notebook 2)</td></tr>
+    <tr><td>$var  ${var}</td><td>parameter expansion — the value of a variable</td></tr>
+    <tr><td>$(cmd)</td><td>command substitution — the output of a command</td></tr>
+    <tr><td>$((expr))</td><td>arithmetic expansion — integer arithmetic</td></tr>
+    <tr><td><b>word splitting</b></td><td>split the <i>unquoted</i> results on whitespace — <b>the culprit in §A</b></td></tr>
+    <tr><td>*  ?  [ ]</td><td>pathname (glob) expansion — match filenames (Notebook 5)</td></tr>
+  </table>
+</div>
+<p>The whole notebook hangs off the bold row. Word splitting is what chopped <code class="docutils literal notranslate"><span class="pre">$f</span></code> in
+two — it splits <em>unquoted</em> expansion results on spaces. Which means the fix is to
+stop the result from being unquoted. That is what quoting is for.</p>
+</section>
+<section id="c-quoting-the-control">
+<h2>C. Quoting — the control<a class="headerlink" href="#c-quoting-the-control" title="Link to this heading">#</a></h2>
+<p>Three tools, three behaviours:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Quoting</span> — <span class="bp-card-job">shell syntax (not a command) that controls which expansions happen.</span>
+  <table>
+    <tr><td>'single'</td><td>literal: <b>no expansion at all</b> — the text is taken exactly as written</td></tr>
+    <tr><td>"double"</td><td>allow <code>$</code>-expansions, but <b>suppress word splitting and globbing</b></td></tr>
+    <tr><td>\\  (backslash)</td><td>escape: protect the single next character</td></tr>
+  </table>
+</div>
+<p>Single quotes turn <em>everything</em> off — the shell does not touch what is inside:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;$HOME and *.xyz are left exactly as typed&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$HOME and *.xyz are left exactly as typed
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is precisely <strong>why you single-quote <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs</strong> (Notebooks 6
+and 8): a <code class="docutils literal notranslate"><span class="pre">$1</span></code> inside single quotes reaches <code class="docutils literal notranslate"><span class="pre">awk</span></code> untouched. Double quotes are the
+middle ground — variables <em>do</em> expand, but the result is kept as one piece:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;your home is </span><span class="nv">$HOME</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>your home is /home/runner
+</pre></div>
+</div>
+</div>
+</div>
+<p>And a backslash protects just the next character — here, a literal dollar sign:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;a price tag: \$5&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a price tag: $5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="d-the-one-habit-and-the-traps">
+<h2>D. The one habit, and the traps<a class="headerlink" href="#d-the-one-habit-and-the-traps" title="Link to this heading">#</a></h2>
+<p>Everything above points at a single rule, and it is the highest-value habit in all
+of shell scripting:</p>
+<div class="danger admonition">
+<p class="admonition-title">⚠ Always double-quote your variable expansions</p>
+<p>Write <code class="docutils literal notranslate"><span class="pre">&quot;$f&quot;</span></code>, not <code class="docutils literal notranslate"><span class="pre">$f</span></code>. An unquoted variable that happens to contain a <strong>space</strong>
+becomes two arguments (the §A bug); one that contains a <strong><code class="docutils literal notranslate"><span class="pre">*</span></code></strong> gets glob-expanded
+against the current directory, matching who-knows-what. Quietly, with no error,
+your command operates on the wrong thing — and when that command is <code class="docutils literal notranslate"><span class="pre">rm</span></code>, the
+result is the kind of story people tell years later. The fix costs two characters.
+Quote every <code class="docutils literal notranslate"><span class="pre">&quot;$var&quot;</span></code> and every <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code>, every time, and a whole category of bugs
+simply never happens.</p>
+</div>
+<p>Watch the fix retire the §A bug — the <em>same</em> command, the <em>only</em> difference being
+the quotes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;argument: [%s]\n&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$f</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>argument: [scratch/my run.xyz]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$f</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>frame data
+</pre></div>
+</div>
+</div>
+</div>
+<p>One argument, the right file. A few more traps worth knowing while we are here:</p>
+<ul class="simple">
+<li><p><strong>Empty or unset variables</strong> vanish when unquoted, which can turn <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">$x</span></code>
+into just <code class="docutils literal notranslate"><span class="pre">command</span></code>. A default value guards against it: <code class="docutils literal notranslate"><span class="pre">${x:-fallback}</span></code> (more in
+§E).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code></strong> is the right way to forward “all the arguments, each kept whole”;
+unquoted <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code> and <code class="docutils literal notranslate"><span class="pre">$*</span></code> both word-split and will mangle any argument with a space.
+(You will use <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code> constantly once you write scripts in Notebook 12.)</p></li>
+<li><p><strong>Backticks</strong> <code class="docutils literal notranslate"><span class="pre">`cmd`</span></code> are the old form of command substitution. Use <strong><code class="docutils literal notranslate"><span class="pre">$(cmd)</span></code></strong>
+instead — it nests cleanly and reads better.</p></li>
+</ul>
+</section>
+<section id="e-the-workhorse-forms">
+<h2>E. The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms<a class="headerlink" href="#e-the-workhorse-forms" title="Link to this heading">#</a></h2>
+<p>Parameter expansion does more than fetch a value. A curated handful of <code class="docutils literal notranslate"><span class="pre">${…}</span></code> forms
+covers almost everything you will reach for — most of it about reshaping filenames,
+which is exactly what scripts spend their time doing.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Parameter expansion</span> — <span class="bp-card-job">the workhorse <code>${…}</code> forms. Case conversion, substrings, indirection, and arrays are out of scope.</span>
+  <table>
+    <tr><td>${var:-default}</td><td>use <i>default</i> if var is unset or empty</td></tr>
+    <tr><td>${#var}</td><td>the length of var</td></tr>
+    <tr><td>${var%.xyz}</td><td>remove a matching <b>suffix</b> (strip an extension)</td></tr>
+    <tr><td>${var#prefix}</td><td>remove a matching <b>prefix</b></td></tr>
+    <tr><td>${var/old/new}</td><td>substitute the first <i>old</i> with <i>new</i></td></tr>
+    <tr><td>$(cmd)</td><td>command substitution — capture a command's output</td></tr>
+    <tr><td>$((expr))</td><td>arithmetic — <b>integer only</b></td></tr>
+  </table>
+</div>
+<p>Suffix-stripping is the daily one: take an input name, drop its extension, build the
+matching output name. This is most of what a data script does between files:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;lj38-relaxed.xyz&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">name</span><span class="p">%.xyz</span><span class="si">}</span><span class="s2">.dat&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38-relaxed.dat
+</pre></div>
+</div>
+</div>
+</div>
+<p>Command substitution drops a command’s <em>output</em> into your line, and arithmetic does
+integer math:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">count</span><span class="o">=</span><span class="k">$(</span>ls<span class="w"> </span>data<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;data/ holds </span><span class="nv">$count</span><span class="s2"> entries&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/ holds 5 entries
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;17 divided by 5 is </span><span class="k">$((</span><span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="k">))</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>17 divided by 5 is 3
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">3</span></code> — <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> is <strong>integer only</strong>, and it <em>truncates</em> (it does not round).
+The moment you need a real number — a mean, a ratio with decimals — the shell cannot
+help, and you reach back for <code class="docutils literal notranslate"><span class="pre">awk</span></code> (Notebook 8) or <code class="docutils literal notranslate"><span class="pre">bc</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ s += $1; n++ } END { printf &quot;mean = %.4f\n&quot;, s/n }&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean = -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is the honest division of labour: the shell for integers and string-shaping,
+<code class="docutils literal notranslate"><span class="pre">awk</span></code> for the floating-point.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The point of this set is to <em>feel</em> the bugs and fix them. Anything that creates a
+file works in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; the rest is read-only.</p>
+<section id="warm-up-1-worked-the-three-quote-types">
+<h3>Warm-up 1 (worked) — The three quote types<a class="headerlink" href="#warm-up-1-worked-the-three-quote-types" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">echo</span></code> a variable with no quotes, single quotes, and double quotes, and watch
+expansion switch off and on.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hello
+hello from /home/runner
+$greeting stays literal
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> double quotes expanded the variable; single quotes kept it literal
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-command-substitution">
+<h3>Warm-up 2 (your turn) — Command substitution<a class="headerlink" href="#warm-up-2-your-turn-command-substitution" title="Link to this heading">#</a></h3>
+<p>Capture the output of a command into a variable with <code class="docutils literal notranslate"><span class="pre">$(…)</span></code>, then use it in a
+sentence. Count the entries in <code class="docutils literal notranslate"><span class="pre">data/</span></code> and report the number.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/ has 5 entries
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command&#39;s output was captured into the variable
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-the-word-splitting-bug-then-the-fix">
+<h3>Applied 1 (your turn) — The word-splitting bug, then the fix<a class="headerlink" href="#applied-1-your-turn-the-word-splitting-bug-then-the-fix" title="Link to this heading">#</a></h3>
+<p>The centrepiece. In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, make a file whose name has a space. Operate on it
+through an <strong>unquoted</strong> variable and watch it fail; then quote the variable and
+watch it work.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unquoted: failed (split into two names)
+content
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the unquoted form failed and the quoted form succeeded
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-the-workhorse-forms">
+<h3>Applied 2 (your turn) — The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms<a class="headerlink" href="#applied-2-your-turn-the-workhorse-forms" title="Link to this heading">#</a></h3>
+<p>Given a filename, build derived strings: strip the <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> to make a <code class="docutils literal notranslate"><span class="pre">.dat</span></code> output
+name (<code class="docutils literal notranslate"><span class="pre">${f%.xyz}</span></code>), get the name’s length (<code class="docutils literal notranslate"><span class="pre">${#f}</span></code>), and supply a default for an
+unset variable (<code class="docutils literal notranslate"><span class="pre">${u:-none}</span></code>).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38-relaxed.dat
+length is 16
+label is none
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the output name, length, and default were all derived correctly
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-arithmetic-and-its-limit">
+<h3>Applied 3 (worked) — Arithmetic and its limit<a class="headerlink" href="#applied-3-worked-arithmetic-and-its-limit" title="Link to this heading">#</a></h3>
+<p>Integer arithmetic with <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> (note the truncation), then a <em>mean</em> — which needs
+floats — with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>integer: 66
+float mean: -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> integer division truncated to 66, and awk gave the float mean -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-build-commands-safely">
+<h3>Composite — putting it together (build commands safely)<a class="headerlink" href="#composite-putting-it-together-build-commands-safely" title="Link to this heading">#</a></h3>
+<p>Build output filenames from a set of trajectory files — <strong>one with a space in its
+name</strong> — using trimming and properly quoted expansions. (The <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">…</span> <span class="pre">in</span> <span class="pre">…;</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code>
+loop here just means “for each file”; it gets its full introduction in Notebook 12.
+The lesson now is that <em>quoting</em> makes the loop space-safe.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;run 3.dat&#39;  &#39;run 3.xyz&#39;   run_1.dat   run_1.xyz   run_2.dat   run_2.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> a .dat was built for every .xyz, including the one whose name has a space
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-an-expansion-order-puzzle">
+<h3>Optional stretch (your turn) — An expansion-order puzzle<a class="headerlink" href="#optional-stretch-your-turn-an-expansion-order-puzzle" title="Link to this heading">#</a></h3>
+<p>A glob stored in a <em>quoted</em> variable does not expand — because globbing happens to
+the line, not to a quoted value. Confirm it: put <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> in a variable, then echo it
+quoted (stays literal) versus letting it expand. Predict each before running.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*.xyz
+x.xyz y.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> quoted, the pattern stayed literal; unquoted, it expanded to the two files
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You now control how the shell reads what you type — the foundation that keeps a
+script from breaking the first time a filename has a space in it. That foundation
+matters because Part III is about turning your one-liners into <strong>scripts you keep
+and re-run</strong>. The next missing piece is mechanical: what makes a file <em>runnable</em> in
+the first place. Next (Notebook 11): permissions and execution.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">No new commands this time</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Quoting and expansion are shell <b>syntax</b>, not commands, so this notebook
+    adds nothing to the Compendium — its reference is the three tables above. The
+    next command card returns in Notebook 11.
+  </div>
+</div>
+<div class="bp-banner" style="margin-top:18px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/03-scripting"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09-editing-in-the-terminal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-a-bug-to-start">A. A bug, to start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-the-model-the-shell-rewrites-your-line">B. The model: the shell rewrites your line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-quoting-the-control">C. Quoting — the control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-the-one-habit-and-the-traps">D. The one habit, and the traps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-the-workhorse-forms">E. The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-the-three-quote-types">Warm-up 1 (worked) — The three quote types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-command-substitution">Warm-up 2 (your turn) — Command substitution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-the-word-splitting-bug-then-the-fix">Applied 1 (your turn) — The word-splitting bug, then the fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-the-workhorse-forms">Applied 2 (your turn) — The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-arithmetic-and-its-limit">Applied 3 (worked) — Arithmetic and its limit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-build-commands-safely">Composite — putting it together (build commands safely)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-an-expansion-order-puzzle">Optional stretch (your turn) — An expansion-order puzzle</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
