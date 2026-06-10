@@ -65,7 +65,7 @@
     <script src="../_static/home-button.js?v=62b63922"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="13 Control flow" href="../notebooks/03-scripting/13-control-flow.html" />
+    <link rel="prev" title="14 Environment and modules" href="../notebooks/04-cluster/14-environment-and-modules.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -182,6 +182,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/03-scripting/13-control-flow.html">13 Control flow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html">14 Environment and modules</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -788,6 +792,68 @@ each command links back to the notebook where it was introduced.</p>
 </tbody>
 </table>
 </div>
+<p class="rubric">Part IV</p>
+<div class="pst-scrollable-table-container"><table class="bp-compendium table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Job</p></th>
+<th class="head"><p>Workhorse flags</p></th>
+<th class="head"><p>Introduced in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-alias"><span class="std std-ref">alias</span></a></p></td>
+<td><p>give a short name to a longer command — typed shorthand for interactive use.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">alias</span> <span class="pre">ll='ls</span> <span class="pre">-lh'</span></code>  define an alias (keep your favourites in `.bashrc`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">alias</span></code>  list every alias currently defined</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">unalias</span> <span class="pre">NAME</span></code>  remove an alias</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-alias"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-export"><span class="std std-ref">export</span></a></p></td>
+<td><p>promote a shell variable to an ENVIRONMENT variable, so every child process and script inherits it.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">NAME=value</span></code>  set a variable AND mark it for inheritance, in one step</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">NAME</span></code>  mark an already-set variable for inheritance</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-p</span></code>  list every exported variable currently in the environment</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-export"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-module"><span class="std std-ref">module</span></a></p></td>
+<td><p>load and unload software on a cluster — adding a chosen version of a tool to your environment on demand.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code>  list the software (and versions) available to load</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">NAME/VER</span></code>  add a module to your environment (puts it on `PATH`, sets its variables)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">list</span></code>  show what you currently have loaded</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">purge</span></code>  unload everything — back to a clean environment</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">swap</span> <span class="pre">A</span> <span class="pre">B</span>&#160; <span class="pre">/</span>&#160; <span class="pre">module</span> <span class="pre">unload</span> <span class="pre">NAME</span></code>  replace one module with another / drop a single one</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-module"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-printenv"><span class="std std-ref">printenv</span></a></p></td>
+<td><p>print the environment — the exported variables the shell passes down to its children.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">printenv</span></code>  list the whole environment, one `NAME=value` per line</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">printenv</span> <span class="pre">NAME</span></code>  print just one variable’s value (empty, non-zero exit, if it is unset)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-printenv"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">source</span></a></p></td>
+<td><p>run a script in the CURRENT shell (not a child), so the variables, functions, and PATH changes it makes persist.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">FILE</span>&#160; <span class="pre">/</span>&#160; <span class="pre">.</span> <span class="pre">FILE</span></code>  execute FILE’s lines in this shell — `.` is the POSIX spelling of the same thing</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -821,12 +887,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/03-scripting/13-control-flow.html"
+       href="../notebooks/04-cluster/14-environment-and-modules.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">13 Control flow</p>
+        <p class="prev-next-title">14 Environment and modules</p>
       </div>
     </a>
 </div>
