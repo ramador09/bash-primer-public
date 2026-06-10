@@ -173,6 +173,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
 <ul class="nav bd-sidenav">
@@ -581,7 +582,16 @@ each command links back to the notebook where it was introduced.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-cut"><span class="std std-ref">cut</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/08-awk-and-sed.html#cmd-awk"><span class="std std-ref">awk</span></a></p></td>
+<td><p>split each line into fields and act on them — print columns, filter by condition, and compute (sum, mean, min/max). The field-aware, can-do-arithmetic tool cut could not be.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-F</span> <span class="pre">C</span></code>  set the field separator to C (the default is any run of whitespace — which is how it beats cut)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">var=val</span></code>  pass a shell value into the program as an awk variable</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/08-awk-and-sed.html#cmd-awk"><span class="std std-ref">8 awk and sed</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-cut"><span class="std std-ref">cut</span></a></p></td>
 <td><p>pick out columns from each line — by delimited field, or by character position.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">C</span></code>  use C as the field delimiter (default is TAB)</div>
@@ -591,7 +601,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-cut"><span class="std std-ref">7 The stream toolkit</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">find</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">find</span></a></p></td>
 <td><p>search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-name</span> <span class="pre">&quot;PAT&quot;</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-iname</span></code>  match the filename against a quoted glob (`-iname` ignores case)</div>
@@ -604,7 +614,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/05-selecting-files.html#cmd-find"><span class="std std-ref">5 Selecting files: globbing, brace expansion, and find</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">grep</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">grep</span></a></p></td>
 <td><p>print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span></code>  match case-insensitively</div>
@@ -618,6 +628,16 @@ each command links back to the notebook where it was introduced.</p>
 </div>
 </td>
 <td><p><a class="reference internal" href="../notebooks/02-pipelines/06-grep-and-regular-expressions.html#cmd-grep"><span class="std std-ref">6 grep and regular expressions</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/02-pipelines/08-awk-and-sed.html#cmd-sed"><span class="std std-ref">sed</span></a></p></td>
+<td><p>edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-E</span></code>  use Extended regex (the same ERE as `grep -E`); sed otherwise defaults to Basic regex</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  suppress the automatic printing of every line; pair with the `p` command to print only what you choose</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-i.bak</span></code>  edit the file IN PLACE; `-i.bak` keeps a backup of the original first (see the admonition)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/02-pipelines/08-awk-and-sed.html#cmd-sed"><span class="std std-ref">8 awk and sed</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/02-pipelines/07-the-stream-toolkit.html#cmd-sort"><span class="std std-ref">sort</span></a></p></td>
 <td><p>order the lines of its input.</p></td>

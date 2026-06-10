@@ -1,0 +1,985 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8 awk and sed &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/08-awk-and-sed';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9 Editing in the terminal: Vim" href="../03-scripting/09-editing-in-the-terminal.html" />
+    <link rel="prev" title="7 The stream toolkit" href="07-the-stream-toolkit.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02-pipelines/08-awk-and-sed.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/02-pipelines/08-awk-and-sed.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>8 awk and sed</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sed-stream-editing">A. <code class="docutils literal notranslate"><span class="pre">sed</span></code> — stream editing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-awk-fields-and-computation">B. <code class="docutils literal notranslate"><span class="pre">awk</span></code> — fields and computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-sed-substitute-and-select">Warm-up 1 (worked) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> substitute and select</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-sed-delete-by-address">Warm-up 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> delete by address</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-awk-fields-clear-the-wall">Applied 1 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> fields clear the wall</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-awk-patterns">Applied 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-awk-arithmetic">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> arithmetic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-canonical-task">Composite — putting it together (the canonical task)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-safe-in-place-edit">Optional stretch (your turn) — Safe in-place edit</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="awk-and-sed">
+<h1>8 awk and sed<a class="headerlink" href="#awk-and-sed" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part II — Pipelines and text extraction</span>
+    <span class="bp-meta">Notebook&nbsp;8</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The two tools that finish the toolkit: sed edits a stream, and awk is
+    field-aware and can compute — clearing the two walls the last notebook hit.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Notebook 7 ended at two walls. <code class="docutils literal notranslate"><span class="pre">tr</span></code> could only swap characters, not replace
+<em>strings</em>. <code class="docutils literal notranslate"><span class="pre">cut</span></code> could only split on a <em>single</em> character, and could not do
+arithmetic. These two tools clear both walls and finish the extraction toolkit:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sed</span></code></strong> edits a stream — find-and-replace and more — picking up the regular
+expressions from Notebook 6.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">awk</span></code></strong> splits each line into fields and can <strong>compute</strong> on them, which is the
+climax of Part II: doing actual arithmetic on the numbers in real data.</p></li>
+</ul>
+<p>A word of honesty first. <code class="docutils literal notranslate"><span class="pre">sed</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> are each whole programming languages —
+people write hundred-line programs in them. We are not doing that. We take the
+<strong>daily workhorse slice</strong> of each, name the deep parts as out of scope, and stop
+there. That is the right amount for a shell primer, and it is genuinely most of
+what you will ever type. (And, as always: averaging a column of energies is just
+averaging a column of numbers — <strong>no physics required.</strong>)</p>
+</section>
+<section id="a-sed-stream-editing">
+<h2>A. <code class="docutils literal notranslate"><span class="pre">sed</span></code> — stream editing<a class="headerlink" href="#a-sed-stream-editing" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sed</span></code> reads its input line by line, applies an editing command to each, and prints
+the result. The mental model is simple: <strong>it is <code class="docutils literal notranslate"><span class="pre">grep</span></code> that can also change what it
+finds.</strong> Its headline command is substitution, <code class="docutils literal notranslate"><span class="pre">s/old/new/</span></code>.</p>
+<div class="bp-card" id="cmd-sed"><span class="bp-card-cmd">sed</span> &mdash; <span class="bp-card-job">edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</span><table><tr><td>-E</td><td>use Extended regex (the same ERE as <code>grep -E</code>); sed otherwise defaults to Basic regex</td></tr><tr><td>-n</td><td>suppress the automatic printing of every line; pair with the <code>p</code> command to print only what you choose</td></tr><tr><td>-i  /  -i.bak</td><td>edit the file IN PLACE; <code>-i.bak</code> keeps a backup of the original first (see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man sed</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the program (<code>sed &#x27;s/old/new/&#x27;</code>) so the shell does not touch <code>$</code>, <code>&amp;</code>, etc.; and <code>-i</code> rewrites the file with NO undo — keep a <code>.bak</code></div><p>Here it is on a scratch config — replace every <code class="docutils literal notranslate"><span class="pre">300</span></code> with <code class="docutils literal notranslate"><span class="pre">500</span></code>. Note <code class="docutils literal notranslate"><span class="pre">sed</span></code> prints
+to the screen and leaves the file untouched (more on that below):</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span><span class="s1">&#39;s/300/500/g&#39;</span><span class="w"> </span>scratch/run.in
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TEMPERATURE 500
+CUTOFF 500
+MAX_STEPS 1000
+# a trailing comment
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">g</span></code> made it global (every match on each line, not just the first). The regular
+expression is the <strong>same language as Notebook 6</strong> — reach for <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-E</span></code> to get the
+Extended syntax, since <code class="docutils literal notranslate"><span class="pre">sed</span></code>, like <code class="docutils literal notranslate"><span class="pre">grep</span></code>, defaults to the quirkier Basic regex.
+With <code class="docutils literal notranslate"><span class="pre">-E</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in the replacement stands for the whole matched text — handy for
+wrapping or annotating a match:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;s/[0-9]+/&lt;&amp;&gt;/g&#39;</span><span class="w"> </span>scratch/run.in
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TEMPERATURE &lt;300&gt;
+CUTOFF &lt;300&gt;
+MAX_STEPS &lt;1000&gt;
+# a trailing comment
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sed</span></code> can also just <em>select</em>. With <code class="docutils literal notranslate"><span class="pre">-n</span></code> (don’t auto-print) and the <code class="docutils literal notranslate"><span class="pre">p</span></code> command, it
+prints only matching lines — essentially <code class="docutils literal notranslate"><span class="pre">grep</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;/CUTOFF/p&#39;</span><span class="w"> </span>scratch/run.in
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CUTOFF 300
+</pre></div>
+</div>
+</div>
+</div>
+<p>And <code class="docutils literal notranslate"><span class="pre">d</span></code> deletes. Addressed by a regex, <code class="docutils literal notranslate"><span class="pre">/^#/d</span></code> strips comment lines; addressed by
+number, <code class="docutils literal notranslate"><span class="pre">2,4d</span></code> deletes a line range:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span><span class="s1">&#39;/^#/d&#39;</span><span class="w"> </span>scratch/run.in
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TEMPERATURE 300
+CUTOFF 300
+MAX_STEPS 1000
+</pre></div>
+</div>
+</div>
+</div>
+<p>The full <code class="docutils literal notranslate"><span class="pre">sed</span></code> command vocabulary is below. Beyond it lie the hold space,
+branches, and multi-command scripts — real, powerful, and firmly <strong>out of scope</strong>
+for this course. When you need them, you will know, and you will reach for a
+reference.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">sed commands</span> — <span class="bp-card-job">the workhorse slice (with <code>-E</code> for ERE). The deep parts — hold space, branching — are out of scope.</span>
+  <table>
+    <tr><td>s/old/new/</td><td>substitute the first match on each line</td></tr>
+    <tr><td>s/old/new/g</td><td>substitute every match on the line</td></tr>
+    <tr><td>s/old/new/2</td><td>substitute only the 2nd match; add <code>I</code> for case-insensitive</td></tr>
+    <tr><td>&amp;</td><td>in the replacement, the whole matched text</td></tr>
+    <tr><td>-n  /pat/p</td><td>print only lines matching pat (like grep)</td></tr>
+    <tr><td>/pat/d   2,5d   $d</td><td>delete: lines matching pat / lines 2–5 / the last line</td></tr>
+  </table>
+</div>
+<div class="danger admonition">
+<p class="admonition-title">⚠ <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-i</span></code> edits in place — no undo</p>
+<p>Everything above printed to the screen and left the file alone. Add <strong><code class="docutils literal notranslate"><span class="pre">-i</span></code></strong> and
+<code class="docutils literal notranslate"><span class="pre">sed</span></code> rewrites the file <em>in place</em> — and, like <code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, with <strong>no undo</strong>. A
+substitution with a slightly-too-greedy pattern, run with <code class="docutils literal notranslate"><span class="pre">-i</span></code>, has quietly mangled
+many a config. Two habits, the same family as the earlier warnings: dry-run
+<em>without</em> <code class="docutils literal notranslate"><span class="pre">-i</span></code> first and read the output, and when you do commit, use <strong><code class="docutils literal notranslate"><span class="pre">-i.bak</span></code></strong>,
+which saves the original as <code class="docutils literal notranslate"><span class="pre">file.bak</span></code> before editing. Never <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-i</span></code> something you
+have not first seen the result of.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i.bak<span class="w"> </span><span class="s1">&#39;s/300/500/g&#39;</span><span class="w"> </span>scratch/run.in
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run.in	run.in.bak
+</pre></div>
+</div>
+</div>
+</div>
+<p>The edit happened, and <code class="docutils literal notranslate"><span class="pre">run.in.bak</span></code> holds the original — your safety net.</p>
+</section>
+<section id="b-awk-fields-and-computation">
+<h2>B. <code class="docutils literal notranslate"><span class="pre">awk</span></code> — fields and computation<a class="headerlink" href="#b-awk-fields-and-computation" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">awk</span></code> also reads line by line, but it does something <code class="docutils literal notranslate"><span class="pre">sed</span></code> does not: it <strong>splits
+each line into fields</strong>, <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, … up to <code class="docutils literal notranslate"><span class="pre">$NF</span></code> (the last), and lets you act on
+them. Crucially, it splits on <em>any run of whitespace</em> by default — which is exactly
+the wall <code class="docutils literal notranslate"><span class="pre">cut</span></code> hit. Where <code class="docutils literal notranslate"><span class="pre">cut</span> <span class="pre">-d'</span> <span class="pre">'</span></code> miscounts ragged spacing, <code class="docutils literal notranslate"><span class="pre">awk</span></code> just works:</p>
+<div class="bp-card" id="cmd-awk"><span class="bp-card-cmd">awk</span> &mdash; <span class="bp-card-job">split each line into fields and act on them — print columns, filter by condition, and compute (sum, mean, min/max). The field-aware, can-do-arithmetic tool cut could not be.</span><table><tr><td>-F C</td><td>set the field separator to C (the default is any run of whitespace — which is how it beats cut)</td></tr><tr><td>-v var=val</td><td>pass a shell value into the program as an awk variable</td></tr></table><div class="bp-card-more">more: <code>man awk</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the program — <code>$1</code>, <code>$2</code> look exactly like shell positional parameters, and the shell will eat them otherwise (the shell-expands-first thread again)</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-m1<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-142.246533543175843
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">$NF</span></code> pulled the energy — the last field — no matter how many spaces padded the
+line. That single fact retires <code class="docutils literal notranslate"><span class="pre">cut</span></code> for anything real. The structure of an <code class="docutils literal notranslate"><span class="pre">awk</span></code>
+program is <code class="docutils literal notranslate"><span class="pre">pattern</span> <span class="pre">{</span> <span class="pre">action</span> <span class="pre">}</span></code>: for every line matching <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, run <code class="docutils literal notranslate"><span class="pre">action</span></code>.
+Either part is optional. A bare condition filters; a bare action runs on every
+line. <code class="docutils literal notranslate"><span class="pre">NR</span></code> is the current line number, so <code class="docutils literal notranslate"><span class="pre">NR==1</span></code> selects the first line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;Ar 1.5 2.5\nAr 3.5 4.5\nKr 5.5 6.5\n&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$1==&quot;Kr&quot; {print $2, $3}&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.5 6.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the payoff, and the reason <code class="docutils literal notranslate"><span class="pre">awk</span></code> is the climax of Part II: it can <strong>compute</strong>.
+A <code class="docutils literal notranslate"><span class="pre">BEGIN</span></code> block runs before the first line, an <code class="docutils literal notranslate"><span class="pre">END</span></code> block after the last, and in
+between you can accumulate. Summing and averaging a column is the canonical move —
+here, the six energies from the log:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ sum += $1; n++ } END { printf &quot;mean = %.4f over %d values\n&quot;, sum/n, n }&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean = -143.4444 over 6 values
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is real arithmetic on real numbers, in one line — the thing no tool before
+this notebook could do. The workhorse <code class="docutils literal notranslate"><span class="pre">awk</span></code> vocabulary is below; arrays,
+user-defined functions, and <code class="docutils literal notranslate"><span class="pre">getline</span></code> are the <strong>out-of-scope</strong> deep end.</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">awk programs</span> — <span class="bp-card-job">the workhorse slice. Arrays, functions, and getline are out of scope. Always single-quote the program.</span>
+  <table>
+    <tr><td>$0   $1 … $NF</td><td>the whole line; field 1 … the last field (NF = field count)</td></tr>
+    <tr><td>NR</td><td>the current record (line) number</td></tr>
+    <tr><td>pattern { action }</td><td>run action on each line matching pattern (either part optional)</td></tr>
+    <tr><td>/regex/   $3&gt;0   NR==1</td><td>patterns: a regex, or a condition on a field or NR</td></tr>
+    <tr><td>print   printf</td><td>output a line, or formatted output</td></tr>
+    <tr><td>BEGIN{…} END{…}</td><td>run once before the first / after the last line — where totals live</td></tr>
+  </table>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Single-quote your programs</p>
+<p>Always wrap a <code class="docutils literal notranslate"><span class="pre">sed</span></code> or <code class="docutils literal notranslate"><span class="pre">awk</span></code> program in <strong>single</strong> quotes: <code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">'{print</span> <span class="pre">$1}'</span></code>. Those
+<code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code> look exactly like shell positional parameters, and in double quotes the
+shell would replace them before <code class="docutils literal notranslate"><span class="pre">awk</span></code> ever ran — usually with nothing. This is the
+same “the shell goes first” rule from globbing and <code class="docutils literal notranslate"><span class="pre">grep</span></code>, and it is the single most
+common <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code> mistake.</p>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>A full set, climbing to the canonical trajectory task. Every <code class="docutils literal notranslate"><span class="pre">sed</span></code> edit works on a
+fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> copy — <code class="docutils literal notranslate"><span class="pre">data/</span></code> is never touched — and the notebook gives the same
+result every run.</p>
+<section id="warm-up-1-worked-sed-substitute-and-select">
+<h3>Warm-up 1 (worked) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> substitute and select<a class="headerlink" href="#warm-up-1-worked-sed-substitute-and-select" title="Link to this heading">#</a></h3>
+<p>On a scratch copy: globally substitute, then use <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">'/pat/p'</span></code> to print only
+matching lines.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ALPHA 1
+beta 2
+ALPHA 3
+gamma 4
+beta 2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> both alphas were upper-cased and only the beta line was selected
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-sed-delete-by-address">
+<h3>Warm-up 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> delete by address<a class="headerlink" href="#warm-up-2-your-turn-sed-delete-by-address" title="Link to this heading">#</a></h3>
+<p>On a scratch copy, delete the comment lines (those starting with <code class="docutils literal notranslate"><span class="pre">#</span></code>) with
+<code class="docutils literal notranslate"><span class="pre">/^#/d</span></code>, and separately delete the first two lines with <code class="docutils literal notranslate"><span class="pre">1,2d</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>keep one
+keep two
+keep three
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the two comment lines are gone, leaving the three keep lines
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-awk-fields-clear-the-wall">
+<h3>Applied 1 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> fields clear the wall<a class="headerlink" href="#applied-1-your-turn-awk-fields-clear-the-wall" title="Link to this heading">#</a></h3>
+<p>The energy line is padded with ragged spaces, so <code class="docutils literal notranslate"><span class="pre">cut</span> <span class="pre">-d'</span> <span class="pre">'</span></code> can’t reliably grab a
+column. Show that, then pull the energy — the <strong>last</strong> field — with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ENERGY| Total FORCE_EVAL
+-142.246533543175843
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk pulled the energy field where cut could not
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-awk-patterns">
+<h3>Applied 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> patterns<a class="headerlink" href="#applied-2-your-turn-awk-patterns" title="Link to this heading">#</a></h3>
+<p>From the trajectory’s comment lines, print only the frames whose energy (the last
+field) is below <code class="docutils literal notranslate"><span class="pre">-0.06</span></code>. (Pattern: a condition on <code class="docutils literal notranslate"><span class="pre">$NF</span></code>.)</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>91, -0.0601988256
+94, -0.0604130301
+97, -0.0609348186
+100, -0.0610322312
+103, -0.0613274365
+106, -0.0613719574
+109, -0.0615142731
+112, -0.0615676636
+115, -0.0616540453
+118, -0.0617197984
+121, -0.0617592599
+124, -0.0618209437
+127, -0.0618432759
+130, -0.0618953104
+133, -0.0619084439
+136, -0.0619586363
+139, -0.0619712325
+142, -0.0620106315
+145, -0.0620252547
+148, -0.0620507388
+151, -0.0620708540
+154, -0.0620797550
+157, -0.0620917993
+160, -0.0620934610
+163, -0.0620980889
+166, -0.0620987337
+169, -0.0621008468
+172, -0.0621013073
+175, -0.0621023237
+178, -0.0621027034
+181, -0.0621033425
+184, -0.0621037945
+186, -0.0621038220
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the condition split the frames into below and not-below -0.06
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-awk-arithmetic">
+<h3>Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> arithmetic<a class="headerlink" href="#applied-3-worked-awk-arithmetic" title="Link to this heading">#</a></h3>
+<p>Sum and average a column with an <code class="docutils literal notranslate"><span class="pre">END</span></code> block — the six log energies.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sum=-860.6663 mean=-143.4444
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk computed the mean energy, -143.4444
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-the-canonical-task">
+<h3>Composite — putting it together (the canonical task)<a class="headerlink" href="#composite-putting-it-together-the-canonical-task" title="Link to this heading">#</a></h3>
+<p>The move you came to Part II for. From a real trajectory, extract the energy of
+every frame (the comment line’s last field), then compute the <strong>mean</strong> energy, the
+<strong>minimum</strong>, and the <strong>frame</strong> at which the minimum occurs — all in one <code class="docutils literal notranslate"><span class="pre">awk</span></code> pass
+over the lines <code class="docutils literal notranslate"><span class="pre">grep</span></code> selects. Composes <code class="docutils literal notranslate"><span class="pre">grep</span></code> (NB6), <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and the pipe (NB4).</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean = -0.054455
+min  = -0.062104  (frame 186)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> mean -0.054455, minimum -0.062104, occurring at frame 186
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-your-turn-safe-in-place-edit">
+<h3>Optional stretch (your turn) — Safe in-place edit<a class="headerlink" href="#optional-stretch-your-turn-safe-in-place-edit" title="Link to this heading">#</a></h3>
+<p>Do a real in-place edit, the safe way. On a scratch copy, use <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-i.bak</span></code> to make
+a substitution, then confirm the <code class="docutils literal notranslate"><span class="pre">.bak</span></code> backup holds the original and the file
+holds the change. The point is the <em>habit</em>: never <code class="docutils literal notranslate"><span class="pre">-i</span></code> without a backup you have
+checked.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cutoff = 500
+cutoff = 300
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the edit took effect in the file, and the .bak preserved the original
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now extract <em>and compute</em> from any text file the course holds — by hand,
+one one-liner at a time. That last phrase is the whole point of what comes next:
+you have been <strong>retyping</strong> these pipelines. Part III is about making them
+<em>reusable</em> — writing and editing them as scripts you keep — and it starts with the
+one tool you still lack: a way to write text in the terminal. Next (Notebook 9):
+<strong>editing with Vim.</strong></p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-sed"><code class="bp-cmd-name">sed</code></a> &mdash; edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</li><li><a href="#cmd-awk"><code class="bp-cmd-name">awk</code></a> &mdash; split each line into fields and act on them — print columns, filter by condition, and compute (sum, mean, min/max). The field-aware, can-do-arithmetic tool cut could not be.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run everything yourself — nothing to install. The published
+    notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in
+    touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/02-pipelines"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07-the-stream-toolkit.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">7 The stream toolkit</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../03-scripting/09-editing-in-the-terminal.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">9 Editing in the terminal: Vim</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sed-stream-editing">A. <code class="docutils literal notranslate"><span class="pre">sed</span></code> — stream editing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-awk-fields-and-computation">B. <code class="docutils literal notranslate"><span class="pre">awk</span></code> — fields and computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-sed-substitute-and-select">Warm-up 1 (worked) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> substitute and select</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-sed-delete-by-address">Warm-up 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> delete by address</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-awk-fields-clear-the-wall">Applied 1 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> fields clear the wall</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-awk-patterns">Applied 2 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-awk-arithmetic">Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> arithmetic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-canonical-task">Composite — putting it together (the canonical task)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-your-turn-safe-in-place-edit">Optional stretch (your turn) — Safe in-place edit</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
