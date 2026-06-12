@@ -63,6 +63,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02-pipelines/05-selecting-files';</script>
     <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/02-pipelines/05-selecting-files.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6 grep and regular expressions" href="06-grep-and-regular-expressions.html" />
@@ -668,8 +669,8 @@ underneath <code class="docutils literal notranslate"><span class="pre">data/</s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz
-data/trajectories/lj38-relaxed.xyz
 data/trajectories/lj38-optimization.xyz
+data/trajectories/lj38-relaxed.xyz
 </pre></div>
 </div>
 </div>
@@ -687,10 +688,10 @@ wrong thing. Quoting hands the pattern to <code class="docutils literal notransl
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
-data/results
 data/inputs
-data/trajectories
 data/logs
+data/results
+data/trajectories
 </pre></div>
 </div>
 </div>
@@ -718,8 +719,8 @@ that is <em>not</em> under <code class="docutils literal notranslate"><span clas
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-relaxed.xyz
-data/trajectories/lj38-optimization.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-optimization.xyz
+data/trajectories/lj38-relaxed.xyz
 </pre></div>
 </div>
 </div>
@@ -751,9 +752,9 @@ trajectory <code class="docutils literal notranslate"><span class="pre">find</sp
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -774,9 +775,9 @@ The <code class="docutils literal notranslate"><span class="pre">{}</span></code
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -846,19 +847,19 @@ inside <code class="docutils literal notranslate"><span class="pre">data/</span>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/geo-opt.inp
-data/inputs/production-md.inp
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/production-md.inp
+data/inputs/geo-opt.inp
 data
-data/results
 data/inputs
-data/trajectories
 data/logs
-data
 data/results
-data/inputs
 data/trajectories
+data
+data/inputs
 data/README.md
 data/logs
+data/results
+data/trajectories
 data/.dataset-notes
 </pre></div>
 </div>
@@ -882,9 +883,9 @@ data/.dataset-notes
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -894,9 +895,9 @@ data/.dataset-notes
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
 180
-==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
-      38
 ==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+      38
+==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
 </pre></div>
 </div>
@@ -919,9 +920,9 @@ to copy every <code class="docutils literal notranslate"><span class="pre">.xyz<
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-relaxed.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-optimization.xyz
 scratch/sorted/R/pt-slab.xyz
-scratch/sorted/R/lj38-optimization.xyz
+scratch/sorted/R/lj38-relaxed.xyz
 </pre></div>
 </div>
 </div>

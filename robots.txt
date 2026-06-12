@@ -1,0 +1,6 @@
+# Introduction to the Bash Shell — public course site.
+# Search engines are welcome to crawl and index everything here.
+User-agent: *
+Allow: /
+
+Sitemap: https://ramador.me/bash-primer-public/sitemap.xml
