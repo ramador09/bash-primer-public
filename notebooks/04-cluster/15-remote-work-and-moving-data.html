@@ -1,0 +1,1285 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="15 Remote work and moving data" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/04-cluster/15-remote-work-and-moving-data.html" />
+<meta property="og:site_name" content="Introduction to the Bash Shell" />
+<meta property="og:description" content="What this notebook is about: Everything so far you could do on the machine in front of you. The cluster changes one thing: you are not sitting at it. It is a..." />
+<meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
+<meta property="og:image:alt" content="Introduction to the Bash Shell" />
+<meta name="description" content="What this notebook is about: Everything so far you could do on the machine in front of you. The cluster changes one thing: you are not sitting at it. It is a..." />
+
+    <title>15 Remote work and moving data &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-cluster/15-remote-work-and-moving-data';</script>
+    <script src="../../_static/home-button.js?v=62b63922"></script>
+    <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/15-remote-work-and-moving-data.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="14 Environment and modules" href="14-environment-and-modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/13-control-flow.html">13 Control flow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14-environment-and-modules.html">14 Environment and modules</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15 Remote work and moving data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/04-cluster/15-remote-work-and-moving-data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/04-cluster/15-remote-work-and-moving-data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>15 Remote work and moving data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-reaching-the-machine-ssh">A. Reaching the machine — <code class="docutils literal notranslate"><span class="pre">ssh</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keys-not-passwords">Keys, not passwords</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-moving-data-tar-then-rsync">B. Moving data — <code class="docutils literal notranslate"><span class="pre">tar</span></code>, then <code class="docutils literal notranslate"><span class="pre">rsync</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scp-the-one-shot-copy"><code class="docutils literal notranslate"><span class="pre">scp</span></code> — the one-shot copy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rsync-the-workhorse"><code class="docutils literal notranslate"><span class="pre">rsync</span></code> — the workhorse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-staying-on-tmux-and-job-control">C. Staying on — <code class="docutils literal notranslate"><span class="pre">tmux</span></code> and job control</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmux-a-session-that-outlives-the-connection"><code class="docutils literal notranslate"><span class="pre">tmux</span></code> — a session that outlives the connection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#job-control-jobs-nohup">Job control — <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-watching-and-resources">D. Watching and resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#watch-re-run-something-to-see-it-change"><code class="docutils literal notranslate"><span class="pre">watch</span></code> — re-run something to see it change</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disk-awareness-du-and-df">Disk awareness — <code class="docutils literal notranslate"><span class="pre">du</span></code> and <code class="docutils literal notranslate"><span class="pre">df</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-symlinks-ln-s">E. Symlinks — <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-archive-round-trip">Warm-up 1 (worked) — Archive round-trip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-local-rsync">Warm-up 2 (your turn) — Local <code class="docutils literal notranslate"><span class="pre">rsync</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-disk-awareness">Applied 1 (your turn) — Disk awareness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-symlinks">Applied 2 (your turn) — Symlinks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-background-and-manage">Applied 3 (worked) — Background and manage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-terminal-conceptual-ssh-and-transfer">Remote (terminal / conceptual) — ssh and transfer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-package-and-sync-off-the-cluster">Composite — putting it together (package and sync off the cluster)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-tmux-or-a-careful-delete">Optional stretch (terminal) — <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, or a careful <code class="docutils literal notranslate"><span class="pre">--delete</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="remote-work-and-moving-data">
+<h1>15 Remote work and moving data<a class="headerlink" href="#remote-work-and-moving-data" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part IV — Working on a cluster</span>
+    <span class="bp-meta">Notebook&nbsp;15</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Operating a machine you are not sitting at: reaching it with <code>ssh</code>,
+    carrying data across with <code>tar</code>/<code>rsync</code>, and keeping long
+    work alive and monitored after you disconnect.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Everything so far you could do on the machine in front of you. The cluster changes
+one thing: <strong>you are not sitting at it.</strong> It is a computer somewhere else — in a
+machine room, reached over the network — and that single fact creates three needs.
+You have to <strong>get on and stay on</strong> it (<code class="docutils literal notranslate"><span class="pre">ssh</span></code>, <code class="docutils literal notranslate"><span class="pre">tmux</span></code>). You have to <strong>move your data
+across</strong> to it and your results back (<code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code>). And because the real
+work takes hours or days, you have to <strong>launch it, disconnect, and come back</strong> to
+find it still running and watchable (<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code>, <code class="docutils literal notranslate"><span class="pre">ps</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>, <code class="docutils literal notranslate"><span class="pre">kill</span></code>). One frame
+— <em>a machine you’re not at</em> — holds this whole wide toolkit together.</p>
+<div class="note admonition">
+<p class="admonition-title">Which cells run here, and which are “type it yourself”</p>
+<p>There is no second machine inside this page, so some of these tools cannot run in
+the grey cells. We label every command:</p>
+<ul class="simple">
+<li><p>A <strong>live grey cell</strong> with output below it runs for real, right here — the
+transfer and process mechanics (<code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code> <em>local-to-local</em>, <code class="docutils literal notranslate"><span class="pre">du</span></code>, <code class="docutils literal notranslate"><span class="pre">ps</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, …) are all genuine.</p></li>
+<li><p>A plain code block tagged <strong><code class="docutils literal notranslate"><span class="pre">[your</span> <span class="pre">terminal]</span></code></strong> needs a real remote machine or an
+interactive screen (<code class="docutils literal notranslate"><span class="pre">ssh</span></code> to a cluster, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>). Type those in the
+<strong>Practice here</strong> terminal, or — for the connect-and-copy ones — against a real
+cluster like ETH’s <strong>Euler</strong>.</p></li>
+</ul>
+<p>The good news: the <em>mechanics</em> of moving data are identical whether the
+destination is a folder next door or a supercomputer. <code class="docutils literal notranslate"><span class="pre">rsync</span></code> run locally teaches
+the real thing; you just add <code class="docutils literal notranslate"><span class="pre">host:</span></code> to the path when the destination is remote.</p>
+</div>
+</section>
+<section id="a-reaching-the-machine-ssh">
+<h2>A. Reaching the machine — <code class="docutils literal notranslate"><span class="pre">ssh</span></code><a class="headerlink" href="#a-reaching-the-machine-ssh" title="Link to this heading">#</a></h2>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ssh</span></code></strong> (“secure shell”) is the front door to every cluster. Point it at a
+machine and it opens a shell there, encrypted end to end, exactly as if you had sat
+down at its keyboard:</p>
+<div class="bp-card" id="cmd-ssh"><span class="bp-card-cmd">ssh</span> &mdash; <span class="bp-card-job">open a shell on a remote machine — or run a single command there — over an encrypted connection.</span><table><tr><td>user@host</td><td>log in as <code>user</code> on <code>host</code> and get an interactive remote shell</td></tr><tr><td>host CMD</td><td>run ONE command on the remote and return (e.g. <code>ssh euler squeue</code>)</td></tr><tr><td>-i keyfile</td><td>authenticate with a specific private key</td></tr><tr><td>-p N</td><td>connect on port N (the default is 22)</td></tr></table><div class="bp-card-more">more: <code>man ssh</code>; host aliases live in <code>~/.ssh/config</code> (<code>Host euler …</code> lets you just type <code>ssh euler</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> ssh REFUSES a private key that others can read — <code>chmod 600 ~/.ssh/id_*</code> (Notebook 11). Keys beat passwords: generate with <code>ssh-keygen</code>, install on the remote with <code>ssh-copy-id</code></div><p>It comes in two shapes — an interactive session, or a single remote command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+ssh<span class="w"> </span>you@euler.ethz.ch<span class="w">        </span><span class="c1"># opens an interactive shell ON Euler</span>
+ssh<span class="w"> </span>euler<span class="w"> </span>squeue<span class="w">             </span><span class="c1"># runs ONE command there and returns its output</span>
+</pre></div>
+</div>
+<section id="keys-not-passwords">
+<h3>Keys, not passwords<a class="headerlink" href="#keys-not-passwords" title="Link to this heading">#</a></h3>
+<p>Typing your password on every connection is both tedious and less secure than the
+standard alternative: a <strong>key pair</strong>. You generate two matching files — a <em>private</em>
+key you keep, and a <em>public</em> key you install on the cluster — and ssh proves your
+identity with them automatically. Generating the pair is real, so run it here:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>scratch/demo_key<span class="w"> </span>-N<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span>-C<span class="w"> </span><span class="s2">&quot;you@laptop&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating public/private ed25519 key pair.
+Your identification has been saved in scratch/demo_key
+Your public key has been saved in scratch/demo_key.pub
+The key fingerprint is:
+SHA256:kD+Ay59PBJ1uAeCHAu/aW3aniEfGqoJtzvm8O/rOlRk you@laptop
+The key&#39;s randomart image is:
++--[ED25519 256]--+
+|.   ...          |
+| o . o + .       |
+|  o + * +        |
+| . o o * .       |
+|  ..o E S        |
+| o  +. B .       |
+|o..+o B o        |
+|o.+Oo+ =         |
+|o+B*X+. .        |
++----[SHA256]-----+
+</pre></div>
+</div>
+</div>
+</div>
+<p>That made two files. Look at their permissions — and notice ssh-keygen has already
+done the Notebook-11 chmod for you:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-l<span class="w"> </span>scratch/demo_key<span class="w"> </span>scratch/demo_key.pub
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jun 12 15:43 scratch/demo_key
+-rw-r--r-- 1 runner runner  92 Jun 12 15:43 scratch/demo_key.pub
+</pre></div>
+</div>
+</div>
+</div>
+<p>The private key is <code class="docutils literal notranslate"><span class="pre">-rw-------</span></code> (mode <strong>600</strong>) — readable only by you. That is not
+optional:</p>
+<div class="warning admonition">
+<p class="admonition-title">⚠ ssh refuses a private key others can read</p>
+<p>If your private key’s file is readable by group or others, <strong>ssh ignores it</strong> and
+falls back to asking for a password — the classic “but I set up my key!” confusion.
+The fix is the Notebook-11 one: <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">600</span> <span class="pre">~/.ssh/id_ed25519</span></code>. Keys are private;
+the filesystem has to agree.</p>
+</div>
+<p>You install the <em>public</em> half on the cluster with <code class="docutils literal notranslate"><span class="pre">ssh-copy-id</span> <span class="pre">you&#64;euler</span></code>, and then
+a short <strong><code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code></strong> turns a long connection string into a one-word alias:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+<span class="c1"># ~/.ssh/config</span>
+Host<span class="w"> </span>euler
+<span class="w">    </span>HostName<span class="w"> </span>euler.ethz.ch
+<span class="w">    </span>User<span class="w"> </span>your_username
+<span class="w">    </span>IdentityFile<span class="w"> </span>~/.ssh/id_ed25519
+
+<span class="c1"># now this is all you type:</span>
+ssh<span class="w"> </span>euler
+</pre></div>
+</div>
+</section>
+</section>
+<section id="b-moving-data-tar-then-rsync">
+<h2>B. Moving data — <code class="docutils literal notranslate"><span class="pre">tar</span></code>, then <code class="docutils literal notranslate"><span class="pre">rsync</span></code><a class="headerlink" href="#b-moving-data-tar-then-rsync" title="Link to this heading">#</a></h2>
+<p>Before you transfer a result directory, you usually <strong>bundle and compress</strong> it: one
+file moves faster and more reliably than ten thousand. That is <strong><code class="docutils literal notranslate"><span class="pre">tar</span></code></strong> (+ gzip):</p>
+<div class="bp-card" id="cmd-tar"><span class="bp-card-cmd">tar</span> &mdash; <span class="bp-card-job">bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</span><table><tr><td>-czf a.tar.gz dir/</td><td>CREATE a gzip-compressed archive of dir/ (c=create, z=gzip, f=file)</td></tr><tr><td>-xzf a.tar.gz</td><td>EXTRACT a gzip archive</td></tr><tr><td>-tzf a.tar.gz</td><td>LIST an archive&#x27;s contents without extracting</td></tr><tr><td>-C dir</td><td>change to dir first — archive from, or extract into, a chosen directory</td></tr></table><div class="bp-card-more">more: <code>man tar</code>; the create mnemonic is <code>czf</code> — &quot;compress, zip, file&quot;</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>f</code> comes LAST among the bundled flags because the filename follows it (<code>-czf name</code>); a gzip-compressed tar is conventionally <code>.tar.gz</code> (or <code>.tgz</code>)</div><div class="bp-card" id="cmd-gzip"><span class="bp-card-cmd">gzip</span> &mdash; <span class="bp-card-job">compress a single file in place (and gunzip to restore it) — the compression behind tar&#x27;s -z.</span><table><tr><td>file</td><td>compress to <code>file.gz</code>, removing the original</td></tr><tr><td>-d  /  gunzip</td><td>decompress (<code>gunzip file.gz</code> is the same as <code>gzip -d</code>)</td></tr><tr><td>-k</td><td>keep the original alongside the compressed copy</td></tr><tr><td>-9  /  -1</td><td>best compression (slow) / fastest (less compression)</td></tr></table><div class="bp-card-more">more: <code>man gzip</code>; for a whole directory, <code>tar -czf</code> first and you get one compressed bundle</div></div><div class="bp-watchout"><strong>Watch out:</strong> plain <code>gzip file</code> REPLACES the file with <code>file.gz</code> (add <code>-k</code> to keep both); gzip handles ONE file — <code>tar</code> is what bundles many</div><p>Create an archive, list it without unpacking, and extract it again — all real:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>-czf<span class="w"> </span>scratch/run.tar.gz<span class="w"> </span>-C<span class="w"> </span>scratch<span class="w"> </span>run
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>-tzf<span class="w"> </span>scratch/run.tar.gz
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>run/
+run/result.txt
+run/logs/
+run/logs/run.log
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>scratch/restored<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>-xzf<span class="w"> </span>scratch/run.tar.gz<span class="w"> </span>-C<span class="w"> </span>scratch/restored<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>find<span class="w"> </span>scratch/restored<span class="w"> </span>-type<span class="w"> </span>f
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/restored/run/result.txt
+scratch/restored/run/logs/run.log
+</pre></div>
+</div>
+</div>
+</div>
+<p>The archive round-tripped: bundled with <code class="docutils literal notranslate"><span class="pre">c</span></code>, inspected with <code class="docutils literal notranslate"><span class="pre">t</span></code>, unpacked with <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+(<code class="docutils literal notranslate"><span class="pre">gzip</span></code> on its own compresses a <em>single</em> file — <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">big.log</span></code> → <code class="docutils literal notranslate"><span class="pre">big.log.gz</span></code>; <code class="docutils literal notranslate"><span class="pre">tar</span></code>
+is what bundles many.)</p>
+<section id="scp-the-one-shot-copy">
+<h3><code class="docutils literal notranslate"><span class="pre">scp</span></code> — the one-shot copy<a class="headerlink" href="#scp-the-one-shot-copy" title="Link to this heading">#</a></h3>
+<p>The simplest remote transfer is <strong><code class="docutils literal notranslate"><span class="pre">scp</span></code></strong>, which copies over ssh just like <code class="docutils literal notranslate"><span class="pre">cp</span></code>
+copies locally:</p>
+<div class="bp-card" id="cmd-scp"><span class="bp-card-cmd">scp</span> &mdash; <span class="bp-card-job">copy files to or from a remote machine over ssh — a simple one-shot transfer.</span><table><tr><td>file host:path</td><td>copy a local file UP to the remote</td></tr><tr><td>host:path .</td><td>copy a remote file DOWN to here</td></tr><tr><td>-r</td><td>copy a directory and everything in it</td></tr></table><div class="bp-card-more">more: <code>man scp</code>; for anything beyond a one-off, prefer <code>rsync</code> — it resumes and skips unchanged files</div></div><div class="bp-watchout"><strong>Watch out:</strong> the remote side is <code>host:path</code>, with a COLON — forget the colon and scp just makes a local copy named <code>host</code></div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+scp<span class="w"> </span>run.tar.gz<span class="w"> </span>euler:/cluster/scratch/you/<span class="w">   </span><span class="c1"># push a file up</span>
+scp<span class="w"> </span>euler:results/summary.txt<span class="w"> </span>.<span class="w">              </span><span class="c1"># pull a file down</span>
+scp<span class="w"> </span>-r<span class="w"> </span>mydir<span class="w"> </span>euler:~/<span class="w">                         </span><span class="c1"># a whole directory</span>
+</pre></div>
+</div>
+</section>
+<section id="rsync-the-workhorse">
+<h3><code class="docutils literal notranslate"><span class="pre">rsync</span></code> — the workhorse<a class="headerlink" href="#rsync-the-workhorse" title="Link to this heading">#</a></h3>
+<p>For anything you will transfer more than once — a results directory you re-sync as a
+job produces more — <strong><code class="docutils literal notranslate"><span class="pre">rsync</span></code></strong> is the right tool. It copies only what has
+<em>changed</em>, so the second sync is near-instant. Crucially, its local-to-local form is
+the <em>same tool</em> you use for the cluster, so we practise it for real:</p>
+<div class="bp-card" id="cmd-rsync"><span class="bp-card-cmd">rsync</span> &mdash; <span class="bp-card-job">sync files and directories — locally or over ssh — copying only what has changed. The workhorse for moving data on and off a cluster.</span><table><tr><td>-a</td><td>archive mode: recurse and preserve permissions, times, and symlinks (the everyday default)</td></tr><tr><td>-v  /  --progress</td><td>verbose / show a progress bar on large transfers</td></tr><tr><td>-z</td><td>compress data in transit (helps over a slow link)</td></tr><tr><td>--dry-run</td><td>show what WOULD transfer, changing NOTHING — run this first</td></tr><tr><td>--delete</td><td>delete files on the destination that are gone from the source (dangerous — see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man rsync</code>; the SAME command syncs to a remote by writing <code>host:path</code> for either side</div></div><div class="bp-watchout"><strong>Watch out:</strong> the TRAILING SLASH matters: <code>rsync -a src/ dst</code> copies the CONTENTS of src into dst, while <code>rsync -a src dst</code> copies the src DIRECTORY into dst. And <code>--delete</code> can wipe the destination — <code>--dry-run</code> first, every time</div><div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rsync<span class="w"> </span>-av<span class="w"> </span>scratch/src/<span class="w"> </span>scratch/dst/
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
+a.txt
+b.txt
+sent 184 bytes  received 54 bytes  476.00 bytes/sec
+total size is 4  speedup is 0.02
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now change one file and re-sync — rsync transfers <strong>only the changed file</strong>, not the
+whole set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;a CHANGED\n&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>scratch/src/a.txt<span class="p">;</span><span class="w"> </span>rsync<span class="w"> </span>-av<span class="w"> </span>scratch/src/<span class="w"> </span>scratch/dst/
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
+a.txt
+sent 148 bytes  received 35 bytes  366.00 bytes/sec
+total size is 12  speedup is 0.07
+</pre></div>
+</div>
+</div>
+</div>
+<p>Only <code class="docutils literal notranslate"><span class="pre">a.txt</span></code> moved the second time. And <strong>preview before you sync</strong> with
+<code class="docutils literal notranslate"><span class="pre">--dry-run</span></code>, which lists what <em>would</em> happen and touches nothing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;c\n&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>scratch/src/c.txt<span class="p">;</span><span class="w"> </span>rsync<span class="w"> </span>-av<span class="w"> </span>--dry-run<span class="w"> </span>scratch/src/<span class="w"> </span>scratch/dst/
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
+c.txt
+sent 115 bytes  received 19 bytes  268.00 bytes/sec
+total size is 14  speedup is 0.10 (DRY RUN)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>scratch/dst
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a.txt  b.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>The dry run named <code class="docutils literal notranslate"><span class="pre">c.txt</span></code> as pending, but <code class="docutils literal notranslate"><span class="pre">scratch/dst</span></code> still has only <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> —
+nothing changed. One footgun deserves a hard stop:</p>
+<div class="warning admonition">
+<p class="admonition-title">⚠ The trailing slash, and <code class="docutils literal notranslate"><span class="pre">--delete</span></code></p>
+<p><strong>Trailing slash:</strong> <code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-a</span> <span class="pre">src/</span> <span class="pre">dst</span></code> copies the <em>contents</em> of <code class="docutils literal notranslate"><span class="pre">src</span></code> into <code class="docutils literal notranslate"><span class="pre">dst</span></code>;
+<code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-a</span> <span class="pre">src</span> <span class="pre">dst</span></code> copies the <em>directory</em> <code class="docutils literal notranslate"><span class="pre">src</span></code> into <code class="docutils literal notranslate"><span class="pre">dst</span></code> (giving <code class="docutils literal notranslate"><span class="pre">dst/src/…</span></code>).
+Mixing these up is the most common rsync surprise — be deliberate about the <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">--delete</span></code>:</strong> this makes the destination an exact mirror by <strong>deleting files there
+that are gone from the source</strong>. It is exactly what you want for a true mirror — and
+a disaster if you point it at the wrong directory. So: <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> first, <em>every
+time</em>, and read the list before you run it for real.</p>
+</div>
+</section>
+</section>
+<section id="c-staying-on-tmux-and-job-control">
+<h2>C. Staying on — <code class="docutils literal notranslate"><span class="pre">tmux</span></code> and job control<a class="headerlink" href="#c-staying-on-tmux-and-job-control" title="Link to this heading">#</a></h2>
+<p>Here is the problem the cluster forces on you. You start a six-hour job over <code class="docutils literal notranslate"><span class="pre">ssh</span></code>,
+close your laptop to go home, and — your connection drops, the shell receives a
+<strong>hang-up signal (<code class="docutils literal notranslate"><span class="pre">SIGHUP</span></code>)</strong>, and your job dies with it. Two tools solve this.</p>
+<section id="tmux-a-session-that-outlives-the-connection">
+<h3><code class="docutils literal notranslate"><span class="pre">tmux</span></code> — a session that outlives the connection<a class="headerlink" href="#tmux-a-session-that-outlives-the-connection" title="Link to this heading">#</a></h3>
+<p><strong><code class="docutils literal notranslate"><span class="pre">tmux</span></code></strong> runs a terminal <em>on the remote machine itself</em> that keeps going when you
+detach. You start work inside it, press <code class="docutils literal notranslate"><span class="pre">Ctrl-b</span> <span class="pre">d</span></code> to <strong>detach</strong> (the work keeps
+running), close your laptop, and later <code class="docutils literal notranslate"><span class="pre">ssh</span></code> back in and <code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">attach</span></code> to find
+everything exactly as you left it.</p>
+<div class="bp-card" id="cmd-tmux"><span class="bp-card-cmd">tmux</span> &mdash; <span class="bp-card-job">run a persistent terminal that survives disconnects — detach, log out, and reattach later with your work still running.</span><table><tr><td>tmux</td><td>start a new session</td></tr><tr><td>Ctrl-b d</td><td>DETACH — leave it running and drop back to your normal shell</td></tr><tr><td>tmux attach  /  tmux a</td><td>re-attach to the running session after you reconnect</td></tr><tr><td>tmux ls</td><td>list running sessions</td></tr></table><div class="bp-card-more">more: <code>man tmux</code>; <code>screen</code> is the older equivalent. The prefix <code>Ctrl-b</code> precedes every tmux command</div></div><div class="bp-watchout"><strong>Watch out:</strong> without tmux (or nohup), logging out sends <code>SIGHUP</code> and kills your running commands — tmux is how a long job survives you closing the laptop</div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+ssh<span class="w"> </span>euler
+tmux<span class="w">                         </span><span class="c1"># start a persistent session</span>
+./long_analysis.sh<span class="w">           </span><span class="c1"># launch your work inside it</span>
+<span class="c1">#   ... press Ctrl-b then d to DETACH; now it&#39;s safe to disconnect ...</span>
+<span class="nb">exit</span><span class="w">                         </span><span class="c1"># log out of ssh; the job keeps running on Euler</span>
+
+<span class="c1">#   ... hours later, from anywhere ...</span>
+ssh<span class="w"> </span>euler
+tmux<span class="w"> </span>attach<span class="w">                  </span><span class="c1"># back exactly where you left off</span>
+</pre></div>
+</div>
+</section>
+<section id="job-control-jobs-nohup">
+<h3>Job control — <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code><a class="headerlink" href="#job-control-jobs-nohup" title="Link to this heading">#</a></h3>
+<p>For a single command, lighter tools suffice. End a command with <strong><code class="docutils literal notranslate"><span class="pre">&amp;</span></code></strong> to run it in
+the <strong>background</strong>, freeing your prompt; <strong><code class="docutils literal notranslate"><span class="pre">jobs</span></code></strong> lists what is backgrounded. Run
+it for real — start a long <code class="docutils literal notranslate"><span class="pre">sleep</span></code>, see it listed, and we will stop it in §D:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sleep<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;backgrounded as PID </span><span class="nv">$!</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4588
+backgrounded as PID 4588
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">jobs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1]+  Running                 sleep 300 &amp;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="bp-card">
+  <span class="bp-card-cmd">Job control</span> — <span class="bp-card-job">manage a command's foreground/background state (shell syntax, not commands).</span>
+  <table>
+    <tr><td>cmd &</td><td>run <code>cmd</code> in the background; the prompt returns at once</td></tr>
+    <tr><td>jobs</td><td>list the shell's background jobs, with their numbers</td></tr>
+    <tr><td>Ctrl-z</td><td>SUSPEND the foreground command (pauses it, hands back the prompt)</td></tr>
+    <tr><td>bg  /  fg</td><td>resume a suspended job in the background / foreground</td></tr>
+    <tr><td>$!  /  %1</td><td>the PID of the last background command / a job by its number</td></tr>
+  </table>
+</div>
+<p>And <strong><code class="docutils literal notranslate"><span class="pre">nohup</span></code></strong> makes a command deaf to that hang-up signal, so it survives logout
+even without tmux:</p>
+<div class="bp-card" id="cmd-nohup"><span class="bp-card-cmd">nohup</span> &mdash; <span class="bp-card-job">run a command immune to hangups, so it keeps going after you log out.</span><table><tr><td>nohup CMD &amp;</td><td>run CMD in the background, ignoring the <code>SIGHUP</code> sent at logout</td></tr></table><div class="bp-card-more">more: <code>man nohup</code>; output it would have printed goes to <code>nohup.out</code> unless you redirect it</div></div><div class="bp-watchout"><strong>Watch out:</strong> for a long interactive workflow <code>tmux</code> is usually nicer; <code>nohup … &amp;</code> is the quick &quot;launch it and let it run&quot; for a single command</div><div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nohup<span class="w"> </span>sleep<span class="w"> </span><span class="m">300</span><span class="w"> </span>&gt;<span class="w"> </span>nohup.out<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;nohup PID </span><span class="nv">$!</span><span class="s2"> — still running after logout; output in nohup.out&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4589
+nohup PID 4589 — still running after logout; output in nohup.out
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>(<code class="docutils literal notranslate"><span class="pre">nohup</span></code> parks any output the command would have printed into a file called
+<code class="docutils literal notranslate"><span class="pre">nohup.out</span></code>. For real work you usually redirect it somewhere meaningful instead.)</p>
+</section>
+</section>
+<section id="d-watching-and-resources">
+<h2>D. Watching and resources<a class="headerlink" href="#d-watching-and-resources" title="Link to this heading">#</a></h2>
+<p>Now to <em>watch</em> those processes and stop them. <strong><code class="docutils literal notranslate"><span class="pre">ps</span></code></strong> takes a snapshot of what is
+running — pair it with <code class="docutils literal notranslate"><span class="pre">grep</span></code> to find one. Both <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we backgrounded are alive:</p>
+<div class="bp-card" id="cmd-ps"><span class="bp-card-cmd">ps</span> &mdash; <span class="bp-card-job">take a snapshot of the processes running right now — what is alive, with their PIDs.</span><table><tr><td>aux</td><td>ALL processes for all users, with CPU/memory (the common BSD-style form)</td></tr><tr><td>-ef</td><td>the same idea in System-V style; pipe into <code>grep</code> to find one</td></tr><tr><td>-p PID</td><td>show just one process by PID</td></tr></table><div class="bp-card-more">more: <code>man ps</code>; for a LIVE, updating view rather than a snapshot, use <code>top</code> / <code>htop</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>ps</code> is a still photo, not a live feed — re-run it (or use <code>top</code>) to see change. Find your process with <code>ps aux | grep NAME</code></div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;[s]leep 300&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4588  0.0  0.0   6124  1972 pts/0    S+   15:43   0:00 sleep 300
+runner      4589  0.0  0.0   6124  1972 pts/0    S+   15:43   0:00 sleep 300
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a <strong>live</strong>, continuously updating view there is <strong><code class="docutils literal notranslate"><span class="pre">top</span></code></strong> (and the friendlier
+<code class="docutils literal notranslate"><span class="pre">htop</span></code>) — interactive, so it belongs in a real terminal:</p>
+<div class="bp-card" id="cmd-top"><span class="bp-card-cmd">top</span> &mdash; <span class="bp-card-job">watch processes live — a continuously updating table of what is using the CPU and memory.</span><table><tr><td>top</td><td>start the live view (press <code>q</code> to quit)</td></tr><tr><td>htop</td><td>a friendlier colour version, if installed — scrollable, with click-to-kill</td></tr></table><div class="bp-card-more">more: <code>man top</code>; it is interactive, so practise it in a real terminal</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>top</code> takes over the screen and never returns on its own — press <code>q</code> to quit (like <code>less</code> and <code>man</code>)</div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+top<span class="w">        </span><span class="c1"># live process table; press &#39;q&#39; to quit</span>
+htop<span class="w">       </span><span class="c1"># the nicer colour version, if installed</span>
+</pre></div>
+</div>
+<p>To stop a process, <strong><code class="docutils literal notranslate"><span class="pre">kill</span></code></strong> sends it a signal by PID. Plain <code class="docutils literal notranslate"><span class="pre">kill</span></code> asks politely
+(it can clean up first); <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code> is the no-mercy hammer. Let us stop the
+background <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we started — politely:</p>
+<div class="bp-card" id="cmd-kill"><span class="bp-card-cmd">kill</span> &mdash; <span class="bp-card-job">send a signal to a process — most often to stop one — by its PID.</span><table><tr><td>kill PID</td><td>politely ask it to terminate (SIGTERM — it can clean up first)</td></tr><tr><td>kill -9 PID</td><td>force-kill (SIGKILL — immediate, no cleanup; the last resort)</td></tr><tr><td>kill %1</td><td>refer to a background job by its <code>jobs</code> number instead of its PID</td></tr></table><div class="bp-card-more">more: <code>man kill</code>; get the PID from <code>ps</code> or <code>jobs</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> try plain <code>kill</code> first; <code>kill -9</code> cannot be caught, so the process gets NO chance to flush files or shut down cleanly — reach for it only when something is truly stuck</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">kill</span><span class="w"> </span>%1<span class="w"> </span>%2<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">wait</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">jobs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Both jobs are gone. (When you only have a PID, <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">&lt;PID&gt;</span></code>; reach for <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code>
+only when a process ignores a polite <code class="docutils literal notranslate"><span class="pre">kill</span></code>.)</p>
+<section id="watch-re-run-something-to-see-it-change">
+<h3><code class="docutils literal notranslate"><span class="pre">watch</span></code> — re-run something to see it change<a class="headerlink" href="#watch-re-run-something-to-see-it-change" title="Link to this heading">#</a></h3>
+<p><strong><code class="docutils literal notranslate"><span class="pre">watch</span></code></strong> re-runs a command every couple of seconds in place — perfect for
+keeping an eye on a job queue. It is interactive, so it too is a terminal tool:</p>
+<div class="bp-card" id="cmd-watch"><span class="bp-card-cmd">watch</span> &mdash; <span class="bp-card-job">re-run a command every couple of seconds and show its latest output in place — to watch something change.</span><table><tr><td>watch CMD</td><td>re-run CMD every 2 seconds (e.g. <code>watch squeue</code> to watch a job queue)</td></tr><tr><td>-n N</td><td>set the interval to N seconds</td></tr><tr><td>-d</td><td>highlight what changed since last time</td></tr></table><div class="bp-card-more">more: <code>man watch</code>; quit with <code>Ctrl-C</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> it is interactive and never returns on its own (<code>Ctrl-C</code> to stop) — practise it in a real terminal</div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+watch<span class="w"> </span>squeue<span class="w">          </span><span class="c1"># refresh the SLURM queue every 2s (Notebook 16)</span>
+watch<span class="w"> </span>-n<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="s1">&#39;ls -l results/ | tail&#39;</span><span class="w">   </span><span class="c1"># watch results appear, every 5s</span>
+</pre></div>
+</div>
+</section>
+<section id="disk-awareness-du-and-df">
+<h3>Disk awareness — <code class="docutils literal notranslate"><span class="pre">du</span></code> and <code class="docutils literal notranslate"><span class="pre">df</span></code><a class="headerlink" href="#disk-awareness-du-and-df" title="Link to this heading">#</a></h3>
+<p>Clusters give you a <strong>quota</strong>, and jobs that fill it fail in confusing ways. Two
+commands keep you ahead of it. <strong><code class="docutils literal notranslate"><span class="pre">du</span></code></strong> measures what your directories use:</p>
+<div class="bp-card" id="cmd-du"><span class="bp-card-cmd">du</span> &mdash; <span class="bp-card-job">report how much disk space files and directories use — for finding what is filling your quota.</span><table><tr><td>-s</td><td>summary: one total per argument, not every file within</td></tr><tr><td>-h</td><td>human-readable sizes (K, M, G)</td></tr><tr><td>-sh *</td><td>the everyday combo: a readable total for each item here</td></tr></table><div class="bp-card-more">more: <code>man du</code>; pair with <code>sort -h</code> to rank by size (<code>du -sh * | sort -h</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>du</code> measures what a directory&#x27;s CONTENTS use (so it can be slow on a huge tree); <code>df</code> measures the disk/quota as a whole</div><div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>du<span class="w"> </span>-sh<span class="w"> </span>scratch/big<span class="w"> </span>scratch/small
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200K	scratch/big
+8.0K	scratch/small
+</pre></div>
+</div>
+</div>
+</div>
+<p>…and <strong><code class="docutils literal notranslate"><span class="pre">df</span></code></strong> measures the filesystem (or quota) as a whole:</p>
+<div class="bp-card" id="cmd-df"><span class="bp-card-cmd">df</span> &mdash; <span class="bp-card-job">report free and used space on the mounted filesystems — how full the disk (or your cluster quota) is.</span><table><tr><td>-h</td><td>human-readable sizes</td></tr><tr><td>df -h .</td><td>show the filesystem holding the current directory</td></tr></table><div class="bp-card-more">more: <code>man df</code>; on a cluster a per-user quota tool (e.g. <code>lfs quota</code>, <code>quota</code>) reports your real limit</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>df</code> is about the whole filesystem; to find which of YOUR directories is the culprit, that is <code>du</code></div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>df<span class="w"> </span>-h<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$ROOT</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   15G  80% /
+</pre></div>
+</div>
+</div>
+</div>
+<p>(<code class="docutils literal notranslate"><span class="pre">du</span></code> finds <em>which directory</em> is heavy; <code class="docutils literal notranslate"><span class="pre">df</span></code> tells you how full the <em>disk</em> is.)</p>
+</section>
+</section>
+<section id="e-symlinks-ln-s">
+<h2>E. Symlinks — <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span></code><a class="headerlink" href="#e-symlinks-ln-s" title="Link to this heading">#</a></h2>
+<p>One last cluster staple. Your big working space (often <code class="docutils literal notranslate"><span class="pre">/scratch/$USER</span></code>) is somewhere
+inconvenient, so you make a <strong>symbolic link</strong> — a lightweight signpost — to reach it
+by a short name from where you work:</p>
+<div class="bp-card" id="cmd-ln"><span class="bp-card-cmd">ln</span> &mdash; <span class="bp-card-job">create a link — most usefully a symbolic link, a lightweight pointer from one path to another.</span><table><tr><td>-s target link</td><td>create a SYMBOLIC link named <code>link</code> pointing at <code>target</code></td></tr><tr><td>-sf</td><td>force — replace an existing link of that name</td></tr></table><div class="bp-card-more">more: <code>man ln</code>; <code>ls -l</code> shows a symlink as <code>link -&gt; target</code> (Notebooks 2–3)</div></div><div class="bp-watchout"><strong>Watch out:</strong> almost always use <code>-s</code> (symbolic). The classic cluster move is <code>ln -s /scratch/$USER scratch</code>, so a short local name points at your big scratch space</div><div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ln<span class="w"> </span>-s<span class="w"> </span>realdir<span class="w"> </span>scratch/link-to-realdir<span class="p">;</span><span class="w"> </span>ls<span class="w"> </span>-l<span class="w"> </span>scratch/link-to-realdir
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jun 12 15:43 scratch/link-to-realdir -&gt; realdir
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> in <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span></code> (Notebooks 2–3) shows it is a pointer, not a copy. Follow it and
+you reach the real thing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>scratch/link-to-realdir/data.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the real file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The runnable ones work in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; <code class="docutils literal notranslate"><span class="pre">data/</span></code> stays read-only, and every
+backgrounded process is cleaned up. The remote ones are yours to do in a terminal
+(the <strong>Practice here</strong> box, or against a real cluster).</p>
+<section id="warm-up-1-worked-archive-round-trip">
+<h3>Warm-up 1 (worked) — Archive round-trip<a class="headerlink" href="#warm-up-1-worked-archive-round-trip" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">-czf</span></code> a directory, list it with <code class="docutils literal notranslate"><span class="pre">-tzf</span></code>, extract it elsewhere with <code class="docutils literal notranslate"><span class="pre">-xzf</span></code>, and
+confirm the contents survived.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- contents ---
+results/
+results/data.csv
+results/summary.txt
+--- extracted ---
+scratch/out/results/data.csv
+scratch/out/results/summary.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the archive was created, listed, and extracted with its contents intact
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-local-rsync">
+<h3>Warm-up 2 (your turn) — Local <code class="docutils literal notranslate"><span class="pre">rsync</span></code><a class="headerlink" href="#warm-up-2-your-turn-local-rsync" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-av</span></code> a source directory into a destination; change one file and re-sync (note
+only it moves); then <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> a new file and confirm the destination did <strong>not</strong>
+change.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
+one.txt
+sent 148 bytes  received 35 bytes  366.00 bytes/sec
+total size is 8  speedup is 0.04
+sending incremental file list
+three.txt
+sent 123 bytes  received 19 bytes  284.00 bytes/sec
+total size is 10  speedup is 0.07 (DRY RUN)
+dst still holds:
+one.txt  two.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the change synced, and the dry-run previewed three.txt without copying it
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-disk-awareness">
+<h3>Applied 1 (your turn) — Disk awareness<a class="headerlink" href="#applied-1-your-turn-disk-awareness" title="Link to this heading">#</a></h3>
+<p>Make two scratch directories of different sizes, compare them with <code class="docutils literal notranslate"><span class="pre">du</span> <span class="pre">-sh</span></code>, and
+identify the larger.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>496K	scratch/heavy
+8.0K	scratch/light
+/dev/root        72G   57G   15G  80% /
+largest: scratch/heavy
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> du sized both directories and identified scratch/heavy as the larger
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-symlinks">
+<h3>Applied 2 (your turn) — Symlinks<a class="headerlink" href="#applied-2-your-turn-symlinks" title="Link to this heading">#</a></h3>
+<p>Create a symbolic link to a directory, read the <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> in <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span></code>, and follow the link
+to reach a file inside the target.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jun 12 15:43 scratch/shortcut -&gt; store
+payload
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the symlink points at store and resolves through to the real file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-3-worked-background-and-manage">
+<h3>Applied 3 (worked) — Background and manage<a class="headerlink" href="#applied-3-worked-background-and-manage" title="Link to this heading">#</a></h3>
+<p>Background a long command with <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, find it with <code class="docutils literal notranslate"><span class="pre">jobs</span></code>/<code class="docutils literal notranslate"><span class="pre">ps</span></code>, then <code class="docutils literal notranslate"><span class="pre">kill</span></code> it and
+confirm it is gone.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4654
+running in background as PID 4654
+[1]+  Running                 sleep 300 &amp;
+    PID COMMAND
+   4654 sleep
+after kill, still alive? no
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4658
+<span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command backgrounded, appeared in the process table, then was killed
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="remote-terminal-conceptual-ssh-and-transfer">
+<h3>Remote (terminal / conceptual) — ssh and transfer<a class="headerlink" href="#remote-terminal-conceptual-ssh-and-transfer" title="Link to this heading">#</a></h3>
+<p>No grade here — there is no remote machine on this page. In the <strong>Practice here</strong>
+terminal, generate a key with <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code> and read the connect-and-copy syntax;
+then, if you have access to a real cluster (ETH’s <strong>Euler</strong>, say), do the real
+thing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w">              </span><span class="c1"># make a key pair</span>
+ssh-copy-id<span class="w"> </span>you@euler.ethz.ch<span class="w">      </span><span class="c1"># install the public half</span>
+ssh<span class="w"> </span>euler<span class="w">                          </span><span class="c1"># connect (alias from ~/.ssh/config)</span>
+scp<span class="w"> </span>run.tar.gz<span class="w"> </span>euler:scratch/<span class="w">      </span><span class="c1"># copy a bundle up</span>
+rsync<span class="w"> </span>-avz<span class="w"> </span>results/<span class="w"> </span>euler:results/<span class="w"> </span><span class="c1"># or sync a directory (add -z over the network)</span>
+</pre></div>
+</div>
+</section>
+<section id="composite-putting-it-together-package-and-sync-off-the-cluster">
+<h3>Composite — putting it together (package and sync off the cluster)<a class="headerlink" href="#composite-putting-it-together-package-and-sync-off-the-cluster" title="Link to this heading">#</a></h3>
+<p>The realistic “get my results off the machine” workflow, composing <code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">du</span></code>. Bundle a results directory, sync the bundle to a destination (a local
+directory standing in for the remote), and verify it arrived intact.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
+job-results.tar.gz
+sent 343 bytes  received 35 bytes  756.00 bytes/sec
+total size is 222  speedup is 0.59
+4.0K	scratch/job-results.tar.gz
+--- arrived, contents: ---
+output/
+output/result.txt
+output/run.log
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the results were bundled, synced to the destination, and verified intact
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-terminal-tmux-or-a-careful-delete">
+<h3>Optional stretch (terminal) — <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, or a careful <code class="docutils literal notranslate"><span class="pre">--delete</span></code><a class="headerlink" href="#optional-stretch-terminal-tmux-or-a-careful-delete" title="Link to this heading">#</a></h3>
+<p>No grade. In the <strong>Practice here</strong> terminal: start <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, run something, press
+<code class="docutils literal notranslate"><span class="pre">Ctrl-b</span> <span class="pre">d</span></code> to detach, then <code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">attach</span></code> to return. Or practise a <strong>mirror</strong> sync —
+<code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-av</span> <span class="pre">--delete</span> <span class="pre">--dry-run</span> <span class="pre">src/</span> <span class="pre">dst/</span></code> — and read the would-delete list carefully
+before ever dropping the <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> (heed the §B admonition).</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now reach a cluster, carry your scripts and data on and off it, and keep
+long work alive and watched after you disconnect — the whole “machine you’re not
+at” toolkit. One thing is still missing: on a real cluster you do not just <code class="docutils literal notranslate"><span class="pre">ssh</span></code> in
+and run your job by hand, because hundreds of people share the machine. You hand it
+to a <strong>scheduler</strong>, which queues it and runs it when resources are free. Next
+(Notebook 16): writing a <strong>SLURM submission script</strong> — loading the environment from
+Notebook 14 inside it — submitting it with <code class="docutils literal notranslate"><span class="pre">sbatch</span></code>, and watching the queue.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-ssh"><code class="bp-cmd-name">ssh</code></a> &mdash; open a shell on a remote machine — or run a single command there — over an encrypted connection.</li><li><a href="#cmd-scp"><code class="bp-cmd-name">scp</code></a> &mdash; copy files to or from a remote machine over ssh — a simple one-shot transfer.</li><li><a href="#cmd-rsync"><code class="bp-cmd-name">rsync</code></a> &mdash; sync files and directories — locally or over ssh — copying only what has changed. The workhorse for moving data on and off a cluster.</li><li><a href="#cmd-tar"><code class="bp-cmd-name">tar</code></a> &mdash; bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</li><li><a href="#cmd-gzip"><code class="bp-cmd-name">gzip</code></a> &mdash; compress a single file in place (and gunzip to restore it) — the compression behind tar&#x27;s -z.</li><li><a href="#cmd-tmux"><code class="bp-cmd-name">tmux</code></a> &mdash; run a persistent terminal that survives disconnects — detach, log out, and reattach later with your work still running.</li><li><a href="#cmd-nohup"><code class="bp-cmd-name">nohup</code></a> &mdash; run a command immune to hangups, so it keeps going after you log out.</li><li><a href="#cmd-ps"><code class="bp-cmd-name">ps</code></a> &mdash; take a snapshot of the processes running right now — what is alive, with their PIDs.</li><li><a href="#cmd-top"><code class="bp-cmd-name">top</code></a> &mdash; watch processes live — a continuously updating table of what is using the CPU and memory.</li><li><a href="#cmd-kill"><code class="bp-cmd-name">kill</code></a> &mdash; send a signal to a process — most often to stop one — by its PID.</li><li><a href="#cmd-du"><code class="bp-cmd-name">du</code></a> &mdash; report how much disk space files and directories use — for finding what is filling your quota.</li><li><a href="#cmd-df"><code class="bp-cmd-name">df</code></a> &mdash; report free and used space on the mounted filesystems — how full the disk (or your cluster quota) is.</li><li><a href="#cmd-ln"><code class="bp-cmd-name">ln</code></a> &mdash; create a link — most usefully a symbolic link, a lightweight pointer from one path to another.</li><li><a href="#cmd-watch"><code class="bp-cmd-name">watch</code></a> &mdash; re-run a command every couple of seconds and show its latest output in place — to watch something change.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
+    section to run the archive, sync, and process commands yourself — and to
+    practise the terminal-only ones (<code>tmux</code>, <code>top</code>,
+    <code>watch</code>). The published notebooks ship <b>without worked
+    solutions</b>; if you would like the reference solutions — to teach from or to
+    check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/04-cluster"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="14-environment-and-modules.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">14 Environment and modules</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-reaching-the-machine-ssh">A. Reaching the machine — <code class="docutils literal notranslate"><span class="pre">ssh</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keys-not-passwords">Keys, not passwords</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-moving-data-tar-then-rsync">B. Moving data — <code class="docutils literal notranslate"><span class="pre">tar</span></code>, then <code class="docutils literal notranslate"><span class="pre">rsync</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scp-the-one-shot-copy"><code class="docutils literal notranslate"><span class="pre">scp</span></code> — the one-shot copy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rsync-the-workhorse"><code class="docutils literal notranslate"><span class="pre">rsync</span></code> — the workhorse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-staying-on-tmux-and-job-control">C. Staying on — <code class="docutils literal notranslate"><span class="pre">tmux</span></code> and job control</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tmux-a-session-that-outlives-the-connection"><code class="docutils literal notranslate"><span class="pre">tmux</span></code> — a session that outlives the connection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#job-control-jobs-nohup">Job control — <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-watching-and-resources">D. Watching and resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#watch-re-run-something-to-see-it-change"><code class="docutils literal notranslate"><span class="pre">watch</span></code> — re-run something to see it change</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disk-awareness-du-and-df">Disk awareness — <code class="docutils literal notranslate"><span class="pre">du</span></code> and <code class="docutils literal notranslate"><span class="pre">df</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-symlinks-ln-s">E. Symlinks — <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-archive-round-trip">Warm-up 1 (worked) — Archive round-trip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-local-rsync">Warm-up 2 (your turn) — Local <code class="docutils literal notranslate"><span class="pre">rsync</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-disk-awareness">Applied 1 (your turn) — Disk awareness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-symlinks">Applied 2 (your turn) — Symlinks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-3-worked-background-and-manage">Applied 3 (worked) — Background and manage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-terminal-conceptual-ssh-and-transfer">Remote (terminal / conceptual) — ssh and transfer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-package-and-sync-off-the-cluster">Composite — putting it together (package and sync off the cluster)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-terminal-tmux-or-a-careful-delete">Optional stretch (terminal) — <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, or a careful <code class="docutils literal notranslate"><span class="pre">--delete</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

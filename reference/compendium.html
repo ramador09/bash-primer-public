@@ -74,7 +74,7 @@
     <link rel="canonical" href="https://ramador.me/bash-primer-public/reference/compendium.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="14 Environment and modules" href="../notebooks/04-cluster/14-environment-and-modules.html" />
+    <link rel="prev" title="15 Remote work and moving data" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -195,6 +195,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html">14 Environment and modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -821,6 +822,25 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-alias"><span class="std std-ref">14 Environment and modules</span></a></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-df"><span class="std std-ref">df</span></a></p></td>
+<td><p>report free and used space on the mounted filesystems — how full the disk (or your cluster quota) is.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-h</span></code>  human-readable sizes</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">df</span> <span class="pre">-h</span> <span class="pre">.</span></code>  show the filesystem holding the current directory</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-df"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-du"><span class="std std-ref">du</span></a></p></td>
+<td><p>report how much disk space files and directories use — for finding what is filling your quota.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-s</span></code>  summary: one total per argument, not every file within</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-h</span></code>  human-readable sizes (K, M, G)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-sh</span> <span class="pre">*</span></code>  the everyday combo: a readable total for each item here</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-du"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-export"><span class="std std-ref">export</span></a></p></td>
 <td><p>promote a shell variable to an ENVIRONMENT variable, so every child process and script inherits it.</p></td>
 <td><div class="line-block">
@@ -831,7 +851,37 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-export"><span class="std std-ref">14 Environment and modules</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-module"><span class="std std-ref">module</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-gzip"><span class="std std-ref">gzip</span></a></p></td>
+<td><p>compress a single file in place (and gunzip to restore it) — the compression behind tar’s -z.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">file</span></code>  compress to `file.gz`, removing the original</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span>&#160; <span class="pre">/</span>&#160; <span class="pre">gunzip</span></code>  decompress (`gunzip file.gz` is the same as `gzip -d`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-k</span></code>  keep the original alongside the compressed copy</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-9</span>&#160; <span class="pre">/</span>&#160; <span class="pre">-1</span></code>  best compression (slow) / fastest (less compression)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-gzip"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-kill"><span class="std std-ref">kill</span></a></p></td>
+<td><p>send a signal to a process — most often to stop one — by its PID.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">PID</span></code>  politely ask it to terminate (SIGTERM — it can clean up first)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span> <span class="pre">PID</span></code>  force-kill (SIGKILL — immediate, no cleanup; the last resort)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">%1</span></code>  refer to a background job by its `jobs` number instead of its PID</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-kill"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ln"><span class="std std-ref">ln</span></a></p></td>
+<td><p>create a link — most usefully a symbolic link, a lightweight pointer from one path to another.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">target</span> <span class="pre">link</span></code>  create a SYMBOLIC link named `link` pointing at `target`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-sf</span></code>  force — replace an existing link of that name</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ln"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-module"><span class="std std-ref">module</span></a></p></td>
 <td><p>load and unload software on a cluster — adding a chosen version of a tool to your environment on demand.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code>  list the software (and versions) available to load</div>
@@ -843,6 +893,14 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-module"><span class="std std-ref">14 Environment and modules</span></a></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-nohup"><span class="std std-ref">nohup</span></a></p></td>
+<td><p>run a command immune to hangups, so it keeps going after you log out.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nohup</span> <span class="pre">CMD</span> <span class="pre">&amp;</span></code>  run CMD in the background, ignoring the `SIGHUP` sent at logout</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-nohup"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-printenv"><span class="std std-ref">printenv</span></a></p></td>
 <td><p>print the environment — the exported variables the shell passes down to its children.</p></td>
 <td><div class="line-block">
@@ -852,13 +910,97 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-printenv"><span class="std std-ref">14 Environment and modules</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">source</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ps"><span class="std std-ref">ps</span></a></p></td>
+<td><p>take a snapshot of the processes running right now — what is alive, with their PIDs.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">aux</span></code>  ALL processes for all users, with CPU/memory (the common BSD-style form)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-ef</span></code>  the same idea in System-V style; pipe into `grep` to find one</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PID</span></code>  show just one process by PID</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ps"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-rsync"><span class="std std-ref">rsync</span></a></p></td>
+<td><p>sync files and directories — locally or over ssh — copying only what has changed. The workhorse for moving data on and off a cluster.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-a</span></code>  archive mode: recurse and preserve permissions, times, and symlinks (the everyday default)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-v</span>&#160; <span class="pre">/</span>&#160; <span class="pre">--progress</span></code>  verbose / show a progress bar on large transfers</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-z</span></code>  compress data in transit (helps over a slow link)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--dry-run</span></code>  show what WOULD transfer, changing NOTHING — run this first</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--delete</span></code>  delete files on the destination that are gone from the source (dangerous — see the admonition)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-rsync"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-scp"><span class="std std-ref">scp</span></a></p></td>
+<td><p>copy files to or from a remote machine over ssh — a simple one-shot transfer.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">file</span> <span class="pre">host:path</span></code>  copy a local file UP to the remote</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">host:path</span> <span class="pre">.</span></code>  copy a remote file DOWN to here</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-r</span></code>  copy a directory and everything in it</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-scp"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">source</span></a></p></td>
 <td><p>run a script in the CURRENT shell (not a child), so the variables, functions, and PATH changes it makes persist.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">FILE</span>&#160; <span class="pre">/</span>&#160; <span class="pre">.</span> <span class="pre">FILE</span></code>  execute FILE’s lines in this shell — `.` is the POSIX spelling of the same thing</div>
 </div>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">14 Environment and modules</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ssh"><span class="std std-ref">ssh</span></a></p></td>
+<td><p>open a shell on a remote machine — or run a single command there — over an encrypted connection.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">user&#64;host</span></code>  log in as `user` on `host` and get an interactive remote shell</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">host</span> <span class="pre">CMD</span></code>  run ONE command on the remote and return (e.g. `ssh euler squeue`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">keyfile</span></code>  authenticate with a specific private key</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">N</span></code>  connect on port N (the default is 22)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ssh"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tar"><span class="std std-ref">tar</span></a></p></td>
+<td><p>bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-czf</span> <span class="pre">a.tar.gz</span> <span class="pre">dir/</span></code>  CREATE a gzip-compressed archive of dir/ (c=create, z=gzip, f=file)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-xzf</span> <span class="pre">a.tar.gz</span></code>  EXTRACT a gzip archive</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-tzf</span> <span class="pre">a.tar.gz</span></code>  LIST an archive’s contents without extracting</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">dir</span></code>  change to dir first — archive from, or extract into, a chosen directory</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tar"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tmux"><span class="std std-ref">tmux</span></a></p></td>
+<td><p>run a persistent terminal that survives disconnects — detach, log out, and reattach later with your work still running.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tmux</span></code>  start a new session</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Ctrl-b</span> <span class="pre">d</span></code>  DETACH — leave it running and drop back to your normal shell</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">attach</span>&#160; <span class="pre">/</span>&#160; <span class="pre">tmux</span> <span class="pre">a</span></code>  re-attach to the running session after you reconnect</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">ls</span></code>  list running sessions</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tmux"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-top"><span class="std std-ref">top</span></a></p></td>
+<td><p>watch processes live — a continuously updating table of what is using the CPU and memory.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">top</span></code>  start the live view (press `q` to quit)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">htop</span></code>  a friendlier colour version, if installed — scrollable, with click-to-kill</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-top"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-watch"><span class="std std-ref">watch</span></a></p></td>
+<td><p>re-run a command every couple of seconds and show its latest output in place — to watch something change.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">watch</span> <span class="pre">CMD</span></code>  re-run CMD every 2 seconds (e.g. `watch squeue` to watch a job queue)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">N</span></code>  set the interval to N seconds</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-d</span></code>  highlight what changed since last time</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-watch"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -896,12 +1038,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/04-cluster/14-environment-and-modules.html"
+       href="../notebooks/04-cluster/15-remote-work-and-moving-data.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">14 Environment and modules</p>
+        <p class="prev-next-title">15 Remote work and moving data</p>
       </div>
     </a>
 </div>
