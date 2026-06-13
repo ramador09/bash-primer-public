@@ -198,6 +198,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../04-cluster/14-environment-and-modules.html">14 Environment and modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../04-cluster/15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../04-cluster/16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-cluster/17-speedup-vs-resources.html">17 Speedup vs resources</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -478,7 +479,8 @@ files live. Here is the patch of tree we are about to explore:</p>
         │   └── replica-exchange.lammps
         ├── results/
         │   ├── sn2-neb.ener
-        │   └── pt-slab.xyz
+        │   ├── pt-slab.xyz
+        │   └── gr2hno3-scaling.dat
         ├── logs/
         │   ├── gr2hno3-nvt.log
         │   └── gr2hno3-restart.log
@@ -699,12 +701,13 @@ within folders — use <code class="docutils literal notranslate"><span class="p
 │   ├── gr2hno3-nvt.log
 │   └── gr2hno3-restart.log
 ├── results
+│   ├── gr2hno3-scaling.dat
 │   ├── pt-slab.xyz
 │   └── sn2-neb.ener
 └── trajectories
     ├── lj38-optimization.xyz
     └── lj38-relaxed.xyz
-5 directories, 10 files
+5 directories, 11 files
 </pre></div>
 </div>
 </div>
@@ -752,9 +755,9 @@ NOTEBOOK_STYLE.md  apt.txt	 notebooks		   templates
 README.md	   commands.yml  opt			   tools
 SERIES_VERSION	   data		 postBuild
 total 80
-drwxr-x---  15 runner runner 4096 Jun 13 16:25 .
+drwxr-x---  15 runner runner 4096 Jun 13 20:27 .
 drwxr-xr-x+  5 root   root   4096 Jun  7 22:22 ..
--rw-------   1 runner runner 1549 Jun 13 16:25 .bash_history
+-rw-------   1 runner runner 1549 Jun 13 20:27 .bash_history
 -rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
 -rw-r--r--   1 runner runner   67 Jun  7 21:47 .bash_profile
 </pre></div>
@@ -778,7 +781,7 @@ form with <code class="docutils literal notranslate"><span class="pre">ls</span>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20K
--rw-r--r-- 1 runner runner 2.0K Jun  1  2023 README.md
+-rw-r--r-- 1 runner runner 2.4K Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4.0K Mar  1  2023 inputs
 drwxr-xr-x 2 runner runner 4.0K Feb  1  2023 logs
 drwxr-xr-x 2 runner runner 4.0K May  1  2023 results
@@ -834,12 +837,13 @@ its <strong>absolute</strong> path (hint: <code class="docutils literal notransl
 │   ├── gr2hno3-nvt.log
 │   └── gr2hno3-restart.log
 ├── results
+│   ├── gr2hno3-scaling.dat
 │   ├── pt-slab.xyz
 │   └── sn2-neb.ener
 └── trajectories
     ├── lj38-optimization.xyz
     └── lj38-relaxed.xyz
-5 directories, 10 files
+5 directories, 11 files
 </pre></div>
 </div>
 </div>
@@ -862,10 +866,10 @@ is newest? (The flags <code class="docutils literal notranslate"><span class="pr
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 32K
-drwxr-xr-x 13 runner runner 4.0K Jun 13 16:25 ..
-drwxr-xr-x  6 runner runner 4.0K Jun 13 16:24 .
+drwxr-xr-x 13 runner runner 4.0K Jun 13 20:27 ..
+drwxr-xr-x  6 runner runner 4.0K Jun 13 20:26 .
 -rw-r--r--  1 runner runner  460 Jun 15  2023 .dataset-notes
--rw-r--r--  1 runner runner 2.0K Jun  1  2023 README.md
+-rw-r--r--  1 runner runner 2.4K Jun  1  2023 README.md
 drwxr-xr-x  2 runner runner 4.0K May  1  2023 results
 drwxr-xr-x  2 runner runner 4.0K Apr  1  2023 trajectories
 drwxr-xr-x  2 runner runner 4.0K Mar  1  2023 inputs

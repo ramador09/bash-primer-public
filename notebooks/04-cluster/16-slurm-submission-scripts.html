@@ -74,7 +74,7 @@
     <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/16-slurm-submission-scripts.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="next" title="17 Speedup vs resources" href="17-speedup-vs-resources.html" />
     <link rel="prev" title="15 Remote work and moving data" href="15-remote-work-and-moving-data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -198,6 +198,7 @@
 <li class="toctree-l1"><a class="reference internal" href="14-environment-and-modules.html">14 Environment and modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">16 SLURM submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17-speedup-vs-resources.html">17 Speedup vs resources</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -559,7 +560,7 @@ ID</strong> — the number you will use to track it:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4803
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4758
 Submitted batch job 1000
 </pre></div>
 </div>
@@ -649,7 +650,7 @@ loading it inside the script:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4842
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4797
 Submitted batch job 1001
 </pre></div>
 </div>
@@ -694,7 +695,7 @@ login shell happened to have:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4873
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4828
 Submitted batch job 1002
 </pre></div>
 </div>
@@ -851,7 +852,7 @@ traj_03.xyz
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4984
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4938
 Submitted batch job 1004
 </pre></div>
 </div>
@@ -929,7 +930,7 @@ for “poll <code class="docutils literal notranslate"><span class="pre">squeue<
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5040
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4995
 Submitted batch job 1005
 --- output file: ---
 slurm-1005.out
@@ -984,11 +985,11 @@ one that <code class="docutils literal notranslate"><span class="pre">module</sp
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5155
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5110
 Submitted batch job 1007
 --- without module load: ---
 bare.sh: line 3: democode: command not found
-[1] 5186
+[1] 5141
 Submitted batch job 1008
 --- with module load inside: ---
 democode 1.0 — stand-in simulation code (loaded via the module system)
@@ -998,9 +999,9 @@ democode 1.0 — stand-in simulation code (loaded via the module system)
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5217
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5172
 Submitted batch job 1009
-[1] 5247
+[1] 5202
 Submitted batch job 1010
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the job failed without the module load and succeeded with it loaded inside
 </pre></div>
@@ -1025,7 +1026,7 @@ submit it. Then “lint” it — confirm the directives are present.</p>
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output=run-%j.out
-[1] 5292
+[1] 5246
 Submitted batch job 1011
 --- output (note the custom --output name): ---
 running production job 1011 on 1 core(s)
@@ -1053,7 +1054,7 @@ inside, writes each task’s result, then collect the results into a table.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5337
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5291
 Submitted batch job 1012
 --- per-task outputs: ---
 slurm-1012_1.out  slurm-1012_2.out  slurm-1012_3.out  slurm-1012_4.out
@@ -1168,11 +1169,11 @@ behind a real CSCS or LUMI allocation proposal.</p>
       </div>
     </a>
     <a class="right-next"
-       href="../../reference/compendium.html"
+       href="17-speedup-vs-resources.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Compendium Scriptorum</p>
+        <p class="prev-next-title">17 Speedup vs resources</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

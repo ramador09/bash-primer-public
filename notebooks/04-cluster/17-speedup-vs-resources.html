@@ -1,0 +1,1006 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="17 Speedup vs resources" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/04-cluster/17-speedup-vs-resources.html" />
+<meta property="og:site_name" content="Introduction to the Bash Shell" />
+<meta property="og:description" content="What this notebook is about: In Notebook 16 you wrote#SBATCH --ntasks=? and--cpus-per-task=? and simply guessed the numbers. This notebook answers the questi..." />
+<meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
+<meta property="og:image:alt" content="Introduction to the Bash Shell" />
+<meta name="description" content="What this notebook is about: In Notebook 16 you wrote#SBATCH --ntasks=? and--cpus-per-task=? and simply guessed the numbers. This notebook answers the questi..." />
+
+    <title>17 Speedup vs resources &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-cluster/17-speedup-vs-resources';</script>
+    <script src="../../_static/home-button.js?v=6d5ef4fc"></script>
+    <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/17-speedup-vs-resources.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="16 SLURM submission scripts" href="16-slurm-submission-scripts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/13-control-flow.html">13 Control flow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14-environment-and-modules.html">14 Environment and modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">17 Speedup vs resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/04-cluster/17-speedup-vs-resources.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/04-cluster/17-speedup-vs-resources.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>17 Speedup vs resources</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-question-how-many-cores">A. The question: how many cores?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-strong-scaling-from-data">B. Strong scaling from data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-why-it-bends-amdahl-s-law">C. Why it bends: Amdahl’s law</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-measure-your-own">D. Measure your own</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-the-justification">E. The justification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-speedup-and-efficiency">Warm-up 1 (worked) — Speedup and efficiency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-find-the-knee">Warm-up 2 (your turn) — Find the knee</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-amdahl-s-serial-fraction">Applied 1 (your turn) — Amdahl’s serial fraction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-measure-your-own-speedup">Applied 2 (your turn) — Measure your own speedup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-justify-an-allocation">Composite — putting it together (justify an allocation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-in-the-terminal">Optional stretch — Plot it in the terminal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="speedup-vs-resources">
+<h1>17 Speedup vs resources<a class="headerlink" href="#speedup-vs-resources" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part IV — Working on a cluster</span>
+    <span class="bp-meta">Notebook&nbsp;17</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Turning a timing table into a defensible core count: computing
+    <code>speedup</code> and <code>efficiency</code> with <code>awk</code>, reading
+    off the knee, and justifying how many cores to request.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>In Notebook 16 you wrote <code class="docutils literal notranslate"><span class="pre">#SBATCH</span> <span class="pre">--ntasks=?</span></code> and <code class="docutils literal notranslate"><span class="pre">--cpus-per-task=?</span></code> and simply
+<strong>guessed</strong> the numbers. This notebook answers the question properly — and it does
+so with the one bash skill that runs through all of Part II: <strong>extract a table and
+compute on it with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</strong> The scaling ideas (efficiency, Amdahl, the knee) are
+just enough context to read the numbers; this is a shell notebook, not a
+parallel-computing course.</p>
+<p>The data is a table of <code class="docutils literal notranslate"><span class="pre">(cores,</span> <span class="pre">walltime)</span></code> for the <strong>same job</strong> run on different
+core counts — physics-optional, as ever. It is a strong-scaling sweep of the
+<strong>graphene + nitric-acid (<code class="docutils literal notranslate"><span class="pre">gr2hno3</span></code>) system</strong> whose CP2K logs you grepped in
+Notebooks 6–8, run on ETH’s <strong>Euler</strong>. From it you will compute speedup and
+efficiency, find where adding cores stops paying off, and write the short
+data-backed paragraph that justifies an allocation request.</p>
+</section>
+<section id="a-the-question-how-many-cores">
+<h2>A. The question: how many cores?<a class="headerlink" href="#a-the-question-how-many-cores" title="Link to this heading">#</a></h2>
+<p>The temptation is to ask for as many cores as possible — surely more is faster? It
+is not, and the cost makes the mistake expensive. A cluster bills you in
+<strong>core-hours</strong>:</p>
+<blockquote>
+<div><p><strong>core-hours = cores × walltime.</strong></p>
+</div></blockquote>
+<p>A job on 256 cores for 1 hour costs 256 core-hours, the same as 1 core for 256
+hours. So if doubling the cores does <strong>not</strong> roughly halve the walltime, you are
+paying double for little gain — and on a finite allocation, burning hours you will
+want later. The whole notebook is about finding the core count where you are still
+getting your money’s worth, and stopping there.</p>
+</section>
+<section id="b-strong-scaling-from-data">
+<h2>B. Strong scaling from data<a class="headerlink" href="#b-strong-scaling-from-data" title="Link to this heading">#</a></h2>
+<p>Here is the sweep — one row per run, the same problem on more and more cores:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^#&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1        1830
+2         921
+4         470
+8         243
+16        129
+32         72
+64         53
+128        41
+256        37
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two derived quantities turn this into an answer. <strong>Speedup</strong> is how many times faster
+you got relative to one core, <strong><code class="docutils literal notranslate"><span class="pre">S(N)</span> <span class="pre">=</span> <span class="pre">T(1)</span> <span class="pre">/</span> <span class="pre">T(N)</span></code></strong>; <strong>efficiency</strong> is how much of
+each core you are actually using, <strong><code class="docutils literal notranslate"><span class="pre">E(N)</span> <span class="pre">=</span> <span class="pre">S(N)</span> <span class="pre">/</span> <span class="pre">N</span></code></strong>. <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">1</span></code> (100%) is the ideal,
+where N cores give exactly N× the speed. Both are pure arithmetic on the table, so
+<code class="docutils literal notranslate"><span class="pre">awk</span></code> computes them in one pass (the <code class="docutils literal notranslate"><span class="pre">T(1)</span></code> baseline is captured from the first row):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  /^#/ || NF != 2 { next }                 # skip comments and blanks</span>
+<span class="s1">  NR_data++ == 0  { t1 = $2 }              # first data row is the 1-core baseline</span>
+<span class="s1">  {</span>
+<span class="s1">    S = t1 / $2                            # speedup  S(N) = T(1)/T(N)</span>
+<span class="s1">    E = S / $1                             # efficiency E(N) = S/N</span>
+<span class="s1">    printf &quot;%6d  %9d  %8.1f  %7.0f%%\n&quot;, $1, $2, S, E*100</span>
+<span class="s1">  }</span>
+<span class="s1">  BEGIN { printf &quot;%6s  %9s  %8s  %8s\n&quot;, &quot;cores&quot;, &quot;time_s&quot;, &quot;speedup&quot;, &quot;efficncy&quot; }</span>
+<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> cores     time_s   speedup  efficncy
+     1       1830       1.0      100%
+     2        921       2.0       99%
+     4        470       3.9       97%
+     8        243       7.5       94%
+    16        129      14.2       89%
+    32         72      25.4       79%
+    64         53      34.5       54%
+   128         41      44.6       35%
+   256         37      49.5       19%
+</pre></div>
+</div>
+</div>
+</div>
+<p>Read down the efficiency column and the story jumps out: near-perfect to 32 cores,
+then a cliff. Here it is as a picture:</p>
+<div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Strong scaling of the gr2hno3 job on Euler <span style="text-transform:none;">(32 cores / node)</span></div>
+  <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">  cores   speedup   parallel efficiency  E = S(N)/N
+    1       1.0×    ████████████████████  100%
+    2       2.0×    ████████████████████   99%
+    4       3.9×    ███████████████████    97%
+    8       7.5×    ███████████████████    94%
+   16      14.2×    ██████████████████     89%
+   32      25.4×    ████████████████       79%   ◀ knee — one full node
+   64      34.5×    ███████████            54%   ◀ now across 2 nodes: comm cost
+  128      44.6×    ███████                35%
+  256      49.5×    ████                   19%   communication-bound
+          ideal speedup would be S = N (linear); the gap is parallel overhead</pre>
+</div>
+<p>The <strong>knee</strong> is the useful core count: the largest N where efficiency is still
+respectable — convention puts the line around <strong>75–80%</strong>. Past it, you spend cores
+to buy almost nothing. Find it directly: the largest N with <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">≥</span> <span class="pre">0.75</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  /^#/ || NF != 2 { next }</span>
+<span class="s1">  NR_data++ == 0  { t1 = $2 }</span>
+<span class="s1">  { if ((t1/$2)/$1 &gt;= 0.75) knee = $1 }</span>
+<span class="s1">  END { print &quot;knee (largest core count with E &gt;= 0.75):&quot;, knee, &quot;cores&quot; }</span>
+<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee (largest core count with E &gt;= 0.75): 32 cores
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>32 cores</strong> — and that is exactly <strong>one node</strong> of this machine. The reason is
+physical: up to 32 cores the job lives inside a single node, sharing fast memory;
+at 64 it must split across <strong>two</strong> nodes and pay for every byte they exchange over
+the network. That communication cost is what bends the curve down so sharply past
+the node boundary.</p>
+</section>
+<section id="c-why-it-bends-amdahl-s-law">
+<h2>C. Why it bends: Amdahl’s law<a class="headerlink" href="#c-why-it-bends-amdahl-s-law" title="Link to this heading">#</a></h2>
+<p>The bend is not bad luck; it is arithmetic. Almost every job has a <strong>serial
+fraction</strong> <code class="docutils literal notranslate"><span class="pre">s</span></code> — setup, I/O, reductions — that cannot be parallelized. If a fraction
+<code class="docutils literal notranslate"><span class="pre">s</span></code> of the work is stuck on one core and the rest <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">−</span> <span class="pre">s)</span></code> splits perfectly, then</p>
+<blockquote>
+<div><p><strong>S(N) = 1 / ( s + (1 − s)/N )</strong>   — Amdahl’s law.</p>
+</div></blockquote>
+<p>As <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">→</span> <span class="pre">∞</span></code>, the <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">−</span> <span class="pre">s)/N</span></code> term vanishes and speedup hits a <strong>ceiling</strong> of <code class="docutils literal notranslate"><span class="pre">1/s</span></code>,
+no matter how many cores you throw at it. You can estimate <code class="docutils literal notranslate"><span class="pre">s</span></code> straight from the
+data: rearranging Amdahl for a single measured point <code class="docutils literal notranslate"><span class="pre">N</span></code> (using the ratio
+<code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>) gives <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>. Take an in-node point, where the
+formula is clean:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  /^#/ || NF != 2 { next }</span>
+<span class="s1">  NR_data++ == 0  { t1 = $2 }</span>
+<span class="s1">  $1 == 16 {</span>
+<span class="s1">    r = $2 / t1</span>
+<span class="s1">    s = (r*$1 - 1) / ($1 - 1)</span>
+<span class="s1">    printf &quot;serial fraction s = %.3f  -&gt;  Amdahl ceiling S_max = 1/s = %.0f\n&quot;, s, 1/s</span>
+<span class="s1">  }</span>
+<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>serial fraction s = 0.009  -&gt;  Amdahl ceiling S_max = 1/s = 117
+</pre></div>
+</div>
+</div>
+</div>
+<p>So under one percent of this job is serial — excellent — and Amdahl alone would
+allow a speedup near 100×. Yet the data tops out around <strong>50×</strong>: the extra shortfall
+is the <strong>inter-node communication</strong> of §B, which Amdahl’s single-node model does not
+include. (The mirror image is <strong>Gustafson’s law / weak scaling</strong>: if you grow the
+<em>problem</em> with the cores instead of fixing it, efficiency holds up far better — a
+different question for a different day.)</p>
+</section>
+<section id="d-measure-your-own">
+<h2>D. Measure your own<a class="headerlink" href="#d-measure-your-own" title="Link to this heading">#</a></h2>
+<p>The dataset shows the <strong>node-level</strong> rolloff. You can feel a <strong>core-level</strong> one on
+this very machine. Take a fixed batch of CPU work, run it split across 1, then 2,
+then 4 parallel workers (<code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code>, from Notebook 5), and time each with the
+<code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code> stopwatch from Notebook 13:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># A &quot;work unit&quot; is one short, CPU-bound awk loop (no I/O, repeatable). bench runs</span>
+<span class="c1"># a fixed batch of 4 of them across W parallel workers and returns the wall time.</span>
+bench<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="nb">local</span><span class="w"> </span><span class="nv">W</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span>t0<span class="w"> </span>t1
+<span class="w">  </span><span class="nv">t0</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%s.%N<span class="k">)</span>
+<span class="w">  </span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-P<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$W</span><span class="s2">&quot;</span><span class="w"> </span>-I<span class="o">{}</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;awk &quot;BEGIN{s=0;for(i=0;i&lt;4000000;i++)s+=sqrt(i)}&quot;&#39;</span>
+<span class="w">  </span><span class="nv">t1</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%s.%N<span class="k">)</span>
+<span class="w">  </span>awk<span class="w"> </span><span class="s2">&quot;BEGIN{ printf \&quot;%.3f\&quot;, </span><span class="nv">$t1</span><span class="s2"> - </span><span class="nv">$t0</span><span class="s2"> }&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">t1</span><span class="o">=</span><span class="k">$(</span>bench<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;%7s  %7s  %7s\n&quot;</span><span class="w"> </span>workers<span class="w"> </span>time_s<span class="w"> </span>speedup
+<span class="k">for</span><span class="w"> </span>W<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">4</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nv">tw</span><span class="o">=</span><span class="k">$(</span>bench<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$W</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="w">  </span>awk<span class="w"> </span><span class="s2">&quot;BEGIN{ printf \&quot;%7d  %7.2f  %7.2f\n\&quot;, </span><span class="nv">$W</span><span class="s2">, </span><span class="nv">$tw</span><span class="s2">, </span><span class="nv">$t1</span><span class="s2">/</span><span class="nv">$tw</span><span class="s2"> }&quot;</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
+      1     1.04     1.00
+      2     1.07     0.97
+      4     1.07     0.97
+</pre></div>
+</div>
+</div>
+</div>
+<p>You should see speedup climb and then <strong>flatten</strong> — going from 2 to 4 workers buys
+much less than 1 to 2 — because once you ask for more workers than the machine has
+physical cores, they fight over the same hardware (<strong>oversubscription</strong>). That is the
+core-level twin of the node-level cliff in §B.</p>
+<div class="warning admonition">
+<p class="admonition-title">⚠ The shape is the lesson, not the numbers</p>
+<p>This page runs on a small, <strong>shared</strong> cloud machine (often only 1–2 cores you do not
+have to yourself), so your exact times will be noisy and your speedup may stall at 2
+workers or wobble. That is fine — even expected. Read the <strong>shape</strong> (more workers →
+diminishing returns → a rolloff), not the decimals. Real benchmarking pins a job to
+dedicated cores and averages several runs; here we are after the idea.</p>
+</div>
+<p>Put the two together and you have the whole picture: your single-node run shows the
+rolloff from <strong>oversubscription</strong> (too many workers per core); the dataset shows the
+rolloff from <strong>communication</strong> (too many nodes per job). Both say the same thing —
+<em>there is a point past which more resources stop helping.</em></p>
+</section>
+<section id="e-the-justification">
+<h2>E. The justification<a class="headerlink" href="#e-the-justification" title="Link to this heading">#</a></h2>
+<p>The payoff is a decision you can defend. An allocation committee (CSCS, LUMI, your PI)
+does not want “we’d like a lot of cores”; it wants a number with evidence. The
+efficiency table writes the paragraph for you:</p>
+<blockquote>
+<div><p><em>We request <strong>32 cores</strong> (one node) per job. Strong-scaling tests of this system
+show parallel efficiency holding above <strong>79%</strong> through 32 cores, then falling
+sharply — to <strong>54%</strong> at 64 cores — as the job spans multiple nodes and
+inter-node communication dominates. Running at 32 cores therefore uses our
+allocation efficiently; larger jobs would burn roughly double the core-hours for
+well under double the speed.</em></p>
+</div></blockquote>
+<p>Numbers in, a defensible decision out. That is the entire point of the exercise — and
+the reason the shell work mattered: it turned a raw timing table into the one sentence
+that gets the allocation approved.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The dataset analysis is read-only and deterministic — graded on the numbers. The live
+micro-benchmark’s times vary with the machine, so it is graded on <strong>structure</strong> (the
+right rows, a rolloff), not exact seconds. Saved results go to a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
+<section id="warm-up-1-worked-speedup-and-efficiency">
+<h3>Warm-up 1 (worked) — Speedup and efficiency<a class="headerlink" href="#warm-up-1-worked-speedup-and-efficiency" title="Link to this heading">#</a></h3>
+<p>Compute the full <code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">E</span></code> table from the dataset with <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and read off the
+efficiency at 32 cores.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> cores     time_s   speedup    effic.
+     1       1830      1.00      100%
+     2        921      1.99       99%
+     4        470      3.89       97%
+     8        243      7.53       94%
+    16        129     14.19       89%
+    32         72     25.42       79%
+    64         53     34.53       54%
+   128         41     44.63       35%
+   256         37     49.46       19%
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk computed the speedup/efficiency table correctly (S=25.4x, E=79% at 32 cores)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-find-the-knee">
+<h3>Warm-up 2 (your turn) — Find the knee<a class="headerlink" href="#warm-up-2-your-turn-find-the-knee" title="Link to this heading">#</a></h3>
+<p>Identify the largest core count whose efficiency is still at least 75%.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee: 32 cores (efficiency stays &gt;= 75% up to here)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the knee — the largest core count with E &gt;= 0.75 — is 32
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-amdahl-s-serial-fraction">
+<h3>Applied 1 (your turn) — Amdahl’s serial fraction<a class="headerlink" href="#applied-1-your-turn-amdahl-s-serial-fraction" title="Link to this heading">#</a></h3>
+<p>Estimate the serial fraction <code class="docutils literal notranslate"><span class="pre">s</span></code> from an in-node data point with
+<code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)/(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>, <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>, and report the Amdahl ceiling <code class="docutils literal notranslate"><span class="pre">1/s</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>from N=8:  s = 0.0089  -&gt;  S_max = 1/s = 112
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the estimated serial fraction s (0.0089) is small and in the expected range (~0.005-0.02)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-your-turn-measure-your-own-speedup">
+<h3>Applied 2 (your turn) — Measure your own speedup<a class="headerlink" href="#applied-2-your-turn-measure-your-own-speedup" title="Link to this heading">#</a></h3>
+<p>Time a fixed batch of CPU work at 1, 2, and 4 parallel workers (<code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code> + the
+<code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code> stopwatch), build the speedup table, and note where it rolls off. Times
+vary, so only the structure is graded.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
+      1     1.04     1.00
+      2     1.07     0.97
+      4     1.07     0.97
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the micro-benchmark produced a 3-row speedup table (1, 2, 4 workers)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-justify-an-allocation">
+<h3>Composite — putting it together (justify an allocation)<a class="headerlink" href="#composite-putting-it-together-justify-an-allocation" title="Link to this heading">#</a></h3>
+<p>The real proposal skill: from the dataset, recommend a core count and back it with the
+efficiency evidence. Compute the knee, then write a short justification paragraph that
+cites the efficiency at the knee and the collapse beyond it. Save it to a file.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We request 32 cores (one node) per job. Strong-scaling tests show parallel
+efficiency holding at 79% through 32 cores, then falling to 54%
+once the job spans multiple nodes and inter-node communication dominates. Running at
+32 cores uses the allocation efficiently; larger jobs would cost far more
+core-hours for little extra speed.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the justification recommends 32 cores and cites the efficiency evidence
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-plot-it-in-the-terminal">
+<h3>Optional stretch — Plot it in the terminal<a class="headerlink" href="#optional-stretch-plot-it-in-the-terminal" title="Link to this heading">#</a></h3>
+<p>No grade. Turn the speedup column into a quick ASCII bar chart with <code class="docutils literal notranslate"><span class="pre">awk</span></code> (no new
+tools) — the shell’s instant plot:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   1 cores  S=  1.0  #
+   2 cores  S=  2.0  ##
+   4 cores  S=  3.9  ####
+   8 cores  S=  7.5  ########
+  16 cores  S= 14.2  ##############
+  32 cores  S= 25.4  #########################
+  64 cores  S= 34.5  ###################################
+ 128 cores  S= 44.6  #############################################
+ 256 cores  S= 49.5  #################################################
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a real plot, pipe the two columns to <strong><code class="docutils literal notranslate"><span class="pre">gnuplot</span></code></strong> in your terminal
+(<code class="docutils literal notranslate"><span class="pre">gnuplot</span> <span class="pre">-p</span> <span class="pre">-e</span> <span class="pre">&quot;plot</span> <span class="pre">'data/results/gr2hno3-scaling.dat'</span> <span class="pre">using</span> <span class="pre">1:2</span> <span class="pre">with</span> <span class="pre">linespoints&quot;</span></code>)
+— or load them into Python/matplotlib. Same data, prettier axes.</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now turn a timing table into a defensible core count — speedup and efficiency
+with <code class="docutils literal notranslate"><span class="pre">awk</span></code>, the knee, the Amdahl ceiling, and the paragraph that justifies the request.
+That is the last piece of <strong>working on a cluster</strong>, and it closes Part IV.</p>
+<p>What is left is to stop doing all of this <strong>by hand.</strong> You have a scaling sweep
+(Notebook 16), text extraction (Part II), and the analysis above — separate steps you
+run and re-run manually. <strong>Part V</strong> ties the whole course together with <strong><code class="docutils literal notranslate"><span class="pre">make</span></code></strong>
+(Notebook 18): a single <code class="docutils literal notranslate"><span class="pre">make</span></code> that orchestrates the sweep, the parsing, and the
+analysis as one automated, repeatable pipeline — scripting, text processing, and HPC
+awareness composed into the tool that runs them all.</p>
+<p><em>No new commands this time: this is a pure-analysis notebook, and every tool in it —
+<code class="docutils literal notranslate"><span class="pre">awk</span></code> (Notebook 8), <code class="docutils literal notranslate"><span class="pre">sort</span></code>, <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code> (Notebook 5), <code class="docutils literal notranslate"><span class="pre">time</span></code>/<code class="docutils literal notranslate"><span class="pre">date</span></code> (Notebook 13) —
+you have already met. The Compendium is unchanged.</em></p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box to run the
+    <code>awk</code> analysis and your own micro-benchmark, and to try the
+    <code>gnuplot</code> plot. The published notebooks ship <b>without worked
+    solutions</b>; if you would like the reference solutions — to teach from or to
+    check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/04-cluster"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="16-slurm-submission-scripts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">16 SLURM submission scripts</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-question-how-many-cores">A. The question: how many cores?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-strong-scaling-from-data">B. Strong scaling from data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-why-it-bends-amdahl-s-law">C. Why it bends: Amdahl’s law</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-measure-your-own">D. Measure your own</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-the-justification">E. The justification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-speedup-and-efficiency">Warm-up 1 (worked) — Speedup and efficiency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-find-the-knee">Warm-up 2 (your turn) — Find the knee</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-amdahl-s-serial-fraction">Applied 1 (your turn) — Amdahl’s serial fraction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-measure-your-own-speedup">Applied 2 (your turn) — Measure your own speedup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-justify-an-allocation">Composite — putting it together (justify an allocation)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-in-the-terminal">Optional stretch — Plot it in the terminal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
