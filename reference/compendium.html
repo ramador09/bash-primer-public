@@ -74,7 +74,7 @@
     <link rel="canonical" href="https://ramador.me/bash-primer-public/reference/compendium.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="15 Remote work and moving data" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html" />
+    <link rel="prev" title="16 SLURM submission scripts" href="../notebooks/04-cluster/16-slurm-submission-scripts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -196,6 +196,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html">14 Environment and modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -932,7 +933,35 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-rsync"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-scp"><span class="std std-ref">scp</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sacct"><span class="std std-ref">sacct</span></a></p></td>
+<td><p>report accounting/history for jobs that have run — their state and exit code.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sacct</span></code>  your recent jobs and how they ended (`COMPLETED`, `FAILED`, `CANCELLED`, `TIMEOUT`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">JOBID</span></code>  one job by id</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sacct"><span class="std std-ref">16 SLURM submission scripts</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sbatch"><span class="std std-ref">sbatch</span></a></p></td>
+<td><p>submit a batch script to the scheduler — it queues the job and prints a job ID.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">script.sh</span></code>  queue the script; it runs later on a compute node, its output going to `slurm-&lt;jobid&gt;.out`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--array=1-N</span></code>  submit a job ARRAY — run the script N times, each task with its own `$SLURM_ARRAY_TASK_ID`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">(resources)</span></code>  set with `#SBATCH` directives at the top of the file, not as command-line flags</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sbatch"><span class="std std-ref">16 SLURM submission scripts</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-scancel"><span class="std std-ref">scancel</span></a></p></td>
+<td><p>cancel a queued or running job by its job ID.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">scancel</span> <span class="pre">JOBID</span></code>  cancel that one job</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-u</span> <span class="pre">&quot;$USER&quot;</span></code>  cancel ALL of your jobs at once (use with care)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-scancel"><span class="std std-ref">16 SLURM submission scripts</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-scp"><span class="std std-ref">scp</span></a></p></td>
 <td><p>copy files to or from a remote machine over ssh — a simple one-shot transfer.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">file</span> <span class="pre">host:path</span></code>  copy a local file UP to the remote</div>
@@ -942,6 +971,14 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-scp"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sinfo"><span class="std std-ref">sinfo</span></a></p></td>
+<td><p>show the cluster’s partitions (queues) — their names, time limits, and how busy they are.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sinfo</span></code>  list the partitions with their `STATE` (`idle`, `mix`, `alloc`) and `TIMELIMIT`</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-sinfo"><span class="std std-ref">16 SLURM submission scripts</span></a></p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">source</span></a></p></td>
 <td><p>run a script in the CURRENT shell (not a child), so the variables, functions, and PATH changes it makes persist.</p></td>
 <td><div class="line-block">
@@ -950,7 +987,17 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/14-environment-and-modules.html#cmd-source"><span class="std std-ref">14 Environment and modules</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ssh"><span class="std std-ref">ssh</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-squeue"><span class="std std-ref">squeue</span></a></p></td>
+<td><p>show the job queue — what is pending, running, and whose.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-u</span> <span class="pre">&quot;$USER&quot;</span></code>  only YOUR jobs (the everyday view)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">JOBID</span></code>  one specific job by id</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ST</span> <span class="pre">column</span></code>  the state: `PD` pending (waiting in line), `R` running, `CG` completing</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html#cmd-squeue"><span class="std std-ref">16 SLURM submission scripts</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ssh"><span class="std std-ref">ssh</span></a></p></td>
 <td><p>open a shell on a remote machine — or run a single command there — over an encrypted connection.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">user&#64;host</span></code>  log in as `user` on `host` and get an interactive remote shell</div>
@@ -961,7 +1008,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-ssh"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tar"><span class="std std-ref">tar</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tar"><span class="std std-ref">tar</span></a></p></td>
 <td><p>bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">-czf</span> <span class="pre">a.tar.gz</span> <span class="pre">dir/</span></code>  CREATE a gzip-compressed archive of dir/ (c=create, z=gzip, f=file)</div>
@@ -972,7 +1019,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tar"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tmux"><span class="std std-ref">tmux</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tmux"><span class="std std-ref">tmux</span></a></p></td>
 <td><p>run a persistent terminal that survives disconnects — detach, log out, and reattach later with your work still running.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">tmux</span></code>  start a new session</div>
@@ -983,7 +1030,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-tmux"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-top"><span class="std std-ref">top</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-top"><span class="std std-ref">top</span></a></p></td>
 <td><p>watch processes live — a continuously updating table of what is using the CPU and memory.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">top</span></code>  start the live view (press `q` to quit)</div>
@@ -992,7 +1039,7 @@ each command links back to the notebook where it was introduced.</p>
 </td>
 <td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-top"><span class="std std-ref">15 Remote work and moving data</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-watch"><span class="std std-ref">watch</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html#cmd-watch"><span class="std std-ref">watch</span></a></p></td>
 <td><p>re-run a command every couple of seconds and show its latest output in place — to watch something change.</p></td>
 <td><div class="line-block">
 <div class="line"><code class="docutils literal notranslate"><span class="pre">watch</span> <span class="pre">CMD</span></code>  re-run CMD every 2 seconds (e.g. `watch squeue` to watch a job queue)</div>
@@ -1038,12 +1085,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/04-cluster/15-remote-work-and-moving-data.html"
+       href="../notebooks/04-cluster/16-slurm-submission-scripts.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">15 Remote work and moving data</p>
+        <p class="prev-next-title">16 SLURM submission scripts</p>
       </div>
     </a>
 </div>

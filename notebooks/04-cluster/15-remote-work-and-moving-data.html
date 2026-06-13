@@ -74,7 +74,7 @@
     <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/15-remote-work-and-moving-data.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="next" title="16 SLURM submission scripts" href="16-slurm-submission-scripts.html" />
     <link rel="prev" title="14 Environment and modules" href="14-environment-and-modules.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -197,6 +197,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="14-environment-and-modules.html">14 Environment and modules</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">15 Remote work and moving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -514,18 +515,18 @@ identity with them automatically. Generating the pair is real, so run it here:</
 Your identification has been saved in scratch/demo_key
 Your public key has been saved in scratch/demo_key.pub
 The key fingerprint is:
-SHA256:MAeL/MGfv7fH3O0AHdcvsCKGAnxInWthHHNtRRkZWNk you@laptop
+SHA256:fbqAvKjEPDCy2iWuQJXwHFNXNQx1m89XMQUhg3zhCcA you@laptop
 The key&#39;s randomart image is:
 +--[ED25519 256]--+
-|  .oooo. =*B     |
-| o o*= o+ + E   .|
-|  +.+o*..   . . o|
-|   oo. B .   + o.|
-|   .. o S . o o .|
-|     . . o . . . |
-|          .  o...|
-|           .. +.o|
-|          ...o ..|
+| . o.. oo=*=+oo=o|
+|  + + . E o+++o o|
+|   =       .oo  .|
+|  .      .    o .|
+|+.      S . .  o.|
+|o*   . .   o    .|
+|o * . o . .      |
+|o+ + . . . .     |
+|o.+.. .   .      |
 +----[SHA256]-----+
 </pre></div>
 </div>
@@ -540,8 +541,8 @@ done the Notebook-11 chmod for you:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jun 12 16:10 scratch/demo_key
--rw-r--r-- 1 runner runner  92 Jun 12 16:10 scratch/demo_key.pub
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jun 13 16:28 scratch/demo_key
+-rw-r--r-- 1 runner runner  92 Jun 13 16:28 scratch/demo_key.pub
 </pre></div>
 </div>
 </div>
@@ -678,8 +679,8 @@ total size is 12  speedup is 0.06
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 c.txt
-sent 116 bytes  received 19 bytes  270.00 bytes/sec
-total size is 14  speedup is 0.10 (DRY RUN)
+sent 112 bytes  received 19 bytes  262.00 bytes/sec
+total size is 14  speedup is 0.11 (DRY RUN)
 </pre></div>
 </div>
 </div>
@@ -749,8 +750,8 @@ it for real — start a long <code class="docutils literal notranslate"><span cl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4659
-backgrounded as PID 4659
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4646
+backgrounded as PID 4646
 </pre></div>
 </div>
 </div>
@@ -789,8 +790,8 @@ even without tmux:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4660
-nohup PID 4660 — still running after logout; output in nohup.out
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4647
+nohup PID 4647 — still running after logout; output in nohup.out
 </pre></div>
 </div>
 </div>
@@ -812,8 +813,8 @@ running — pair it with <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4659  0.0  0.0   6124  1972 pts/0    S+   16:10   0:00 sleep 300
-runner      4660  0.0  0.0   6124  1972 pts/0    S+   16:10   0:00 sleep 300
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4646  0.0  0.0   6124  1972 pts/0    S+   16:28   0:00 sleep 300
+runner      4647  0.0  0.0   6124  1972 pts/0    S+   16:28   0:00 sleep 300
 </pre></div>
 </div>
 </div>
@@ -874,7 +875,7 @@ commands keep you ahead of it. <strong><code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   56G   16G  78% /
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   16G  79% /
 </pre></div>
 </div>
 </div>
@@ -896,7 +897,7 @@ by a short name from where you work:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jun 12 16:10 scratch/link-to-realdir -&gt; realdir
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jun 13 16:28 scratch/link-to-realdir -&gt; realdir
 </pre></div>
 </div>
 </div>
@@ -962,10 +963,9 @@ one.txt
 sent 150 bytes  received 35 bytes  370.00 bytes/sec
 total size is 8  speedup is 0.04
 sending incremental file list
-./
 three.txt
-sent 133 bytes  received 22 bytes  310.00 bytes/sec
-total size is 10  speedup is 0.06 (DRY RUN)
+sent 124 bytes  received 19 bytes  286.00 bytes/sec
+total size is 10  speedup is 0.07 (DRY RUN)
 dst still holds:
 one.txt  two.txt
 </pre></div>
@@ -990,7 +990,7 @@ identify the larger.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>496K	scratch/heavy
 8.0K	scratch/light
-/dev/root        72G   56G   16G  78% /
+/dev/root        72G   57G   16G  79% /
 largest: scratch/heavy
 </pre></div>
 </div>
@@ -1012,7 +1012,7 @@ to reach a file inside the target.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jun 12 16:10 scratch/shortcut -&gt; store
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jun 13 16:28 scratch/shortcut -&gt; store
 payload
 </pre></div>
 </div>
@@ -1034,11 +1034,11 @@ confirm it is gone.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4726
-running in background as PID 4726
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4712
+running in background as PID 4712
 [1]+  Running                 sleep 300 &amp;
     PID COMMAND
-   4726 sleep
+   4712 sleep
 after kill, still alive? no
 </pre></div>
 </div>
@@ -1046,7 +1046,7 @@ after kill, still alive? no
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4730
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4716
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command backgrounded, appeared in the process table, then was killed
 </pre></div>
 </div>
@@ -1079,8 +1079,8 @@ directory standing in for the remote), and verify it arrived intact.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 job-results.tar.gz
-sent 344 bytes  received 35 bytes  758.00 bytes/sec
-total size is 223  speedup is 0.59
+sent 347 bytes  received 35 bytes  764.00 bytes/sec
+total size is 226  speedup is 0.59
 4.0K	scratch/job-results.tar.gz
 --- arrived, contents: ---
 output/
@@ -1170,11 +1170,11 @@ Notebook 14 inside it — submitting it with <code class="docutils literal notra
       </div>
     </a>
     <a class="right-next"
-       href="../../reference/compendium.html"
+       href="16-slurm-submission-scripts.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Compendium Scriptorum</p>
+        <p class="prev-next-title">16 SLURM submission scripts</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

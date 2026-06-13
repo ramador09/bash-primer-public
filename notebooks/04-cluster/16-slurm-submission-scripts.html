@@ -1,0 +1,1267 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="16 SLURM submission scripts" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/04-cluster/16-slurm-submission-scripts.html" />
+<meta property="og:site_name" content="Introduction to the Bash Shell" />
+<meta property="og:description" content="What this notebook is about: Everything in Notebooks 14 and 15 got you onto the cluster and your data across to it. This one is about the thing you actually ..." />
+<meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
+<meta property="og:image:alt" content="Introduction to the Bash Shell" />
+<meta name="description" content="What this notebook is about: Everything in Notebooks 14 and 15 got you onto the cluster and your data across to it. This one is about the thing you actually ..." />
+
+    <title>16 SLURM submission scripts &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-cluster/16-slurm-submission-scripts';</script>
+    <script src="../../_static/home-button.js?v=6d5ef4fc"></script>
+    <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/16-slurm-submission-scripts.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="15 Remote work and moving data" href="15-remote-work-and-moving-data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/13-control-flow.html">13 Control flow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14-environment-and-modules.html">14 Environment and modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16 SLURM submission scripts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/04-cluster/16-slurm-submission-scripts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/04-cluster/16-slurm-submission-scripts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>16 SLURM submission scripts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-why-a-scheduler">A. Why a scheduler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-anatomy-of-a-submission-script">B. Anatomy of a submission script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-the-environment-inside-the-job">C. The environment inside the job</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-submit-and-monitor">D. Submit and monitor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-job-arrays-one-script-many-tasks">E. Job arrays — one script, many tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-anatomy-and-submit">Warm-up 1 (worked) — Anatomy and submit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-submit-and-monitor">Warm-up 2 (your turn) — Submit and monitor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-the-environment-inside-the-job">Applied 1 (your turn) — The environment inside the job</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-a-real-euler-submission-script">Applied 2 (worked) — A real Euler submission script</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-a-job-array-sweep">Composite — putting it together (a job-array sweep)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-conceptual-generate-a-script-and-the-resource-question">Optional stretch (conceptual) — Generate a script, and the resource question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="slurm-submission-scripts">
+<h1>16 SLURM submission scripts<a class="headerlink" href="#slurm-submission-scripts" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part IV — Working on a cluster</span>
+    <span class="bp-meta">Notebook&nbsp;16</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    Handing your work to a scheduler: writing a <code>#SBATCH</code> submission
+    script, loading its environment from inside, submitting it with
+    <code>sbatch</code>, watching the queue, and sweeping a whole dataset with a
+    job array.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Everything in Notebooks 14 and 15 got you <em>onto</em> the cluster and your data <em>across</em>
+to it. This one is about the thing you actually came for: <strong>running the work</strong> — and
+on a shared machine you do not just run it, you <strong>hand it to a scheduler.</strong></p>
+<p>A submission script is the whole idea, and it is nothing new: it is a <strong>bash script</strong>
+(Part III) with a short header of <strong><code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code> directives</strong> that tell the scheduler
+what resources you want. You write it, <strong>submit</strong> it, and <strong>check on it</strong>; it runs
+<em>later</em>, on some compute node, in a <strong>fresh non-login shell</strong> — which is exactly why
+the environment lesson from Notebook 14 is about to pay off. The loop is:</p>
+<blockquote>
+<div><p><strong>submit → queue → run → collect.</strong></p>
+</div></blockquote>
+<div class="note admonition">
+<p class="admonition-title">A real scheduler we can stand in for</p>
+<p>There is no SLURM scheduler inside this page, so the course ships a thin <strong>mock</strong>:
+<code class="docutils literal notranslate"><span class="pre">sbatch</span></code> runs your job’s body right here — in the background, in a fresh shell — and
+writes a real <code class="docutils literal notranslate"><span class="pre">slurm-&lt;jobid&gt;.out</span></code>; <code class="docutils literal notranslate"><span class="pre">squeue</span></code>, <code class="docutils literal notranslate"><span class="pre">scancel</span></code>, <code class="docutils literal notranslate"><span class="pre">sacct</span></code>, and <code class="docutils literal notranslate"><span class="pre">sinfo</span></code> all
+behave plausibly. Because <code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code> lines are ordinary <strong>comments to bash</strong>, the
+scripts you write here are <strong>exactly</strong> what you would submit on ETH’s <strong>Euler</strong> or
+any other SLURM cluster.</p>
+<p>The one thing the mock cannot reproduce is the <strong>queue wait</strong>: here your job starts
+immediately, where on a shared cluster it waits its turn behind hundreds of others.
+That wait is the scheduler’s whole reason to exist — so picture the line even as we
+skip it. (As ever: <strong>no physics</strong> — we load a stand-in “code” and never ask what it
+computes.)</p>
+</div>
+</section>
+<section id="a-why-a-scheduler">
+<h2>A. Why a scheduler<a class="headerlink" href="#a-why-a-scheduler" title="Link to this heading">#</a></h2>
+<p>A cluster is <strong>shared</strong>. Hundreds of people want to run hours-long jobs on the same
+few thousand cores, so you cannot simply log in and launch your work — you would
+trample everyone else (and they, you). Instead the machine runs a <strong>scheduler</strong>
+(SLURM, on Euler and most academic clusters). You describe the job and the resources
+it needs; SLURM puts it in a <strong>queue</strong>, and when the resources are free it runs your
+job on a <strong>compute node</strong> and saves the output for you to collect.</p>
+<p>The machine is carved into <strong>partitions</strong> (named queues, often by time limit).
+<strong><code class="docutils literal notranslate"><span class="pre">sinfo</span></code></strong> shows them — the menu you are choosing from:</p>
+<div class="bp-card" id="cmd-sinfo"><span class="bp-card-cmd">sinfo</span> &mdash; <span class="bp-card-job">show the cluster&#x27;s partitions (queues) — their names, time limits, and how busy they are.</span><table><tr><td>sinfo</td><td>list the partitions with their <code>STATE</code> (<code>idle</code>, <code>mix</code>, <code>alloc</code>) and <code>TIMELIMIT</code></td></tr></table><div class="bp-card-more">more: <code>man sinfo</code>; the partition names feed your <code>#SBATCH --partition=</code> choice</div></div><div class="bp-watchout"><strong>Watch out:</strong> partitions differ per cluster — Euler&#x27;s are time-based (e.g. <code>normal.4h</code>). Check <code>sinfo</code> and your cluster&#x27;s docs before guessing a <code>--partition</code></div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sinfo
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PARTITION    AVAIL  TIMELIMIT  NODES  STATE
+normal.4h       up    4:00:00     48  idle
+normal.24h      up   24:00:00     96  mix
+normal.120h     up  120:00:00     24  alloc
+</pre></div>
+</div>
+</div>
+</div>
+<p>(Real Euler partitions are time-based — <code class="docutils literal notranslate"><span class="pre">normal.4h</span></code>, <code class="docutils literal notranslate"><span class="pre">normal.24h</span></code>, and so on — and
+busier; this is the mock’s tidy stand-in.) One rule of etiquette follows immediately
+from “shared”: <strong>never run heavy work on the login node.</strong> The login node is the
+shared front desk where everyone types; you <em>submit</em> real computation to a compute
+node, you do not run it where you land.</p>
+</section>
+<section id="b-anatomy-of-a-submission-script">
+<h2>B. Anatomy of a submission script<a class="headerlink" href="#b-anatomy-of-a-submission-script" title="Link to this heading">#</a></h2>
+<p>A submission script has three parts, in order: a <strong>shebang</strong>, a <strong>header of
+<code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code> directives</strong>, then the <strong>body</strong> (the actual commands). Here is the
+smallest complete one — write it and look at its three parts:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&gt;<span class="w"> </span>first-job.sh<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">#!/usr/bin/env bash</span>
+<span class="s">#SBATCH --job-name=first</span>
+<span class="s">#SBATCH --time=00:05:00</span>
+<span class="s">#SBATCH --ntasks=1</span>
+<span class="s">#SBATCH --mem-per-cpu=1G</span>
+
+<span class="s">echo &quot;Hello from batch job $SLURM_JOB_ID, running as &#39;$SLURM_JOB_NAME&#39;.&quot;</span>
+<span class="s">echo &quot;I ran on a compute node, in a shell all my own.&quot;</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code> lines look like comments — and to <strong>bash</strong> they <em>are</em> comments, which
+is why the script still runs as an ordinary file. To <strong>SLURM</strong> they are resource
+requests, read before the job starts. They must come <strong>before any real command</strong>.
+Here is the workhorse set:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">#SBATCH directives</span> — <span class="bp-card-job">resource requests at the top of the script: comments to bash, instructions to SLURM. (A reference table — Euler-anchored.)</span>
+  <table>
+    <tr><td>--job-name=NAME</td><td>a label for the job, shown in <code>squeue</code></td></tr>
+    <tr><td>--time=HH:MM:SS</td><td>wall-clock limit; the job is KILLED when it is exceeded</td></tr>
+    <tr><td>--ntasks=N</td><td>number of tasks (e.g. MPI ranks); <code>1</code> for a serial job</td></tr>
+    <tr><td>--cpus-per-task=N</td><td>cores per task — for a threaded / OpenMP code</td></tr>
+    <tr><td>--nodes=N</td><td>how many compute nodes to spread across</td></tr>
+    <tr><td>--mem-per-cpu=SIZE</td><td>memory per core, e.g. <code>2G</code>; too low and the job is OOM-killed</td></tr>
+    <tr><td>--partition=NAME</td><td>which queue (from <code>sinfo</code>) to submit to</td></tr>
+    <tr><td>--output=FILE</td><td>where output goes (default <code>slurm-%j.out</code>; <code>%j</code> = the job id)</td></tr>
+    <tr><td>--array=A-B</td><td>submit a job array — many tasks from one script (§E)</td></tr>
+  </table>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">⚠ Request realistically — too little is as bad as too much</p>
+<p>Two directives bite hardest. If <strong><code class="docutils literal notranslate"><span class="pre">--time</span></code></strong> is shorter than the job needs, SLURM
+<strong>kills it</strong> the moment the limit passes — hours of work, gone at 99%. If
+<strong><code class="docutils literal notranslate"><span class="pre">--mem-per-cpu</span></code></strong> is lower than the job needs, it is <strong>OOM-killed</strong>. (And asking
+for <em>too much</em> of either just makes you wait longer in the queue, since SLURM must
+find that much free — and on many clusters it bills your allocation.) Estimate from
+a real run, then add a margin.</p>
+</div>
+<p>Now <strong>submit</strong> it. <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> hands the script to the scheduler and prints a <strong>job
+ID</strong> — the number you will use to track it:</p>
+<div class="bp-card" id="cmd-sbatch"><span class="bp-card-cmd">sbatch</span> &mdash; <span class="bp-card-job">submit a batch script to the scheduler — it queues the job and prints a job ID.</span><table><tr><td>sbatch script.sh</td><td>queue the script; it runs later on a compute node, its output going to <code>slurm-&lt;jobid&gt;.out</code></td></tr><tr><td>--array=1-N</td><td>submit a job ARRAY — run the script N times, each task with its own <code>$SLURM_ARRAY_TASK_ID</code></td></tr><tr><td>(resources)</td><td>set with <code>#SBATCH</code> directives at the top of the file, not as command-line flags</td></tr></table><div class="bp-card-more">more: <code>man sbatch</code>; it returns <code>Submitted batch job &lt;id&gt;</code> — note the id to track the job</div></div><div class="bp-watchout"><strong>Watch out:</strong> the job runs in a FRESH shell on another machine — it does NOT inherit your interactively-loaded modules. <code>module load</code> what you need INSIDE the script (Notebook 14)</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>first-job.sh
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4803
+Submitted batch job 1000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>The job ran on a “compute node”, and — this is the part that surprises everyone the
+first time — <strong>its output did not come back to your screen.</strong> It went to a file,
+<code class="docutils literal notranslate"><span class="pre">slurm-&lt;jobid&gt;.out</span></code>, in the directory you submitted from. That is where results live;
+go and find it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>slurm-*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>slurm-1000.out
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>slurm-*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello from batch job 1000, running as &#39;first&#39;.
+I ran on a compute node, in a shell all my own.
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is the whole loop in miniature: you wrote a script, <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> queued it, it ran
+elsewhere, and it left its output in a file for you to collect.</p>
+</section>
+<section id="c-the-environment-inside-the-job">
+<h2>C. The environment inside the job<a class="headerlink" href="#c-the-environment-inside-the-job" title="Link to this heading">#</a></h2>
+<p>Here is the single most important practical lesson in this notebook, and it follows
+straight from Notebook 14. Your job runs in a <strong>fresh, non-login shell</strong> on a compute
+node. That shell does <strong>not</strong> run your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, and it does <strong>not</strong> inherit the
+modules you loaded by hand on the login node. So if your script just <em>calls</em> a tool,
+expecting it to be on <code class="docutils literal notranslate"><span class="pre">PATH</span></code> the way it was when you tested by hand — it will not be.</p>
+<p>Watch it fail. First, load our stand-in code <strong>here, in this interactive shell</strong>, and
+confirm it is available:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>democode/1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>democode
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/bash-primer/bash-primer/opt/democode-1.0/bin/democode
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is right there on our <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. Now submit a job that simply runs it — <strong>without</strong>
+loading it inside the script:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&gt;<span class="w"> </span>no-module.sh<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">#!/usr/bin/env bash</span>
+<span class="s">#SBATCH --job-name=no-module</span>
+<span class="s">democode</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>no-module.sh
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4842
+Submitted batch job 1001
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>slurm-*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>no-module.sh: line 3: democode: command not found
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></code></strong> — even though <code class="docutils literal notranslate"><span class="pre">democode</span></code> was loaded right here when we
+submitted. The job’s fresh shell never saw it. The fix is the whole lesson: <strong>load
+the environment <em>inside</em> the script</strong>, so the job sets itself up no matter what your
+login shell happened to have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&gt;<span class="w"> </span>with-module.sh<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">#!/usr/bin/env bash</span>
+<span class="s">#SBATCH --job-name=with-module</span>
+<span class="s">module load democode/1.0</span>
+<span class="s">democode</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>with-module.sh
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4873
+Submitted batch job 1002
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>slurm-*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>democode 1.0 — stand-in simulation code (loaded via the module system)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Same job, one line added, and now it works. <strong>Every</strong> submission script should set up
+its own environment — <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code> (and <code class="docutils literal notranslate"><span class="pre">export</span></code> what you need) — in its body. It is
+the difference between “it worked when I ran it by hand” and a job that actually runs.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+</section>
+<section id="d-submit-and-monitor">
+<h2>D. Submit and monitor<a class="headerlink" href="#d-submit-and-monitor" title="Link to this heading">#</a></h2>
+<p>You rarely submit one job and walk away. The real rhythm is <strong>submit, then watch</strong>:
+is it queued, running, done? Three commands cover it. <strong><code class="docutils literal notranslate"><span class="pre">squeue</span></code></strong> shows the queue,
+<strong><code class="docutils literal notranslate"><span class="pre">scancel</span></code></strong> cancels a job, and <strong><code class="docutils literal notranslate"><span class="pre">sacct</span></code></strong> reports on jobs that have already
+finished.</p>
+<div class="bp-card" id="cmd-squeue"><span class="bp-card-cmd">squeue</span> &mdash; <span class="bp-card-job">show the job queue — what is pending, running, and whose.</span><table><tr><td>-u &quot;$USER&quot;</td><td>only YOUR jobs (the everyday view)</td></tr><tr><td>-j JOBID</td><td>one specific job by id</td></tr><tr><td>ST column</td><td>the state: <code>PD</code> pending (waiting in line), <code>R</code> running, <code>CG</code> completing</td></tr></table><div class="bp-card-more">more: <code>man squeue</code>; pair with <code>watch squeue</code> (Notebook 15) to watch the queue update live</div></div><div class="bp-watchout"><strong>Watch out:</strong> an empty queue means the job already finished (or never queued) — check <code>sacct</code> for its history and read <code>slurm-&lt;jobid&gt;.out</code> for its result</div><div class="bp-card" id="cmd-scancel"><span class="bp-card-cmd">scancel</span> &mdash; <span class="bp-card-job">cancel a queued or running job by its job ID.</span><table><tr><td>scancel JOBID</td><td>cancel that one job</td></tr><tr><td>-u &quot;$USER&quot;</td><td>cancel ALL of your jobs at once (use with care)</td></tr></table><div class="bp-card-more">more: <code>man scancel</code>; get the id from <code>squeue</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> check the id before you cancel — <code>scancel -u &quot;$USER&quot;</code> kills every job you have queued, not just the one you meant</div><div class="bp-card" id="cmd-sacct"><span class="bp-card-cmd">sacct</span> &mdash; <span class="bp-card-job">report accounting/history for jobs that have run — their state and exit code.</span><table><tr><td>sacct</td><td>your recent jobs and how they ended (<code>COMPLETED</code>, <code>FAILED</code>, <code>CANCELLED</code>, <code>TIMEOUT</code>)</td></tr><tr><td>-j JOBID</td><td>one job by id</td></tr></table><div class="bp-card-more">more: <code>man sacct</code>; <code>squeue</code> is the LIVE queue, <code>sacct</code> is the history after the fact</div></div><div class="bp-watchout"><strong>Watch out:</strong> a job missing from <code>squeue</code> is not lost — <code>sacct</code> shows how it ended: <code>TIMEOUT</code> means <code>--time</code> was too short, <code>OUT_OF_MEMORY</code> means <code>--mem</code> was too low</div><p>Submit a longer job and watch it move through the system. First, there it is in the
+queue — running (<code class="docutils literal notranslate"><span class="pre">R</span></code>), with the job id, name, and partition:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">jobid</span><span class="o">=</span><span class="k">$(</span>sbatch<span class="w"> </span>long-job.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $NF}&#39;</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;submitted, tracking job </span><span class="nv">$jobid</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>submitted, tracking job 1003
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>squeue<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$USER</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             JOBID   PARTITION       NAME      USER ST     TIME  NODES NODELIST
+              1003      normal   long-job    runner  R     0:01      1 compute-01
+</pre></div>
+</div>
+</div>
+</div>
+<p>On a real cluster you would <code class="docutils literal notranslate"><span class="pre">watch</span> <span class="pre">squeue</span></code> (Notebook 15) and wait for it to finish.
+Here, suppose you spot a mistake and want it gone — <strong><code class="docutils literal notranslate"><span class="pre">scancel</span></code></strong> it by id:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scancel<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$jobid</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>squeue<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$USER</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             JOBID   PARTITION       NAME      USER ST     TIME  NODES NODELIST
+</pre></div>
+</div>
+</div>
+</div>
+<p>The queue is empty again. And after the fact — whether a job finished or was
+cancelled — <strong><code class="docutils literal notranslate"><span class="pre">sacct</span></code></strong> is the history book that says how it ended:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sacct
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       JobID      JobName       State ExitCode
+------------ ------------ ----------- --------
+        1003     long-job   CANCELLED      0:0
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">CANCELLED</span></code>, as expected. (A finished job would read <code class="docutils literal notranslate"><span class="pre">COMPLETED</span></code>; a job that ran past
+its <code class="docutils literal notranslate"><span class="pre">--time</span></code> reads <code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code>; one that overran its memory, <code class="docutils literal notranslate"><span class="pre">OUT_OF_MEMORY</span></code>.) The
+loop, then, is: <strong><code class="docutils literal notranslate"><span class="pre">sbatch</span></code> → <code class="docutils literal notranslate"><span class="pre">squeue</span></code> to watch → read <code class="docutils literal notranslate"><span class="pre">slurm-&lt;jobid&gt;.out</span></code> for the
+result, or <code class="docutils literal notranslate"><span class="pre">sacct</span></code> for the verdict.</strong></p>
+</section>
+<section id="e-job-arrays-one-script-many-tasks">
+<h2>E. Job arrays — one script, many tasks<a class="headerlink" href="#e-job-arrays-one-script-many-tasks" title="Link to this heading">#</a></h2>
+<p>The cluster’s real power is doing the <em>same</em> work over a <em>whole dataset</em> at once. You
+have 200 trajectories to analyze; you do not write 200 scripts, and you do not loop
+200 <code class="docutils literal notranslate"><span class="pre">sbatch</span></code>es. You write <strong>one</strong> script and submit it as a <strong>job array</strong>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">#SBATCH</span> <span class="pre">--array=1-N</span></code> tells SLURM to run the script <strong>N times</strong>. Each run — each
+<strong>task</strong> — is identical except for one variable, <strong><code class="docutils literal notranslate"><span class="pre">$SLURM_ARRAY_TASK_ID</span></code></strong>, which is
+its index (1, 2, 3, …). You use that index to pick <em>which</em> item this task handles —
+exactly the indexing logic of a loop (Notebook 13), but the scheduler runs the tasks
+in parallel for you. Here is a sweep over a small list of trajectory files:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>We have a list of files (one per line) and a script whose task picks the line
+matching its array index, then “analyzes” it (here: reports the atom count):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>files.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>traj_01.xyz
+traj_02.xyz
+traj_03.xyz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&gt;<span class="w"> </span>sweep.sh<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">#!/usr/bin/env bash</span>
+<span class="s">#SBATCH --job-name=sweep</span>
+<span class="s">#SBATCH --array=1-3</span>
+<span class="s">#SBATCH --time=00:10:00</span>
+
+<span class="s">module load democode/1.0                       # set up the environment (§C)</span>
+<span class="s">file=$(sed -n &quot;${SLURM_ARRAY_TASK_ID}p&quot; files.txt)   # this task&#39;s file</span>
+<span class="s">atoms=$(head -n 1 &quot;$file&quot;)                      # the &quot;analysis&quot;</span>
+<span class="s">echo &quot;task ${SLURM_ARRAY_TASK_ID}: ${file} has ${atoms} atoms&quot;</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Submit it <strong>once</strong>; SLURM expands it into three tasks:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>sweep.sh
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4984
+Submitted batch job 1004
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>Each task wrote its own output file, <code class="docutils literal notranslate"><span class="pre">slurm-&lt;jobid&gt;_&lt;task&gt;.out</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>slurm-*_*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>slurm-1004_1.out  slurm-1004_2.out  slurm-1004_3.out
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>slurm-*_*.out
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>task 1: traj_01.xyz has 12 atoms
+task 2: traj_02.xyz has 38 atoms
+task 3: traj_03.xyz has 7 atoms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Three files processed from one submission, each by its own task. Collecting the
+per-task outputs into a single result is the everyday last step:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>slurm-*_*.out<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>&gt;<span class="w"> </span>results.txt<span class="p">;</span><span class="w"> </span>cat<span class="w"> </span>results.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>task 1: traj_01.xyz has 12 atoms
+task 2: traj_02.xyz has 38 atoms
+task 3: traj_03.xyz has 7 atoms
+</pre></div>
+</div>
+</div>
+</div>
+<p>The variables SLURM sets inside the job (you read them, you never set them):</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">$SLURM_* variables</span> — <span class="bp-card-job">set by the scheduler inside the running job; read them in your script. (A reference table.)</span>
+  <table>
+    <tr><td>$SLURM_JOB_ID</td><td>the job's id (the number <code>sbatch</code> returned)</td></tr>
+    <tr><td>$SLURM_JOB_NAME</td><td>the <code>--job-name</code> you gave it</td></tr>
+    <tr><td>$SLURM_SUBMIT_DIR</td><td>the directory you ran <code>sbatch</code> from</td></tr>
+    <tr><td>$SLURM_ARRAY_TASK_ID</td><td>which array task this is — the index you sweep on</td></tr>
+    <tr><td>$SLURM_CPUS_PER_TASK</td><td>the <code>--cpus-per-task</code> you requested</td></tr>
+  </table>
+</div>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>The runnable ones submit through the mock: each lives in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, every
+<code class="docutils literal notranslate"><span class="pre">slurm-*.out</span></code> is cleaned up between them, and <code class="docutils literal notranslate"><span class="pre">data/</span></code> stays read-only. Job IDs vary,
+so the checks read <strong>content</strong>, not numbers. (When a hidden step needs the
+background job to finish before reading its output, it <code class="docutils literal notranslate"><span class="pre">wait</span></code>s — the mock’s stand-in
+for “poll <code class="docutils literal notranslate"><span class="pre">squeue</span></code> until it is done”.)</p>
+<section id="warm-up-1-worked-anatomy-and-submit">
+<h3>Warm-up 1 (worked) — Anatomy and submit<a class="headerlink" href="#warm-up-1-worked-anatomy-and-submit" title="Link to this heading">#</a></h3>
+<p>Write a minimal script (shebang + a couple of <code class="docutils literal notranslate"><span class="pre">#SBATCH</span></code> lines + an <code class="docutils literal notranslate"><span class="pre">echo</span></code> body),
+<code class="docutils literal notranslate"><span class="pre">sbatch</span></code> it, find its <code class="docutils literal notranslate"><span class="pre">slurm-&lt;jobid&gt;.out</span></code>, and read it.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5040
+Submitted batch job 1005
+--- output file: ---
+slurm-1005.out
+--- its contents: ---
+hello from job 1005 on the cluster
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the script was submitted and its output landed in slurm-&lt;jobid&gt;.out
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-submit-and-monitor">
+<h3>Warm-up 2 (your turn) — Submit and monitor<a class="headerlink" href="#warm-up-2-your-turn-submit-and-monitor" title="Link to this heading">#</a></h3>
+<p>Submit a job, see it in <code class="docutils literal notranslate"><span class="pre">squeue</span></code>, then <code class="docutils literal notranslate"><span class="pre">scancel</span></code> it and confirm with <code class="docutils literal notranslate"><span class="pre">sacct</span></code> that it
+is recorded as cancelled.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>submitted job 1006
+             JOBID   PARTITION       NAME      USER ST     TIME  NODES NODELIST
+              1006      normal monitor-me    runner  R     0:01      1 compute-01
+--- queue after cancel: ---
+             JOBID   PARTITION       NAME      USER ST     TIME  NODES NODELIST
+--- history: ---
+       JobID      JobName       State ExitCode
+------------ ------------ ----------- --------
+        1006   monitor-me   CANCELLED      0:0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the job appeared in the queue and its end-state was recorded by sacct
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-the-environment-inside-the-job">
+<h3>Applied 1 (your turn) — The environment inside the job<a class="headerlink" href="#applied-1-your-turn-the-environment-inside-the-job" title="Link to this heading">#</a></h3>
+<p>Submit a script that runs <code class="docutils literal notranslate"><span class="pre">democode</span></code> <strong>without</strong> loading its module (it fails), then
+one that <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>s it <strong>inside</strong> (it works) — the §C lesson, in your hands.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5155
+Submitted batch job 1007
+--- without module load: ---
+bare.sh: line 3: democode: command not found
+[1] 5186
+Submitted batch job 1008
+--- with module load inside: ---
+democode 1.0 — stand-in simulation code (loaded via the module system)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5217
+Submitted batch job 1009
+[1] 5247
+Submitted batch job 1010
+<span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the job failed without the module load and succeeded with it loaded inside
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-worked-a-real-euler-submission-script">
+<h3>Applied 2 (worked) — A real Euler submission script<a class="headerlink" href="#applied-2-worked-a-real-euler-submission-script" title="Link to this heading">#</a></h3>
+<p>Write a properly-formed script with the full workhorse header (<code class="docutils literal notranslate"><span class="pre">--partition</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--time</span></code>, <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code>, <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code>, <code class="docutils literal notranslate"><span class="pre">--output</span></code>), set up its environment, and
+submit it. Then “lint” it — confirm the directives are present.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- the #SBATCH header: ---
+#SBATCH --job-name=production
+#SBATCH --partition=normal.4h
+#SBATCH --time=02:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=2G
+#SBATCH --output=run-%j.out
+[1] 5292
+Submitted batch job 1011
+--- output (note the custom --output name): ---
+running production job 1011 on 1 core(s)
+democode 1.0 — stand-in simulation code (loaded via the module system)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the script has a well-formed Euler header, honoured --output, and ran
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-a-job-array-sweep">
+<h3>Composite — putting it together (a job-array sweep)<a class="headerlink" href="#composite-putting-it-together-a-job-array-sweep" title="Link to this heading">#</a></h3>
+<p>The realistic “run my analysis over the whole dataset” workflow, composing the file
+list (Notebook 5), array indexing (Notebook 13), the script (Notebook 12), and the
+environment inside (Notebook 14). Write <strong>one</strong> array script that processes <strong>one
+trajectory per task</strong> — <code class="docutils literal notranslate"><span class="pre">$SLURM_ARRAY_TASK_ID</span></code> indexing a file list — <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>s
+inside, writes each task’s result, then collect the results into a table.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5337
+Submitted batch job 1012
+--- per-task outputs: ---
+slurm-1012_1.out  slurm-1012_2.out  slurm-1012_3.out  slurm-1012_4.out
+--- collected results table: ---
+frame_01.xyz 12
+frame_02.xyz 38
+frame_03.xyz 54
+frame_04.xyz 9
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the array ran four tasks, one per file, and the collected table has all four results
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-conceptual-generate-a-script-and-the-resource-question">
+<h3>Optional stretch (conceptual) — Generate a script, and the resource question<a class="headerlink" href="#optional-stretch-conceptual-generate-a-script-and-the-resource-question" title="Link to this heading">#</a></h3>
+<p>No grade. Two directions. <strong>(a)</strong> A submission script is just text, so you can
+<strong>generate</strong> one with a heredoc (Notebook 12) — handy when a parameter changes per
+run:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generated:
+run-1.sh  run-2.sh  run-4.sh
+--- run-4.sh: ---
+#!/usr/bin/env bash
+#SBATCH --job-name=scaling-4
+#SBATCH --cpus-per-task=4
+#SBATCH --time=00:30:00
+echo &quot;would run on 4 core(s)&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>(b)</strong> Every script in this notebook simply <em>guessed</em> at <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code>. How many should you actually request? Asking for more cores does
+not automatically run faster — and wastes your allocation while you wait longer in
+the queue. That question is the whole of Notebook 17. (And for an <em>interactive</em>
+session on a compute node — a shell to test in, rather than a batch job — the tool is
+<code class="docutils literal notranslate"><span class="pre">srun</span></code>; read your cluster’s docs for it.)</p>
+</section>
+</section>
+<section id="outlook">
+<h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
+<p>You can now write a real submission script, set up its environment from the inside,
+submit and monitor it with <code class="docutils literal notranslate"><span class="pre">sbatch</span></code>/<code class="docutils literal notranslate"><span class="pre">squeue</span></code>/<code class="docutils literal notranslate"><span class="pre">scancel</span></code>/<code class="docutils literal notranslate"><span class="pre">sacct</span></code>, and sweep an entire
+dataset with a single job array. That is the working cluster loop, end to end.</p>
+<p>But every script you wrote <strong>guessed</strong> at <code class="docutils literal notranslate"><span class="pre">--ntasks</span></code> and <code class="docutils literal notranslate"><span class="pre">--cpus-per-task</span></code>. Ask for
+too few and the job crawls; ask for too many and you wait longer in the queue, waste
+your allocation, and — the part that surprises people — often do not run any faster
+at all. <strong>How many should you actually request?</strong> Next (Notebook 17): read real
+scaling data, compute parallel efficiency, and <em>justify</em> the number — the reasoning
+behind a real CSCS or LUMI allocation proposal.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-sbatch"><code class="bp-cmd-name">sbatch</code></a> &mdash; submit a batch script to the scheduler — it queues the job and prints a job ID.</li><li><a href="#cmd-squeue"><code class="bp-cmd-name">squeue</code></a> &mdash; show the job queue — what is pending, running, and whose.</li><li><a href="#cmd-scancel"><code class="bp-cmd-name">scancel</code></a> &mdash; cancel a queued or running job by its job ID.</li><li><a href="#cmd-sacct"><code class="bp-cmd-name">sacct</code></a> &mdash; report accounting/history for jobs that have run — their state and exit code.</li><li><a href="#cmd-sinfo"><code class="bp-cmd-name">sinfo</code></a> &mdash; show the cluster&#x27;s partitions (queues) — their names, time limits, and how busy they are.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box to write and
+    submit your own scripts against the SLURM mock — and, if you have access to a real
+    cluster (ETH's <b>Euler</b>, say), the very same scripts work there unchanged. The
+    published notebooks ship <b>without worked solutions</b>; if you would like the
+    reference solutions — to teach from or to check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/04-cluster"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="15-remote-work-and-moving-data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">15 Remote work and moving data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-why-a-scheduler">A. Why a scheduler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-anatomy-of-a-submission-script">B. Anatomy of a submission script</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-the-environment-inside-the-job">C. The environment inside the job</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-submit-and-monitor">D. Submit and monitor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-job-arrays-one-script-many-tasks">E. Job arrays — one script, many tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-anatomy-and-submit">Warm-up 1 (worked) — Anatomy and submit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-submit-and-monitor">Warm-up 2 (your turn) — Submit and monitor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-the-environment-inside-the-job">Applied 1 (your turn) — The environment inside the job</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-a-real-euler-submission-script">Applied 2 (worked) — A real Euler submission script</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-a-job-array-sweep">Composite — putting it together (a job-array sweep)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-conceptual-generate-a-script-and-the-resource-question">Optional stretch (conceptual) — Generate a script, and the resource question</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
