@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/02-pipelines/04-redirection-and-pipes.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: Part I got you to a file and let you look inside it. Part II is about processing a file without reading it by eye — and this not..." />
+<meta property="og:description" content="What this notebook is about: Part I got you to a file and let you look inside it. Part II is about processing a file without reading it by eye, and this note..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: Part I got you to a file and let you look inside it. Part II is about processing a file without reading it by eye — and this not..." />
+<meta name="description" content="What this notebook is about: Part I got you to a file and let you look inside it. Part II is about processing a file without reading it by eye, and this note..." />
 
     <title>4 Redirection and pipes &#8212; Introduction to the Bash Shell</title>
   
@@ -451,15 +451,15 @@
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>Part I got you to a file and let you look inside it. Part II is about <em>processing</em>
-a file without reading it by eye — and this notebook is the plumbing that makes
+a file without reading it by eye, and this notebook is the plumbing that makes
 that possible.</p>
-<p>Here is the organising idea, and it is worth saying plainly because the rest of
+<p>The organising idea is worth saying plainly, because the rest of
 the course hangs off it. The Unix way is <strong>many small tools that each do one thing
 well</strong>, snapped together so the output of one becomes the input of the next. That
 is <em>why</em> the coming notebooks teach <code class="docutils literal notranslate"><span class="pre">grep</span></code>, <code class="docutils literal notranslate"><span class="pre">cut</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, and <code class="docutils literal notranslate"><span class="pre">awk</span></code> as separate
 little programs rather than one giant Swiss-army command: each is a pipe fitting,
 and this notebook is the pipe.</p>
-<p>We start mining the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> files now — but, as always, <strong>you only
+<p>We start mining the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> files now. As always, though, <strong>you only
 ever need to see them as text.</strong></p>
 </section>
 <section id="a-the-three-streams">
@@ -467,9 +467,9 @@ ever need to see them as text.</strong></p>
 <p>Every command, when it runs, is wired to three <strong>streams</strong>. Picture the command as
 a box:</p>
 <ul class="simple">
-<li><p><strong>stdin</strong> (standard input, stream <code class="docutils literal notranslate"><span class="pre">0</span></code>) — where it reads its input from;</p></li>
-<li><p><strong>stdout</strong> (standard output, stream <code class="docutils literal notranslate"><span class="pre">1</span></code>) — where it writes its <em>results</em>;</p></li>
-<li><p><strong>stderr</strong> (standard error, stream <code class="docutils literal notranslate"><span class="pre">2</span></code>) — where it writes its <em>complaints</em>.</p></li>
+<li><p><strong>stdin</strong> (standard input, stream <code class="docutils literal notranslate"><span class="pre">0</span></code>): where it reads its input from;</p></li>
+<li><p><strong>stdout</strong> (standard output, stream <code class="docutils literal notranslate"><span class="pre">1</span></code>): where it writes its <em>results</em>;</p></li>
+<li><p><strong>stderr</strong> (standard error, stream <code class="docutils literal notranslate"><span class="pre">2</span></code>): where it writes its <em>complaints</em>.</p></li>
 </ul>
 <div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
   <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">One command, three streams</div>
@@ -534,8 +534,8 @@ a second line
 </div>
 </div>
 <p>The mirror image is <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, which feeds a file into a command’s <strong>stdin</strong>. Most
-commands also take a filename directly, so you meet <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> less often — but it is the
-same idea, running backwards:</p>
+commands also take a filename directly, so you meet <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> less often, though it is
+the same idea running backwards:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&lt;<span class="w"> </span>scratch/notes.txt
@@ -552,7 +552,7 @@ a second line
 <div class="danger admonition">
 <p class="admonition-title">⚠ <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> clobbers — it destroys before it writes</p>
 <p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> does not ask. The instant you run <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">&gt;</span> <span class="pre">file</span></code>, the file’s old contents are
-<strong>gone</strong>, replaced by the new output — even if <code class="docutils literal notranslate"><span class="pre">cmd</span></code> then fails and writes nothing.
+<strong>gone</strong>, replaced by the new output, even if <code class="docutils literal notranslate"><span class="pre">cmd</span></code> then fails and writes nothing.
 This is the data-loss footgun of the notebook, and <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">important.txt</span></code> in the wrong
 moment has erased many a file. Two habits: when you mean to <em>add</em>, reach for <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>,
 not <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>; and before you <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> onto an existing file, glance at it (<code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cat</span></code>) so you
@@ -610,7 +610,7 @@ README.md  inputs  logs  results  scaling  trajectories
 </div>
 </div>
 <p>Often you do not want the errors <em>at all</em>. Redirect them to <strong><code class="docutils literal notranslate"><span class="pre">/dev/null</span></code></strong>, the
-system’s black hole — anything sent there simply vanishes:</p>
+system’s black hole; anything sent there vanishes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>data<span class="w"> </span>nope-not-here<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
@@ -630,7 +630,7 @@ place), and <code class="docutils literal notranslate"><span class="pre">&amp;&g
 reference table below.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A subtlety to file away, not to dwell on: in <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">2&gt;&amp;1</span></code> the order matters —
+<p>A subtlety to file away, not to dwell on: in <code class="docutils literal notranslate"><span class="pre">cmd</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">2&gt;&amp;1</span></code> the order matters:
 <code class="docutils literal notranslate"><span class="pre">2&gt;&amp;1</span></code> copies stderr to <em>wherever stdout points at that moment</em>, so stdout must be
 redirected first. Reverse them and stderr still goes to the screen. You will rarely
 need this, but when a captured log is mysteriously missing its errors, this is why.</p>
@@ -650,7 +650,7 @@ better: it wires one command’s <strong>stdout</strong> straight into the next 
                   the pipe │ carries only stdout — errors still go to the screen</pre>
 </div>
 <p>You have already <em>seen</em> a pipe, back in Notebook 1, without it being explained. The
-line that fetched the top of the <code class="docutils literal notranslate"><span class="pre">ls</span></code> manual —</p>
+line that fetched the top of the <code class="docutils literal notranslate"><span class="pre">ls</span></code> manual,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>man<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>col<span class="w"> </span>-b<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
@@ -666,10 +666,10 @@ SYNOPSIS
 </div>
 </div>
 </div>
-<p>— was a three-stage pipeline all along: <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ls</span></code> produces the manual on stdout,
+<p>was a three-stage pipeline all along: <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ls</span></code> produces the manual on stdout,
 <code class="docutils literal notranslate"><span class="pre">col</span> <span class="pre">-b</span></code> cleans up its formatting, and <code class="docutils literal notranslate"><span class="pre">head</span> <span class="pre">-n</span> <span class="pre">6</span></code> keeps the first six lines. Each
-stage hands its stdout to the next. Here is a simpler one — list <code class="docutils literal notranslate"><span class="pre">data/</span></code> in long
-form, but keep only the first few lines:</p>
+stage hands its stdout to the next. A simpler one: list <code class="docutils literal notranslate"><span class="pre">data/</span></code> in long
+form, keeping only the first few lines:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-l<span class="w"> </span>data<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">3</span>
@@ -684,7 +684,7 @@ drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
 </div>
 </div>
 </div>
-<p>And one more, piping a file’s contents straight into <code class="docutils literal notranslate"><span class="pre">head</span></code> — the output of <code class="docutils literal notranslate"><span class="pre">cat</span></code>
+<p>And one more, piping a file’s contents straight into <code class="docutils literal notranslate"><span class="pre">head</span></code>: the output of <code class="docutils literal notranslate"><span class="pre">cat</span></code>
 becomes the input of <code class="docutils literal notranslate"><span class="pre">head</span></code>, no temporary file needed:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -701,12 +701,12 @@ becomes the input of <code class="docutils literal notranslate"><span class="pre
 </div>
 </div>
 <p>One caution worth repeating: <strong>only stdout flows through the pipe.</strong> A command’s
-stderr is <em>not</em> piped onward — it leaks straight to your terminal unless you
+stderr is <em>not</em> piped onward; it leaks straight to your terminal unless you
 redirect it (that is what the earlier <code class="docutils literal notranslate"><span class="pre">2&gt;</span></code> tricks are for). The pipe carries
 results, not complaints.</p>
 <p>Right now these pipelines are modest, because we only have NB1–3 commands to pipe.
 That changes fast: the rest of Part II is nothing but tools built to sit in a
-pipeline — <code class="docutils literal notranslate"><span class="pre">grep</span></code> to filter, <code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code> to reshape, <code class="docutils literal notranslate"><span class="pre">awk</span></code> to compute. The
+pipeline: <code class="docutils literal notranslate"><span class="pre">grep</span></code> to filter, <code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code> to reshape, <code class="docutils literal notranslate"><span class="pre">awk</span></code> to compute. The
 pipe is what makes them worth having.</p>
 </section>
 <section id="d-tee-save-a-copy-without-breaking-the-pipe">
@@ -751,7 +751,7 @@ trajectories
 </section>
 <section id="operator-reference">
 <h2>Operator reference<a class="headerlink" href="#operator-reference" title="Link to this heading">#</a></h2>
-<p>These are <strong>shell syntax, not commands</strong> — there is no <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">&gt;</span></code>. They wire commands
+<p>These are <strong>shell syntax, not commands</strong>: there is no <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">&gt;</span></code>. They wire commands
 and files together, and they are worth keeping in one place:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Operators</span> — <span class="bp-card-job">redirection and pipes are shell <em>syntax</em>; they steer the three streams between commands and files.</span>
@@ -763,13 +763,13 @@ and files together, and they are worth keeping in one place:</p>
     <tr><td>2&gt;</td><td>send stderr (errors) to a file</td></tr>
     <tr><td>2&gt;&amp;1</td><td>send stderr wherever stdout is currently going</td></tr>
     <tr><td>&amp;&gt;</td><td>send both stdout and stderr to a file</td></tr>
-    <tr><td>/dev/null</td><td>the void — discard whatever is redirected here</td></tr>
+    <tr><td>/dev/null</td><td>the void: discard whatever is redirected here</td></tr>
   </table>
 </div>
 </section>
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
-<p>From here on the exercises do more of the work — that is where fluency is built.
+<p>From here on the exercises do more of the work; that is where fluency is built.
 They ramp from mechanical warm-ups, through tasks on the real <code class="docutils literal notranslate"><span class="pre">data/</span></code>, to a
 composite that wires the whole notebook together. As in Notebook 3, anything we
 write goes into a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, never into <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p>
@@ -950,8 +950,8 @@ First frame of lj38-relaxed.xyz:
 <h3>Optional stretch (terminal-only) — Compose your own<a class="headerlink" href="#optional-stretch-terminal-only-compose-your-own" title="Link to this heading">#</a></h3>
 <p>No ✓ for this one. In the
 <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>,
-build a <strong>three-stage pipeline</strong> from commands you already know — for example
-<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">data</span> <span class="pre">|</span> <span class="pre">head</span> <span class="pre">-n</span> <span class="pre">4</span> <span class="pre">|</span> <span class="pre">tail</span> <span class="pre">-n</span> <span class="pre">2</span></code> — and <strong>predict its output before you run
+build a <strong>three-stage pipeline</strong> from commands you already know (for example
+<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">data</span> <span class="pre">|</span> <span class="pre">head</span> <span class="pre">-n</span> <span class="pre">4</span> <span class="pre">|</span> <span class="pre">tail</span> <span class="pre">-n</span> <span class="pre">2</span></code>) and <strong>predict its output before you run
 it</strong>. Then add a <code class="docutils literal notranslate"><span class="pre">tee</span></code> in the middle so you also save the intermediate result to a
 file, and check the file matches what you expected. Predicting first, then
 verifying, is how you build real confidence with pipes.</p>
@@ -961,18 +961,18 @@ verifying, is how you build real confidence with pipes.</p>
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
 <p>You now have the plumbing: the three streams, redirection to and from files, and
 the pipe that snaps commands together. What is still missing is <em>tools worth
-piping</em> — and that is the rest of Part II. Next (Notebook 5): <strong>globbing and brace
+piping</em>, and that is the rest of Part II. Next (Notebook 5): <strong>globbing and brace
 expansion</strong>, so a single command can act on many files at once; then <code class="docutils literal notranslate"><span class="pre">grep</span></code>, the
-stream toolkit (<code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code>/<code class="docutils literal notranslate"><span class="pre">wc</span></code>/<code class="docutils literal notranslate"><span class="pre">tr</span></code>), and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code> — each a small,
+stream toolkit (<code class="docutils literal notranslate"><span class="pre">cut</span></code>/<code class="docutils literal notranslate"><span class="pre">sort</span></code>/<code class="docutils literal notranslate"><span class="pre">uniq</span></code>/<code class="docutils literal notranslate"><span class="pre">wc</span></code>/<code class="docutils literal notranslate"><span class="pre">tr</span></code>), and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code>: each a small,
 sharp tool built to live inside a pipeline.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-tee"><code class="bp-cmd-name">tee</code></a> &mdash; copy what flows in to a file AND pass it straight through, so you can save a mid-pipeline result without breaking the pipeline.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

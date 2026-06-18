@@ -434,7 +434,7 @@
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
     The two tools that finish the toolkit: sed edits a stream, and awk is
-    field-aware and can compute — clearing the two walls the last notebook hit.
+    field-aware and can compute, clearing the two walls the last notebook hit.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <span class="bp-meta">Raymond Amador</span>
@@ -448,24 +448,24 @@
 <em>strings</em>. <code class="docutils literal notranslate"><span class="pre">cut</span></code> could only split on a <em>single</em> character, and could not do
 arithmetic. These two tools clear both walls and finish the extraction toolkit:</p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">sed</span></code></strong> edits a stream — find-and-replace and more — picking up the regular
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sed</span></code></strong> edits a stream (find-and-replace and more), picking up the regular
 expressions from Notebook 6.</p></li>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">awk</span></code></strong> splits each line into fields and can <strong>compute</strong> on them, which is the
 climax of Part II: doing actual arithmetic on the numbers in real data.</p></li>
 </ul>
-<p>A word of honesty first. <code class="docutils literal notranslate"><span class="pre">sed</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> are each whole programming languages —
+<p>A word of honesty first. <code class="docutils literal notranslate"><span class="pre">sed</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> are each whole programming languages;
 people write hundred-line programs in them. We are not doing that. We take the
 <strong>daily workhorse slice</strong> of each, name the deep parts as out of scope, and stop
 there. That is the right amount for a shell primer, and it is genuinely most of
 what you will ever type. (And, as always: averaging a column of energies is just
-averaging a column of numbers — <strong>no physics required.</strong>)</p>
+averaging a column of numbers: <strong>no physics required.</strong>)</p>
 </section>
 <section id="a-sed-stream-editing">
 <h2>A. <code class="docutils literal notranslate"><span class="pre">sed</span></code> — stream editing<a class="headerlink" href="#a-sed-stream-editing" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sed</span></code> reads its input line by line, applies an editing command to each, and prints
 the result. The mental model is simple: <strong>it is <code class="docutils literal notranslate"><span class="pre">grep</span></code> that can also change what it
 finds.</strong> Its headline command is substitution, <code class="docutils literal notranslate"><span class="pre">s/old/new/</span></code>.</p>
-<div class="bp-card" id="cmd-sed"><span class="bp-card-cmd">sed</span> &mdash; <span class="bp-card-job">edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</span><table><tr><td>-E</td><td>use Extended regex (the same ERE as <code>grep -E</code>); sed otherwise defaults to Basic regex</td></tr><tr><td>-n</td><td>suppress the automatic printing of every line; pair with the <code>p</code> command to print only what you choose</td></tr><tr><td>-i  /  -i.bak</td><td>edit the file IN PLACE; <code>-i.bak</code> keeps a backup of the original first (see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man sed</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the program (<code>sed &#x27;s/old/new/&#x27;</code>) so the shell does not touch <code>$</code>, <code>&amp;</code>, etc.; and <code>-i</code> rewrites the file with NO undo — keep a <code>.bak</code></div><p>Here it is on a scratch config — replace every <code class="docutils literal notranslate"><span class="pre">300</span></code> with <code class="docutils literal notranslate"><span class="pre">500</span></code>. Note <code class="docutils literal notranslate"><span class="pre">sed</span></code> prints
+<div class="bp-card" id="cmd-sed"><span class="bp-card-cmd">sed</span> &mdash; <span class="bp-card-job">edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</span><table><tr><td>-E</td><td>use Extended regex (the same ERE as <code>grep -E</code>); sed otherwise defaults to Basic regex</td></tr><tr><td>-n</td><td>suppress the automatic printing of every line; pair with the <code>p</code> command to print only what you choose</td></tr><tr><td>-i  /  -i.bak</td><td>edit the file IN PLACE; <code>-i.bak</code> keeps a backup of the original first (see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man sed</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the program (<code>sed &#x27;s/old/new/&#x27;</code>) so the shell does not touch <code>$</code>, <code>&amp;</code>, etc.; and <code>-i</code> rewrites the file with NO undo — keep a <code>.bak</code></div><p>Here it is on a scratch config: replace every <code class="docutils literal notranslate"><span class="pre">300</span></code> with <code class="docutils literal notranslate"><span class="pre">500</span></code>. Note <code class="docutils literal notranslate"><span class="pre">sed</span></code> prints
 to the screen and leaves the file untouched (more on that below):</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -487,7 +487,7 @@ MAX_STEPS 1000
 <p>The <code class="docutils literal notranslate"><span class="pre">g</span></code> made it global (every match on each line, not just the first). The regular
 expression is the <strong>same language as Notebook 6</strong> — reach for <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-E</span></code> to get the
 Extended syntax, since <code class="docutils literal notranslate"><span class="pre">sed</span></code>, like <code class="docutils literal notranslate"><span class="pre">grep</span></code>, defaults to the quirkier Basic regex.
-With <code class="docutils literal notranslate"><span class="pre">-E</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in the replacement stands for the whole matched text — handy for
+With <code class="docutils literal notranslate"><span class="pre">-E</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in the replacement stands for the whole matched text, handy for
 wrapping or annotating a match:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -505,7 +505,7 @@ MAX_STEPS &lt;1000&gt;
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">sed</span></code> can also just <em>select</em>. With <code class="docutils literal notranslate"><span class="pre">-n</span></code> (don’t auto-print) and the <code class="docutils literal notranslate"><span class="pre">p</span></code> command, it
-prints only matching lines — essentially <code class="docutils literal notranslate"><span class="pre">grep</span></code>:</p>
+prints only matching lines, essentially <code class="docutils literal notranslate"><span class="pre">grep</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;/CUTOFF/p&#39;</span><span class="w"> </span>scratch/run.in
@@ -535,11 +535,11 @@ MAX_STEPS 1000
 </div>
 </div>
 <p>The full <code class="docutils literal notranslate"><span class="pre">sed</span></code> command vocabulary is below. Beyond it lie the hold space,
-branches, and multi-command scripts — real, powerful, and firmly <strong>out of scope</strong>
+branches, and multi-command scripts: real, formidable, and firmly <strong>out of scope</strong>
 for this course. When you need them, you will know, and you will reach for a
 reference.</p>
 <div class="bp-card">
-  <span class="bp-card-cmd">sed commands</span> — <span class="bp-card-job">the workhorse slice (with <code>-E</code> for ERE). The deep parts — hold space, branching — are out of scope.</span>
+  <span class="bp-card-cmd">sed commands</span> — <span class="bp-card-job">the workhorse slice (with <code>-E</code> for ERE). The deep parts (hold space, branching) are out of scope.</span>
   <table>
     <tr><td>s/old/new/</td><td>substitute the first match on each line</td></tr>
     <tr><td>s/old/new/g</td><td>substitute every match on the line</td></tr>
@@ -552,7 +552,7 @@ reference.</p>
 <div class="danger admonition">
 <p class="admonition-title">⚠ <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-i</span></code> edits in place — no undo</p>
 <p>Everything above printed to the screen and left the file alone. Add <strong><code class="docutils literal notranslate"><span class="pre">-i</span></code></strong> and
-<code class="docutils literal notranslate"><span class="pre">sed</span></code> rewrites the file <em>in place</em> — and, like <code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, with <strong>no undo</strong>. A
+<code class="docutils literal notranslate"><span class="pre">sed</span></code> rewrites the file <em>in place</em>, and, like <code class="docutils literal notranslate"><span class="pre">rm</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, with <strong>no undo</strong>. A
 substitution with a slightly-too-greedy pattern, run with <code class="docutils literal notranslate"><span class="pre">-i</span></code>, has quietly mangled
 many a config. Two habits, the same family as the earlier warnings: dry-run
 <em>without</em> <code class="docutils literal notranslate"><span class="pre">-i</span></code> first and read the output, and when you do commit, use <strong><code class="docutils literal notranslate"><span class="pre">-i.bak</span></code></strong>,
@@ -578,13 +578,13 @@ have not first seen the result of.</p>
 </div>
 </div>
 </div>
-<p>The edit happened, and <code class="docutils literal notranslate"><span class="pre">run.in.bak</span></code> holds the original — your safety net.</p>
+<p>The edit happened, and <code class="docutils literal notranslate"><span class="pre">run.in.bak</span></code> holds the original: your safety net.</p>
 </section>
 <section id="b-awk-fields-and-computation">
 <h2>B. <code class="docutils literal notranslate"><span class="pre">awk</span></code> — fields and computation<a class="headerlink" href="#b-awk-fields-and-computation" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">awk</span></code> also reads line by line, but it does something <code class="docutils literal notranslate"><span class="pre">sed</span></code> does not: it <strong>splits
 each line into fields</strong>, <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, … up to <code class="docutils literal notranslate"><span class="pre">$NF</span></code> (the last), and lets you act on
-them. Crucially, it splits on <em>any run of whitespace</em> by default — which is exactly
+them. Crucially, it splits on <em>any run of whitespace</em> by default, which is exactly
 the wall <code class="docutils literal notranslate"><span class="pre">cut</span></code> hit. Where <code class="docutils literal notranslate"><span class="pre">cut</span> <span class="pre">-d'</span> <span class="pre">'</span></code> miscounts ragged spacing, <code class="docutils literal notranslate"><span class="pre">awk</span></code> just works:</p>
 <div class="bp-card" id="cmd-awk"><span class="bp-card-cmd">awk</span> &mdash; <span class="bp-card-job">split each line into fields and act on them — print columns, filter by condition, and compute (sum, mean, min/max). The field-aware, can-do-arithmetic tool cut could not be.</span><table><tr><td>-F C</td><td>set the field separator to C (the default is any run of whitespace — which is how it beats cut)</td></tr><tr><td>-v var=val</td><td>pass a shell value into the program as an awk variable</td></tr></table><div class="bp-card-more">more: <code>man awk</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> single-quote the program — <code>$1</code>, <code>$2</code> look exactly like shell positional parameters, and the shell will eat them otherwise (the shell-expands-first thread again)</div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -598,7 +598,7 @@ the wall <code class="docutils literal notranslate"><span class="pre">cut</span>
 </div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">$NF</span></code> pulled the energy — the last field — no matter how many spaces padded the
+<p><code class="docutils literal notranslate"><span class="pre">$NF</span></code> pulled the energy (the last field) no matter how many spaces padded the
 line. That single fact retires <code class="docutils literal notranslate"><span class="pre">cut</span></code> for anything real. The structure of an <code class="docutils literal notranslate"><span class="pre">awk</span></code>
 program is <code class="docutils literal notranslate"><span class="pre">pattern</span> <span class="pre">{</span> <span class="pre">action</span> <span class="pre">}</span></code>: for every line matching <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, run <code class="docutils literal notranslate"><span class="pre">action</span></code>.
 Either part is optional. A bare condition filters; a bare action runs on every
@@ -617,7 +617,7 @@ line. <code class="docutils literal notranslate"><span class="pre">NR</span></co
 </div>
 <p>Now the payoff, and the reason <code class="docutils literal notranslate"><span class="pre">awk</span></code> is the climax of Part II: it can <strong>compute</strong>.
 A <code class="docutils literal notranslate"><span class="pre">BEGIN</span></code> block runs before the first line, an <code class="docutils literal notranslate"><span class="pre">END</span></code> block after the last, and in
-between you can accumulate. Summing and averaging a column is the canonical move —
+between you can accumulate. Summing and averaging a column is the canonical move:
 here, the six energies from the log:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -631,7 +631,7 @@ here, the six energies from the log:</p>
 </div>
 </div>
 </div>
-<p>That is real arithmetic on real numbers, in one line — the thing no tool before
+<p>That is real arithmetic on real numbers, in one line: the thing no tool before
 this notebook could do. The workhorse <code class="docutils literal notranslate"><span class="pre">awk</span></code> vocabulary is below; arrays,
 user-defined functions, and <code class="docutils literal notranslate"><span class="pre">getline</span></code> are the <strong>out-of-scope</strong> deep end.</p>
 <div class="bp-card">
@@ -642,14 +642,14 @@ user-defined functions, and <code class="docutils literal notranslate"><span cla
     <tr><td>pattern { action }</td><td>run action on each line matching pattern (either part optional)</td></tr>
     <tr><td>/regex/   $3&gt;0   NR==1</td><td>patterns: a regex, or a condition on a field or NR</td></tr>
     <tr><td>print   printf</td><td>output a line, or formatted output</td></tr>
-    <tr><td>BEGIN{…} END{…}</td><td>run once before the first / after the last line — where totals live</td></tr>
+    <tr><td>BEGIN{…} END{…}</td><td>run once before the first / after the last line: where totals live</td></tr>
   </table>
 </div>
 <div class="note admonition">
 <p class="admonition-title">Single-quote your programs</p>
 <p>Always wrap a <code class="docutils literal notranslate"><span class="pre">sed</span></code> or <code class="docutils literal notranslate"><span class="pre">awk</span></code> program in <strong>single</strong> quotes: <code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">'{print</span> <span class="pre">$1}'</span></code>. Those
 <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code> look exactly like shell positional parameters, and in double quotes the
-shell would replace them before <code class="docutils literal notranslate"><span class="pre">awk</span></code> ever ran — usually with nothing. This is the
+shell would replace them before <code class="docutils literal notranslate"><span class="pre">awk</span></code> ever ran, usually with nothing. This is the
 same “the shell goes first” rule from globbing and <code class="docutils literal notranslate"><span class="pre">grep</span></code>, and it is the single most
 common <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code> mistake.</p>
 </div>
@@ -657,7 +657,7 @@ common <code class="docutils literal notranslate"><span class="pre">awk</span></
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <p>A full set, climbing to the canonical trajectory task. Every <code class="docutils literal notranslate"><span class="pre">sed</span></code> edit works on a
-fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> copy — <code class="docutils literal notranslate"><span class="pre">data/</span></code> is never touched — and the notebook gives the same
+fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> copy (<code class="docutils literal notranslate"><span class="pre">data/</span></code> is never touched), and the notebook gives the same
 result every run.</p>
 <section id="warm-up-1-worked-sed-substitute-and-select">
 <h3>Warm-up 1 (worked) — <code class="docutils literal notranslate"><span class="pre">sed</span></code> substitute and select<a class="headerlink" href="#warm-up-1-worked-sed-substitute-and-select" title="Link to this heading">#</a></h3>
@@ -710,7 +710,7 @@ keep three
 <section id="applied-1-your-turn-awk-fields-clear-the-wall">
 <h3>Applied 1 (your turn) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> fields clear the wall<a class="headerlink" href="#applied-1-your-turn-awk-fields-clear-the-wall" title="Link to this heading">#</a></h3>
 <p>The energy line is padded with ragged spaces, so <code class="docutils literal notranslate"><span class="pre">cut</span> <span class="pre">-d'</span> <span class="pre">'</span></code> can’t reliably grab a
-column. Show that, then pull the energy — the <strong>last</strong> field — with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
+column. Show that, then pull the energy (the <strong>last</strong> field) with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -784,7 +784,7 @@ field) is below <code class="docutils literal notranslate"><span class="pre">-0.
 </section>
 <section id="applied-3-worked-awk-arithmetic">
 <h3>Applied 3 (worked) — <code class="docutils literal notranslate"><span class="pre">awk</span></code> arithmetic<a class="headerlink" href="#applied-3-worked-awk-arithmetic" title="Link to this heading">#</a></h3>
-<p>Sum and average a column with an <code class="docutils literal notranslate"><span class="pre">END</span></code> block — the six log energies.</p>
+<p>Sum and average a column with an <code class="docutils literal notranslate"><span class="pre">END</span></code> block: the six log energies.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -806,7 +806,7 @@ field) is below <code class="docutils literal notranslate"><span class="pre">-0.
 <h3>Composite — putting it together (the canonical task)<a class="headerlink" href="#composite-putting-it-together-the-canonical-task" title="Link to this heading">#</a></h3>
 <p>The move you came to Part II for. From a real trajectory, extract the energy of
 every frame (the comment line’s last field), then compute the <strong>mean</strong> energy, the
-<strong>minimum</strong>, and the <strong>frame</strong> at which the minimum occurs — all in one <code class="docutils literal notranslate"><span class="pre">awk</span></code> pass
+<strong>minimum</strong>, and the <strong>frame</strong> at which the minimum occurs, all in one <code class="docutils literal notranslate"><span class="pre">awk</span></code> pass
 over the lines <code class="docutils literal notranslate"><span class="pre">grep</span></code> selects. Composes <code class="docutils literal notranslate"><span class="pre">grep</span></code> (NB6), <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and the pipe (NB4).</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -853,10 +853,10 @@ cutoff = 300
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now extract <em>and compute</em> from any text file the course holds — by hand,
+<p>You can now extract <em>and compute</em> from any text file the course holds, by hand,
 one one-liner at a time. That last phrase is the whole point of what comes next:
 you have been <strong>retyping</strong> these pipelines. Part III is about making them
-<em>reusable</em> — writing and editing them as scripts you keep — and it starts with the
+<em>reusable</em> (writing and editing them as scripts you keep), and it starts with the
 one tool you still lack: a way to write text in the terminal. Next (Notebook 9):
 <strong>editing with Vim.</strong></p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-sed"><code class="bp-cmd-name">sed</code></a> &mdash; edit a stream line by line — substitute, delete, or selectively print — like grep that can also change what it matches.</li><li><a href="#cmd-awk"><code class="bp-cmd-name">awk</code></a> &mdash; split each line into fields and act on them — print columns, filter by condition, and compute (sum, mean, min/max). The field-aware, can-do-arithmetic tool cut could not be.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
@@ -864,9 +864,9 @@ one tool you still lack: a way to write text in the terminal. Next (Notebook 9):
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

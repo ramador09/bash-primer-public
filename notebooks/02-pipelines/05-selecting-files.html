@@ -434,8 +434,8 @@
     <span class="bp-meta">Notebook&nbsp;5</span>
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
-    Referring to many files at once — by pattern, by generation, or by searching
-    the tree — and then acting on the whole set.
+    Referring to many files at once (by pattern, by generation, or by searching
+    the tree), and then acting on the whole set.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <span class="bp-meta">Raymond Amador</span>
@@ -451,13 +451,13 @@ notebook answers a single question: <strong>how do you refer to many files at on
 act on the whole set?</strong></p>
 <p>There are three ways to select, and one way to act, and they share one idea:</p>
 <ul class="simple">
-<li><p><strong>glob</strong> — match files that already exist, <em>here</em> (<code class="docutils literal notranslate"><span class="pre">*.xyz</span></code>);</p></li>
-<li><p><strong>brace expansion</strong> — <em>generate</em> names and sequences, exist or not (<code class="docutils literal notranslate"><span class="pre">run_{1..10}</span></code>);</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">find</span></code></strong> — search the whole <em>tree</em> by criteria (every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>, anywhere);</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">xargs</span></code></strong> — take any of those lists and <em>run a command</em> over all of it.</p></li>
+<li><p><strong>glob</strong>: match files that already exist, <em>here</em> (<code class="docutils literal notranslate"><span class="pre">*.xyz</span></code>);</p></li>
+<li><p><strong>brace expansion</strong>: <em>generate</em> names and sequences, exist or not (<code class="docutils literal notranslate"><span class="pre">run_{1..10}</span></code>);</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">find</span></code></strong>: search the whole <em>tree</em> by criteria (every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>, anywhere);</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">xargs</span></code></strong>: take any of those lists and <em>run a command</em> over all of it.</p></li>
 </ul>
 <p>The files are the real <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> trajectories and simulation logs from before; as
-ever, <strong>selecting them needs no physics.</strong> Let us take the four in turn, simplest
+ever, <strong>selecting them needs no physics.</strong> Let’s take the four in turn, simplest
 first.</p>
 </section>
 <section id="a-globbing-match-files-that-are-here">
@@ -488,7 +488,7 @@ data/trajectories/lj38-optimization.xyz
 </div>
 </div>
 </div>
-<p>Here is the load-bearing idea, and it is worth stopping on because it explains
+<p>The load-bearing idea is worth stopping on, because it explains
 half of bash’s surprises. <strong>The shell expands the glob <em>before the command runs</em>.</strong>
 <code class="docutils literal notranslate"><span class="pre">ls</span></code> never sees <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code>; it sees the three real filenames the shell already
 substituted. You can watch that substitution directly with <code class="docutils literal notranslate"><span class="pre">echo</span></code>, which just
@@ -521,7 +521,7 @@ make one in <code class="docutils literal notranslate"><span class="pre">scratch
 </div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">?</span></code> matches exactly one character — so <code class="docutils literal notranslate"><span class="pre">run_?.log</span></code> catches <code class="docutils literal notranslate"><span class="pre">run_1</span></code> through <code class="docutils literal notranslate"><span class="pre">run_9</span></code>
+<p><code class="docutils literal notranslate"><span class="pre">?</span></code> matches exactly one character, so <code class="docutils literal notranslate"><span class="pre">run_?.log</span></code> catches <code class="docutils literal notranslate"><span class="pre">run_1</span></code> through <code class="docutils literal notranslate"><span class="pre">run_9</span></code>
 but <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">run_10</span></code>, which has two digits:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -549,7 +549,7 @@ but <strong>not</strong> <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 <p>Two gotchas worth carrying forward. First, a glob that matches <strong>nothing</strong> is, by
-bash’s default, passed through to the command <em>literally</em> — the pattern itself,
+bash’s default, passed through to the command <em>literally</em>: the pattern itself,
 unexpanded:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -565,7 +565,7 @@ unexpanded:</p>
 </div>
 <p>There is no <code class="docutils literal notranslate"><span class="pre">.dat</span></code> file, so <code class="docutils literal notranslate"><span class="pre">*.dat</span></code> arrived verbatim. (Bash has a <code class="docutils literal notranslate"><span class="pre">nullglob</span></code>
 option that makes a non-match expand to nothing instead; just know it exists.)
-Second, globs <strong>skip dotfiles</strong> — <code class="docutils literal notranslate"><span class="pre">data/*</span></code> quietly passed over the hidden
+Second, globs <strong>skip dotfiles</strong>: <code class="docutils literal notranslate"><span class="pre">data/*</span></code> quietly passed over the hidden
 <code class="docutils literal notranslate"><span class="pre">.dataset-notes</span></code> from Notebook 2:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -592,7 +592,7 @@ earlier than globbing.</p>
     <tr><td>{1..10}</td><td>a numeric range</td></tr>
     <tr><td>{1..10..2}</td><td>a range with a step</td></tr>
     <tr><td>pre{a,b}post</td><td>a shared prefix/suffix is distributed over each item</td></tr>
-    <tr><td>file{,.bak}</td><td>the empty item gives <code>file</code> and <code>file.bak</code> — the backup idiom</td></tr>
+    <tr><td>file{,.bak}</td><td>the empty item gives <code>file</code> and <code>file.bak</code>: the backup idiom</td></tr>
   </table>
 </div>
 <p>Watch the generation with <code class="docutils literal notranslate"><span class="pre">echo</span></code>:</p>
@@ -645,7 +645,7 @@ directories at once:</p>
 </div>
 </div>
 <p>And the <code class="docutils literal notranslate"><span class="pre">file{,.bak}</span></code> idiom expands <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">config.txt{,.bak}</span></code> into
-<code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">config.txt</span> <span class="pre">config.txt.bak</span></code> — an instant backup in nine keystrokes:</p>
+<code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">config.txt</span> <span class="pre">config.txt.bak</span></code>: an instant backup in nine keystrokes:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell docutils container">
@@ -674,7 +674,7 @@ directories at once:</p>
 “names here” to “<strong>criteria anywhere in the tree</strong>”: walk a directory and
 everything under it, keep the files that match a set of tests, and (optionally)
 run a command on each.</p>
-<div class="bp-card" id="cmd-find"><span class="bp-card-cmd">find</span> &mdash; <span class="bp-card-job">search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</span><table><tr><td>-name &quot;PAT&quot;  /  -iname</td><td>match the filename against a quoted glob (<code>-iname</code> ignores case)</td></tr><tr><td>-type f  /  -type d</td><td>match only files / only directories</td></tr><tr><td>-maxdepth N</td><td>descend at most N levels deep</td></tr><tr><td>-size +Nk  /  -mtime -N</td><td>by size (larger than N kB) or age (changed within N days)</td></tr><tr><td>-exec CMD {} +</td><td>run CMD on the matches — <code>{}</code> is each path, <code>+</code> batches them into few calls</td></tr><tr><td>-print  /  -delete</td><td>print the matches (the safe default) / delete them (dangerous — see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man find</code> — its options are many; you consult it, you do not memorise it</div></div><div class="bp-watchout"><strong>Watch out:</strong> quote the <code>-name</code> glob (<code>find data -name &quot;*.xyz&quot;</code>) or the shell expands it before find ever sees it; and <code>-delete</code> is <code>rm</code> at scale — read the admonition first</div><p>The shape is <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">&lt;where&gt;</span> <span class="pre">&lt;tests&gt;</span> <span class="pre">&lt;action&gt;</span></code>. Start simple — every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
+<div class="bp-card" id="cmd-find"><span class="bp-card-cmd">find</span> &mdash; <span class="bp-card-job">search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</span><table><tr><td>-name &quot;PAT&quot;  /  -iname</td><td>match the filename against a quoted glob (<code>-iname</code> ignores case)</td></tr><tr><td>-type f  /  -type d</td><td>match only files / only directories</td></tr><tr><td>-maxdepth N</td><td>descend at most N levels deep</td></tr><tr><td>-size +Nk  /  -mtime -N</td><td>by size (larger than N kB) or age (changed within N days)</td></tr><tr><td>-exec CMD {} +</td><td>run CMD on the matches — <code>{}</code> is each path, <code>+</code> batches them into few calls</td></tr><tr><td>-print  /  -delete</td><td>print the matches (the safe default) / delete them (dangerous — see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man find</code> — its options are many; you consult it, you do not memorise it</div></div><div class="bp-watchout"><strong>Watch out:</strong> quote the <code>-name</code> glob (<code>find data -name &quot;*.xyz&quot;</code>) or the shell expands it before find ever sees it; and <code>-delete</code> is <code>rm</code> at scale — read the admonition first</div><p>The shape is <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">&lt;where&gt;</span> <span class="pre">&lt;tests&gt;</span> <span class="pre">&lt;action&gt;</span></code>. Start simple: every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
 underneath <code class="docutils literal notranslate"><span class="pre">data/</span></code>, wherever it lives:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -690,7 +690,7 @@ data/trajectories/lj38-relaxed.xyz
 </div>
 </div>
 </div>
-<p>It reached into both <code class="docutils literal notranslate"><span class="pre">trajectories/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/</span></code> — something no single glob can
+<p>It reached into both <code class="docutils literal notranslate"><span class="pre">trajectories/</span></code> and <code class="docutils literal notranslate"><span class="pre">results/</span></code>, something no single glob can
 do. <strong>Quote the pattern</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;*.xyz&quot;</span></code>): that is the payoff of §A. If you leave it
 bare, the <em>shell</em> expands <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> before <code class="docutils literal notranslate"><span class="pre">find</span></code> ever runs, and <code class="docutils literal notranslate"><span class="pre">find</span></code> gets the
 wrong thing. Quoting hands the pattern to <code class="docutils literal notranslate"><span class="pre">find</span></code> intact.</p>
@@ -744,8 +744,8 @@ data/trajectories/lj38-relaxed.xyz
 <div class="danger admonition">
 <p class="admonition-title">⚠ find can delete at scale — dry-run first, always</p>
 <p><code class="docutils literal notranslate"><span class="pre">find</span></code> has a <code class="docutils literal notranslate"><span class="pre">-delete</span></code> action and an <code class="docutils literal notranslate"><span class="pre">-exec</span> <span class="pre">rm</span></code> action, and they are the Notebook
-3 <code class="docutils literal notranslate"><span class="pre">rm</span></code> footgun multiplied by <em>every file in the tree</em>. One wrong test — a <code class="docutils literal notranslate"><span class="pre">-name</span></code>
-that is broader than you meant, a stray <code class="docutils literal notranslate"><span class="pre">-o</span></code> — and an entire subtree is gone, with
+3 <code class="docutils literal notranslate"><span class="pre">rm</span></code> footgun multiplied by <em>every file in the tree</em>. One wrong test (a <code class="docutils literal notranslate"><span class="pre">-name</span></code>
+that is broader than you meant, a stray <code class="docutils literal notranslate"><span class="pre">-o</span></code>) and an entire subtree is gone, with
 no undo and no trash. The habit that saves you is simple and non-negotiable:
 <strong>run the <code class="docutils literal notranslate"><span class="pre">find</span></code> with <code class="docutils literal notranslate"><span class="pre">-print</span></code> first and read the list</strong>, every time. Only once you
 have <em>seen</em> exactly what it matches do you swap <code class="docutils literal notranslate"><span class="pre">-print</span></code> for <code class="docutils literal notranslate"><span class="pre">-delete</span></code>. Never pipe
@@ -755,9 +755,9 @@ a <code class="docutils literal notranslate"><span class="pre">find</span></code
 <section id="d-xargs-act-on-a-list">
 <h2>D. <code class="docutils literal notranslate"><span class="pre">xargs</span></code> — act on a list<a class="headerlink" href="#d-xargs-act-on-a-list" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">find</span></code> <em>selects</em> files; <code class="docutils literal notranslate"><span class="pre">xargs</span></code> <em>acts</em> on them. It reads a list of items on
-standard input and turns them into arguments for a command — which means it is, at
+standard input and turns them into arguments for a command, which means it is, at
 heart, just a pipe (Notebook 4): a list flows in, command lines come out.</p>
-<div class="bp-card" id="cmd-xargs"><span class="bp-card-cmd">xargs</span> &mdash; <span class="bp-card-job">read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</span><table><tr><td>-0</td><td>items are NUL-separated, not whitespace — pair with <code>find -print0</code> to survive spaces and newlines in names</td></tr><tr><td>-n N</td><td>use at most N items per command line</td></tr><tr><td>-I {}</td><td>place each item where <code>{}</code> appears, instead of appending it at the end</td></tr></table><div class="bp-card-more">more: <code>man xargs</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> filenames with spaces or newlines break the default whitespace splitting — use <code>find -print0 | xargs -0</code>. (It also has <code>-P</code> to run jobs in parallel; we return to that in Part IV.)</div><p>The classic pairing pulls the first line — the atom count — out of <em>every</em>
+<div class="bp-card" id="cmd-xargs"><span class="bp-card-cmd">xargs</span> &mdash; <span class="bp-card-job">read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</span><table><tr><td>-0</td><td>items are NUL-separated, not whitespace — pair with <code>find -print0</code> to survive spaces and newlines in names</td></tr><tr><td>-n N</td><td>use at most N items per command line</td></tr><tr><td>-I {}</td><td>place each item where <code>{}</code> appears, instead of appending it at the end</td></tr></table><div class="bp-card-more">more: <code>man xargs</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> filenames with spaces or newlines break the default whitespace splitting — use <code>find -print0 | xargs -0</code>. (It also has <code>-P</code> to run jobs in parallel; we return to that in Part IV.)</div><p>The classic pairing pulls the first line (the atom count) out of <em>every</em>
 trajectory <code class="docutils literal notranslate"><span class="pre">find</span></code> can reach:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -778,7 +778,7 @@ trajectory <code class="docutils literal notranslate"><span class="pre">find</sp
 </div>
 <p>Two details carry the safety lesson. <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">…</span> <span class="pre">-print0</span></code> separates names with an
 invisible NUL character instead of whitespace, and <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-0</span></code> reads them the same
-way — so a filename with a space or newline in it cannot be split in two and
+way, so a filename with a space or newline in it cannot be split in two and
 mangled. Make <code class="docutils literal notranslate"><span class="pre">-print0</span> <span class="pre">|</span> <span class="pre">xargs</span> <span class="pre">-0</span></code> your default pairing.</p>
 <p><code class="docutils literal notranslate"><span class="pre">find</span></code> also has its own built-in way to act, <code class="docutils literal notranslate"><span class="pre">-exec</span></code>, which needs no pipe at all.
 The <code class="docutils literal notranslate"><span class="pre">{}</span></code> stands for each match and the trailing <code class="docutils literal notranslate"><span class="pre">+</span></code> batches them efficiently:</p>
@@ -807,7 +807,7 @@ talk about speed in Part IV.)</p>
 </section>
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
-<p>A fuller set this time — selection is a theme worth practising from several angles.
+<p>A fuller set this time: selection is a theme worth practising from several angles.
 Reads over <code class="docutils literal notranslate"><span class="pre">data/</span></code> are fine; anything that creates or deletes works in a fresh
 <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, set up at the top of each exercise so reruns are identical.</p>
 <section id="warm-up-1-worked-globs">
@@ -957,7 +957,7 @@ scratch/sorted/R/lj38-relaxed.xyz
 <h3>Optional stretch (your turn) — Boolean find<a class="headerlink" href="#optional-stretch-your-turn-boolean-find" title="Link to this heading">#</a></h3>
 <p>Compose a single <code class="docutils literal notranslate"><span class="pre">find</span></code> with combined tests: every <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> under <code class="docutils literal notranslate"><span class="pre">data/</span></code> that is
 <strong>not</strong> in <code class="docutils literal notranslate"><span class="pre">results/</span></code> <strong>and</strong> is larger than 1 kilobyte, then count them with
-<code class="docutils literal notranslate"><span class="pre">xargs</span></code>. (Aside: <code class="docutils literal notranslate"><span class="pre">xargs</span></code> could run the action in parallel with <code class="docutils literal notranslate"><span class="pre">-P</span></code> — a thread we
+<code class="docutils literal notranslate"><span class="pre">xargs</span></code>. (Aside: <code class="docutils literal notranslate"><span class="pre">xargs</span></code> could run the action in parallel with <code class="docutils literal notranslate"><span class="pre">-P</span></code>, a thread we
 pick up in Part IV.)</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -980,19 +980,19 @@ pick up in Part IV.)</p>
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now select files at scale — by pattern, by generation, by searching the
-tree — and act on the whole set at once. Next (Notebook 6): instead of finding
+<p>You can now select files at scale (by pattern, by generation, by searching the
+tree) and act on the whole set at once. Next (Notebook 6): instead of finding
 <em>files</em>, you will find matching <strong>text inside</strong> them with <code class="docutils literal notranslate"><span class="pre">grep</span></code>, and meet
-<strong>regular expressions</strong> — the pattern language that <code class="docutils literal notranslate"><span class="pre">sed</span></code>, and the Vim
+<strong>regular expressions</strong>: the pattern language that <code class="docutils literal notranslate"><span class="pre">sed</span></code>, and the Vim
 search-and-replace you saw in Notebook 9, all share.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-find"><code class="bp-cmd-name">find</code></a> &mdash; search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</li><li><a href="#cmd-xargs"><code class="bp-cmd-name">xargs</code></a> &mdash; read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/02-pipelines/06-grep-and-regular-expressions.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: Notebook 5 found files by their names. This notebook looks inside them, for text — and it does so by pattern, not by exact strin..." />
+<meta property="og:description" content="What this notebook is about: Notebook 5 found files by their names. This notebook looks inside them, for text, and it does so by pattern, not by exact string..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: Notebook 5 found files by their names. This notebook looks inside them, for text — and it does so by pattern, not by exact strin..." />
+<meta name="description" content="What this notebook is about: Notebook 5 found files by their names. This notebook looks inside them, for text, and it does so by pattern, not by exact string..." />
 
     <title>6 grep and regular expressions &#8212; Introduction to the Bash Shell</title>
   
@@ -436,7 +436,7 @@
     <span class="bp-meta">Notebook&nbsp;6</span>
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
-    Finding lines by pattern, not by literal string — and the pattern language,
+    Finding lines by pattern, not by literal string, and the pattern language,
     regular expressions, that you will reuse for the rest of the course.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -448,14 +448,14 @@
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>Notebook 5 found <em>files</em> by their names. This notebook looks <em>inside</em> them, for
-<strong>text</strong> — and it does so by <strong>pattern</strong>, not by exact string. The tool is <code class="docutils literal notranslate"><span class="pre">grep</span></code>;
+<strong>text</strong>, and it does so by <strong>pattern</strong>, not by exact string. The tool is <code class="docutils literal notranslate"><span class="pre">grep</span></code>;
 the pattern language is <strong>regular expressions</strong>.</p>
 <p>Those two are not equally important. <code class="docutils literal notranslate"><span class="pre">grep</span></code> is one command among many. Regular
 expressions are <em>the</em> most reusable text skill in this whole course: the same
 patterns drive <code class="docutils literal notranslate"><span class="pre">sed</span></code> in Notebook 8 and the Vim search-and-replace from Notebook 9.
-Learn them once here and they pay off everywhere. So we teach both — the tool, and
+Learn them once here and they pay off everywhere. So we teach both: the tool, and
 the language behind it.</p>
-<p>The files are real CP2K run logs now living in <code class="docutils literal notranslate"><span class="pre">data/logs/</span></code>. Matching <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">energy</span></code> or a warning in one of them needs <strong>no physics</strong> — it is just pattern on
+<p>The files are real CP2K run logs now living in <code class="docutils literal notranslate"><span class="pre">data/logs/</span></code>. Matching <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">energy</span></code> or a warning in one of them needs <strong>no physics</strong>: it is just pattern on
 text.</p>
 </section>
 <section id="a-grep-with-literal-patterns">
@@ -479,9 +479,9 @@ the pattern. Start literal: find the total-energy lines in a run log.</p>
 </div>
 </div>
 </div>
-<p>Six lines — the energy after each step of the run. Note the <strong>single quotes</strong>
+<p>Six lines: the energy after each step of the run. Note the <strong>single quotes</strong>
 around the pattern: get into that habit now. They stop the shell from touching the
-pattern (expanding a <code class="docutils literal notranslate"><span class="pre">$</span></code>, a <code class="docutils literal notranslate"><span class="pre">*</span></code>, and so on) before <code class="docutils literal notranslate"><span class="pre">grep</span></code> ever sees it — exactly
+pattern (expanding a <code class="docutils literal notranslate"><span class="pre">$</span></code>, a <code class="docutils literal notranslate"><span class="pre">*</span></code>, and so on) before <code class="docutils literal notranslate"><span class="pre">grep</span></code> ever sees it, exactly
 the “the shell goes first” lesson from globbing, and a habit that becomes essential
 the moment your patterns contain regex characters.</p>
 <p>The workhorse flags turn a match into an answer. Just <em>count</em> the matches with
@@ -514,7 +514,7 @@ capitals; <code class="docutils literal notranslate"><span class="pre">-i</span>
 </div>
 </div>
 </div>
-<p>And <code class="docutils literal notranslate"><span class="pre">-l</span></code> answers “<strong>which files</strong> contain this?” without printing the matches —
+<p>And <code class="docutils literal notranslate"><span class="pre">-l</span></code> answers “<strong>which files</strong> contain this?” without printing the matches,
 indispensable across a directory of logs:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -533,7 +533,7 @@ data/logs/gr2hno3-restart.log
 <section id="b-regular-expressions">
 <h2>B. Regular expressions<a class="headerlink" href="#b-regular-expressions" title="Link to this heading">#</a></h2>
 <p>A literal pattern is the floor. The ceiling is a <strong>regular expression</strong>: a small
-language for describing <em>shapes</em> of text — “a line starting with <code class="docutils literal notranslate"><span class="pre">ENERGY</span></code>”, “a
+language for describing <em>shapes</em> of text, such as “a line starting with <code class="docutils literal notranslate"><span class="pre">ENERGY</span></code>”, “a
 signed decimal number”, “either <code class="docutils literal notranslate"><span class="pre">warning</span></code> or <code class="docutils literal notranslate"><span class="pre">error</span></code>”. We teach the <strong>Extended</strong>
 flavour (ERE), which you reach with <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>. Here is the workhorse set.</p>
 <div class="bp-card">
@@ -550,7 +550,7 @@ flavour (ERE), which you reach with <code class="docutils literal notranslate"><
     <tr><td>\.</td><td>backslash escapes a metacharacter to mean it literally (a real dot)</td></tr>
   </table>
 </div>
-<p>Read one slowly, piece by piece — the pattern that matches a signed decimal like
+<p>Read one slowly, piece by piece: the pattern that matches a signed decimal like
 the energies above:</p>
 <div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
   <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Anatomy of one pattern: a signed decimal</div>
@@ -580,7 +580,7 @@ finds the energy lines (<code class="docutils literal notranslate"><span class="
 </div>
 </div>
 </div>
-<p>Alternation pulls warnings <em>or</em> errors in one pass — the everyday log-triage move:</p>
+<p>Alternation pulls warnings <em>or</em> errors in one pass, the everyday log-triage move:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;warning|error&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
@@ -598,7 +598,7 @@ finds the energy lines (<code class="docutils literal notranslate"><span class="
 <div class="note admonition">
 <p class="admonition-title">ERE vs BRE, and what we are skipping</p>
 <p>Reach for <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>. Without it, grep uses the older <strong>Basic</strong> regex (BRE), in
-which <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">?</span> <span class="pre">{</span> <span class="pre">}</span> <span class="pre">(</span> <span class="pre">)</span> <span class="pre">|</span></code> are <em>literal characters</em> unless you backslash them — a
+which <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">?</span> <span class="pre">{</span> <span class="pre">}</span> <span class="pre">(</span> <span class="pre">)</span> <span class="pre">|</span></code> are <em>literal characters</em> unless you backslash them, a
 reliable source of “why doesn’t my pattern work”. <code class="docutils literal notranslate"><span class="pre">-E</span></code> gives the Extended syntax
 above, and the same <code class="docutils literal notranslate"><span class="pre">-E</span></code> works for <code class="docutils literal notranslate"><span class="pre">sed</span></code> later. Two things we deliberately leave
 out as beyond a prerequisite course: Perl-style <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-P</span></code> (PCRE), and
@@ -608,7 +608,7 @@ backreferences / lookaround. They exist; you do not need them yet.</p>
 <section id="c-pattern-and-flag-together-on-a-real-log">
 <h2>C. Pattern and flag together, on a real log<a class="headerlink" href="#c-pattern-and-flag-together-on-a-real-log" title="Link to this heading">#</a></h2>
 <p>The power is in combining a regex with the flags. The signed-decimal pattern, fed
-the energy lines, and then <code class="docutils literal notranslate"><span class="pre">-o</span></code> to print <strong>only the matched part</strong> — the numbers
+the energy lines, and then <code class="docutils literal notranslate"><span class="pre">-o</span></code> to print <strong>only the matched part</strong>: the numbers
 themselves, stripped of the surrounding text:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -627,7 +627,7 @@ themselves, stripped of the surrounding text:</p>
 </div>
 </div>
 </div>
-<p>That is a first taste of <strong>extraction</strong> — turning lines into values. Mind the
+<p>That is a first taste of <strong>extraction</strong>: turning lines into values. Mind the
 scope boundary, though: <code class="docutils literal notranslate"><span class="pre">grep</span></code> <em>selects</em> (and with <code class="docutils literal notranslate"><span class="pre">-o</span></code>, clips) text; it does not
 do columns or arithmetic. When you want “the third field of every line”, that is
 <code class="docutils literal notranslate"><span class="pre">awk</span></code>, in Notebook 8. Here, <code class="docutils literal notranslate"><span class="pre">grep</span></code> finds; it does not transform.</p>
@@ -657,7 +657,7 @@ things:</p>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span></code></strong> locates <strong>text</strong>, by what is <em>inside</em> the files (<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-r</span> <span class="pre">'WARNING'</span> <span class="pre">data</span></code>).</p></li>
 </ul>
 <p>And, being good Unix citizens, they compose: <code class="docutils literal notranslate"><span class="pre">find</span></code> the files you care about, then
-<code class="docutils literal notranslate"><span class="pre">grep</span></code> their contents — a pairing you will reach for constantly.</p>
+<code class="docutils literal notranslate"><span class="pre">grep</span></code> their contents, a pairing you will reach for constantly.</p>
 </section>
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
@@ -691,7 +691,7 @@ data/logs/gr2hno3-restart.log
 <section id="warm-up-2-your-turn-invert">
 <h3>Warm-up 2 (your turn) — Invert<a class="headerlink" href="#warm-up-2-your-turn-invert" title="Link to this heading">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">-v</span></code> to print the lines that do <strong>not</strong> match. Count the <strong>non-blank</strong> lines of
-the log by inverting a pattern that matches blank lines (<code class="docutils literal notranslate"><span class="pre">'^[[:space:]]*$'</span></code> — start,
+the log by inverting a pattern that matches blank lines (<code class="docutils literal notranslate"><span class="pre">'^[[:space:]]*$'</span></code>: start,
 any spaces, end).</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -714,7 +714,7 @@ any spaces, end).</p>
 <h3>Applied 1 (your turn) — Anchors and classes<a class="headerlink" href="#applied-1-your-turn-anchors-and-classes" title="Link to this heading">#</a></h3>
 <p>Write ERE patterns (<code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code>) for two things in
 <code class="docutils literal notranslate"><span class="pre">data/trajectories/lj38-optimization.xyz</span></code>: the comment lines, which <strong>start</strong> with
-whitespace then <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span></code> (use <code class="docutils literal notranslate"><span class="pre">^</span></code> and a POSIX class), and count them — there is one
+whitespace then <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span></code> (use <code class="docutils literal notranslate"><span class="pre">^</span></code> and a POSIX class), and count them; there is one
 per frame.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -763,7 +763,7 @@ per frame.</p>
 </section>
 <section id="applied-3-worked-extract-the-matched-part">
 <h3>Applied 3 (worked) — Extract the matched part<a class="headerlink" href="#applied-3-worked-extract-the-matched-part" title="Link to this heading">#</a></h3>
-<p>Pull <em>just the numbers</em> out of the energy lines with <code class="docutils literal notranslate"><span class="pre">-o</span></code> — a first taste of
+<p>Pull <em>just the numbers</em> out of the energy lines with <code class="docutils literal notranslate"><span class="pre">-o</span></code>: a first taste of
 extraction (the full version, with fields, is <code class="docutils literal notranslate"><span class="pre">awk</span></code> in Notebook 8).</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -791,7 +791,7 @@ extraction (the full version, with fields, is <code class="docutils literal notr
 <h3>Discovery (your turn) — Find the flag yourself<a class="headerlink" href="#discovery-your-turn-find-the-flag-yourself" title="Link to this heading">#</a></h3>
 <p>This is the course’s standing skill: needing a flag you were never handed, and
 <em>finding</em> it. Your task: print <strong>three lines of context around</strong> each <code class="docutils literal notranslate"><span class="pre">WARNING</span></code> in
-the log — the warning <em>and</em> its neighbours. That flag is not on the card. Consult
+the log: the warning <em>and</em> its neighbours. That flag is not on the card. Consult
 <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">grep</span></code>, find the context option (<code class="docutils literal notranslate"><span class="pre">-C</span></code>, or <code class="docutils literal notranslate"><span class="pre">-A</span></code>/<code class="docutils literal notranslate"><span class="pre">-B</span></code>), and use
 it.</p>
 <div class="cell tag_remove-input docutils container">
@@ -877,9 +877,9 @@ data/logs/gr2hno3-nvt.log:6
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now find and pattern-match text — and you have the regular-expression
+<p>You can now find and pattern-match text, and you have the regular-expression
 foundation that the rest of the course leans on. Next (Notebook 7): the <strong>stream
-toolkit</strong> — <code class="docutils literal notranslate"><span class="pre">cut</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, <code class="docutils literal notranslate"><span class="pre">uniq</span></code>, <code class="docutils literal notranslate"><span class="pre">wc</span></code>, <code class="docutils literal notranslate"><span class="pre">tr</span></code> — the small tools that <em>reshape</em> the
+toolkit</strong> (<code class="docutils literal notranslate"><span class="pre">cut</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, <code class="docutils literal notranslate"><span class="pre">uniq</span></code>, <code class="docutils literal notranslate"><span class="pre">wc</span></code>, <code class="docutils literal notranslate"><span class="pre">tr</span></code>), the small tools that <em>reshape</em> the
 lines <code class="docutils literal notranslate"><span class="pre">grep</span></code> selects, turning a pile of matches into counts, columns, and ordered
 tables.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-grep"><code class="bp-cmd-name">grep</code></a> &mdash; print the lines of a file (or of its input) that match a pattern — literal text, or a regular expression.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
@@ -887,9 +887,9 @@ tables.</p>
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>
