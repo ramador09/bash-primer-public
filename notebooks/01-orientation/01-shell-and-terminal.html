@@ -434,7 +434,7 @@
     <span class="bp-meta">Notebook&nbsp;1</span>
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
-    What a terminal, a shell, and bash each are — and how to run your first
+    What a terminal, a shell, and bash each are, and how to run your first
     commands and find help on your own.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -447,35 +447,35 @@
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>This is the first step, and it assumes the truest beginning: that you have never
 opened a terminal, and that you would like to. No prior command-line experience
-is taken for granted, and <strong>no physics is needed — not here, not anywhere in this
+is taken for granted, and <strong>no physics is needed: not here, not anywhere in this
 course.</strong> Later notebooks borrow real scientific files to practise on, but they
 are only ever <em>text to operate on</em>; you will never need to know what they mean.</p>
 <p>A confession about the premise: “the terminal” has a reputation for being arcane,
 a black rectangle for people with strong opinions about keyboards. It is not. It
-is one of the simplest tools you will ever use — a place to type the name of a
+is one of the simplest tools you will ever use: a place to type the name of a
 thing you want done and read back what happened. This course exists because
 students arrive at the graduate <em>Molecular and Materials Modelling</em> course with
-wildly uneven footing — some fluent at the shell, some who have never opened one
-— and nothing computational can really begin until that gap is closed. We close
-it here.</p>
+wildly uneven footing. Some are fluent at the shell; some have never opened one;
+and nothing computational can really begin until that gap is closed. We close it
+here.</p>
 </section>
 <section id="first-the-lay-of-the-land">
 <h2>First, the lay of the land<a class="headerlink" href="#first-the-lay-of-the-land" title="Link to this heading">#</a></h2>
 <p>Three words get used interchangeably and shouldn’t be. Pulling them apart now
 saves confusion later.</p>
 <ul class="simple">
-<li><p>The <strong>terminal</strong> is the <em>window</em> — the program that draws the text and takes
+<li><p>The <strong>terminal</strong> is the <em>window</em>: the program that draws the text and takes
 your keystrokes. It is a viewport, nothing more.</p></li>
 <li><p>The <strong>shell</strong> is the program <em>running inside</em> that window. It reads the command
 you type, works out what you meant, and asks the operating system to carry it
-out. <strong>bash</strong> is one such shell — the one this course teaches, and the default
+out. <strong>bash</strong> is one such shell, the one this course teaches and the default
 on most Linux systems.</p></li>
 <li><p>The <strong>operating system</strong> does the actual work: it owns the files, the memory,
 the hardware, and it hands results back up the chain.</p></li>
 </ul>
 <p>So a command you type travels: from <strong>you</strong>, into the <strong>terminal</strong>, which passes
-it to the <strong>shell</strong> (bash), which asks the <strong>operating system</strong> to do the thing —
-and the answer comes back the same way.</p>
+it to the <strong>shell</strong> (bash), which asks the <strong>operating system</strong> to do the thing.
+The answer comes back the same way.</p>
 <div class="bp-banner" style="background:#faf7f0;">
   <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px;color:#16213e;">
     <span style="padding:6px 12px;border:1px solid #dcd6c8;border-radius:5px;background:#fff;">You</span>
@@ -493,7 +493,7 @@ processes or kernels; you can drive a car without a theory of combustion.</p>
 <section id="getting-a-shell">
 <h2>Getting a shell<a class="headerlink" href="#getting-a-shell" title="Link to this heading">#</a></h2>
 <p>This page is for <strong>reading</strong>: every grey cell below is a real command and its
-real output. To <strong>practise</strong>, you want a shell of your own to type into — and the
+real output. To <strong>practise</strong>, you want a shell of your own to type into, and the
 fastest one needs nothing installed at all.</p>
 <div class="tip admonition">
 <p class="admonition-title">Practice here → open a live terminal</p>
@@ -502,12 +502,12 @@ fastest one needs nothing installed at all.</p>
 </div>
 <p>If you would rather use your own machine, you already have a terminal:</p>
 <ul class="simple">
-<li><p><strong>macOS</strong> — open <em>Terminal</em> (Applications → Utilities, or Spotlight “Terminal”).</p></li>
-<li><p><strong>Linux</strong> — open the terminal app your desktop ships (often Ctrl+Alt+T).</p></li>
-<li><p><strong>Windows</strong> — install <strong>WSL</strong> (Windows Subsystem for Linux), which gives you a
+<li><p><strong>macOS</strong>: open <em>Terminal</em> (Applications → Utilities, or Spotlight “Terminal”).</p></li>
+<li><p><strong>Linux</strong>: open the terminal app your desktop ships (often Ctrl+Alt+T).</p></li>
+<li><p><strong>Windows</strong>: install <strong>WSL</strong> (Windows Subsystem for Linux), which gives you a
 real bash.</p></li>
 </ul>
-<p>And here is the quiet point of this whole notebook: <strong>the grey cells below are a
+<p>And this is the quiet point of the whole notebook: <strong>the grey cells below are a
 live bash session too.</strong> Every command in them was really run, and the text
 beneath each one is really what bash printed. Reading down the page, you are
 already watching a shell work.</p>
@@ -515,7 +515,7 @@ already watching a shell work.</p>
 <section id="the-prompt-and-the-anatomy-of-a-command">
 <h2>The prompt and the anatomy of a command<a class="headerlink" href="#the-prompt-and-the-anatomy-of-a-command" title="Link to this heading">#</a></h2>
 <p>When a shell is ready for you, it prints a <strong>prompt</strong> and waits. A prompt often
-ends in <code class="docutils literal notranslate"><span class="pre">$</span></code> and may show your username, the machine, and where you are — for
+ends in <code class="docutils literal notranslate"><span class="pre">$</span></code> and may show your username, the machine, and where you are, for
 example <code class="docutils literal notranslate"><span class="pre">you&#64;laptop:~$</span></code>. Whatever it shows, the <code class="docutils literal notranslate"><span class="pre">$</span></code> is the shell saying “your
 turn”.</p>
 <p>You answer by typing a <strong>command</strong> and pressing Enter. Nearly every command has
@@ -527,10 +527,10 @@ the same three-part shape, and learning to see it is most of the battle:</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The <strong>command</strong> is the program’s name — what you want done.</p></li>
+<li><p>The <strong>command</strong> is the program’s name: what you want done.</p></li>
 <li><p><strong>Options</strong> (also called <strong>flags</strong>) tune <em>how</em> it runs. They usually start with
 a dash: <code class="docutils literal notranslate"><span class="pre">-l</span></code>, <code class="docutils literal notranslate"><span class="pre">--all</span></code>. Most are optional.</p></li>
-<li><p><strong>Arguments</strong> are what the command acts <em>on</em> — a file, some text, a name.</p></li>
+<li><p><strong>Arguments</strong> are what the command acts <em>on</em>: a file, some text, a name.</p></li>
 </ul>
 <p>Here is the smallest possible example. The command is <code class="docutils literal notranslate"><span class="pre">echo</span></code>; it has no options;
 its single argument is the word <code class="docutils literal notranslate"><span class="pre">hello</span></code>:</p>
@@ -547,7 +547,7 @@ its single argument is the word <code class="docutils literal notranslate"><span
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">echo</span></code> did exactly one thing: it printed its argument back to you. Hold on to the
-three words — <strong>command</strong>, <strong>option/flag</strong>, <strong>argument</strong> — because the entire
+three words (<strong>command</strong>, <strong>option/flag</strong>, <strong>argument</strong>), because the entire
 course is built on them.</p>
 </section>
 <section id="your-first-commands">
@@ -555,7 +555,7 @@ course is built on them.</p>
 <p>Each new command below comes as a <strong>command card</strong>: what it does, the handful of
 flags worth knowing, and where to look for the rest. You are not meant to
 memorise these. You are meant to recognise the shape and know how to look things
-up — which is the next section’s whole subject.</p>
+up, which is the next section’s whole subject.</p>
 <div class="bp-card" id="cmd-echo"><span class="bp-card-cmd">echo</span> &mdash; <span class="bp-card-job">print its arguments back to standard output.</span><table><tr><td>-n</td><td>do not add the trailing newline</td></tr><tr><td>-e</td><td>interpret backslash escapes such as <code>\n</code> (newline) and <code>\t</code> (tab)</td></tr></table><div class="bp-card-more">more: <code>help echo</code></div></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello from the shell!&quot;</span>
@@ -612,7 +612,7 @@ and a second line
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 18 19:50:10 UTC 2026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 18 21:09:04 UTC 2026
 </pre></div>
 </div>
 </div>
@@ -624,14 +624,14 @@ and a second line
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-18 19:50:10
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2026-06-18 21:09:04
 </pre></div>
 </div>
 </div>
 </div>
 <div class="bp-card" id="cmd-clear"><span class="bp-card-cmd">clear</span> &mdash; <span class="bp-card-job">wipe the visible screen, giving you a clean prompt.</span><div class="bp-card-more">more: <code>man clear</code>, or just press <code>Ctrl+L</code></div></div><p>There is nothing to <em>print</em> here: <code class="docutils literal notranslate"><span class="pre">clear</span></code> works by sending the terminal a short
 control code that means “blank yourself”. In a notebook there is no screen to
-blank, so let us simply <em>look</em> at the code it would send (the <code class="docutils literal notranslate"><span class="pre">^[</span></code> is the escape
+blank, so we <em>look</em> at the code it would send instead (the <code class="docutils literal notranslate"><span class="pre">^[</span></code> is the escape
 character):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -672,7 +672,7 @@ of entries so there is something to show:</p>
 <p>Nobody memorises flags. Not your instructor, not the people who wrote these
 tools. What a fluent user actually knows is narrower and far more useful: that a
 flag <em>probably exists</em> for what they want, and how to surface it in ten seconds.
-That skill — looking it up — is worth more than any list you could cram, and it
+That skill, looking it up, is worth more than any list you could cram, and it
 is the one this course returns to again and again. Three tools cover almost
 everything.</p>
 <div class="bp-card" id="cmd-man"><span class="bp-card-cmd">man</span> &mdash; <span class="bp-card-job">open the full manual page for a command.</span><table><tr><td>-k word</td><td>search every manual&#x27;s summary line for a keyword (same as <code>apropos</code>) — for when you don&#x27;t know the command&#x27;s name yet</td></tr></table><div class="bp-card-more">more: press <code>q</code> to quit the manual; <code>man man</code> documents man itself</div></div><p>A manual page is thorough and a little dense; you skim it, you do not read it like
@@ -721,7 +721,7 @@ With -s, or with [MMDDhhmm[[CC]YY][.ss]], set the date and time.
   directly with <code>help</code>: try <code>help echo</code>. (We use exactly
   this in the last exercise.)
 </div>
-<div class="bp-card" id="cmd-tldr"><span class="bp-card-cmd">tldr</span> &mdash; <span class="bp-card-job">show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</span><div class="bp-card-more">more: may need installing (<code>brew install tldr</code>, <code>npm install -g tldr</code>); when it is missing, <code>--help</code> is always there</div></div><p><code class="docutils literal notranslate"><span class="pre">tldr</span></code> is a community project, so it is not guaranteed to be on every machine —
+<div class="bp-card" id="cmd-tldr"><span class="bp-card-cmd">tldr</span> &mdash; <span class="bp-card-job">show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</span><div class="bp-card-more">more: may need installing (<code>brew install tldr</code>, <code>npm install -g tldr</code>); when it is missing, <code>--help</code> is always there</div></div><p><code class="docutils literal notranslate"><span class="pre">tldr</span></code> is a community project, so it is not guaranteed to be on every machine,
 which is the whole reason <code class="docutils literal notranslate"><span class="pre">--help</span></code> is worth knowing: it ships with the command
 itself and is <em>always</em> available. When in doubt, reach for <code class="docutils literal notranslate"><span class="pre">--help</span></code> first.</p>
 </section>
@@ -729,8 +729,8 @@ itself and is <em>always</em> available. When in doubt, reach for <code class="d
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <p>From here on, each exercise follows the same rhythm: a short task, a place for
 your answer, and an automatic check that confirms the result with a green ✓. On
-the published page the answer code is hidden — you see the problem and the
-checkmark; the worked solutions are available on request (see the foot of the
+the published page the answer code is hidden: you see the problem and the
+checkmark, and the worked solutions are available on request (see the foot of the
 notebook).</p>
 <section id="exercise-1-worked-speak-to-the-shell">
 <h3>Exercise 1 (worked) — Speak to the shell<a class="headerlink" href="#exercise-1-worked-speak-to-the-shell" title="Link to this heading">#</a></h3>
@@ -811,7 +811,7 @@ and <strong><code class="docutils literal notranslate"><span class="pre">-a</spa
 <h3>Exercise 4 (your turn) — Find a flag yourself<a class="headerlink" href="#exercise-4-your-turn-find-a-flag-yourself" title="Link to this heading">#</a></h3>
 <p>A gentle taste of the course’s core skill: finding a flag without being told it.
 You want <code class="docutils literal notranslate"><span class="pre">echo</span></code> to print something <strong>without</strong> the usual newline at the end. The
-flag exists — find it. Because <code class="docutils literal notranslate"><span class="pre">echo</span></code> is a builtin, ask bash with <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">echo</span></code>
+flag exists. Find it. Because <code class="docutils literal notranslate"><span class="pre">echo</span></code> is a builtin, ask bash with <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">echo</span></code>
 (remember the watch-out above), spot the flag, and demonstrate it.</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
@@ -832,7 +832,7 @@ no trailing newline here
 </section>
 <section id="exercise-5-your-turn-optional-recall-and-reuse">
 <h3>Exercise 5 (your turn, optional) — Recall and reuse<a class="headerlink" href="#exercise-5-your-turn-optional-recall-and-reuse" title="Link to this heading">#</a></h3>
-<p>You rarely retype a command — you fish it back out of your history. Run
+<p>You rarely retype a command; you fish it back out of your history. Run
 <code class="docutils literal notranslate"><span class="pre">history</span></code> to see the list, then, in your own shell, re-run an earlier entry with
 <code class="docutils literal notranslate"><span class="pre">!N</span></code> (where <code class="docutils literal notranslate"><span class="pre">N</span></code> is its number) or hunt for it with <kbd>Ctrl</kbd>+<kbd>R</kbd>.</p>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -856,21 +856,20 @@ no trailing newline here
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now stand in a shell, type a command, read what comes back, and — most
-importantly — find out what you don’t know on your own. That last skill is the
+<p>You can now stand in a shell, type a command, read what comes back, and, most
+importantly, find out what you don’t know on your own. That last skill is the
 one that compounds. What you cannot yet do is <em>move</em>: every command so far has
 run wherever the shell happened to drop you. The next notebook gives you the map
-and the legs — the <strong>filesystem</strong>, and how to walk through it — which is the
-ground every later trick, from finding files to extracting numbers from them,
-stands on.</p>
+and the legs: the <strong>filesystem</strong>, and how to walk through it. It is the ground
+every later trick stands on, from finding files to extracting numbers from them.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-echo"><code class="bp-cmd-name">echo</code></a> &mdash; print its arguments back to standard output.</li><li><a href="#cmd-pwd"><code class="bp-cmd-name">pwd</code></a> &mdash; print the working directory: where you currently are in the filesystem.</li><li><a href="#cmd-whoami"><code class="bp-cmd-name">whoami</code></a> &mdash; print the username the shell is running as.</li><li><a href="#cmd-date"><code class="bp-cmd-name">date</code></a> &mdash; print the current date and time.</li><li><a href="#cmd-clear"><code class="bp-cmd-name">clear</code></a> &mdash; wipe the visible screen, giving you a clean prompt.</li><li><a href="#cmd-history"><code class="bp-cmd-name">history</code></a> &mdash; list the commands you have run, newest last, each with a number.</li><li><a href="#cmd-man"><code class="bp-cmd-name">man</code></a> &mdash; open the full manual page for a command.</li><li><a href="#cmd-tldr"><code class="bp-cmd-name">tldr</code></a> &mdash; show a few practical, copy-paste examples for a command, skipping the exhaustive manual.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box above to
-    run everything yourself — nothing to install. The published notebooks ship
-    <b>without worked solutions</b>; if you would like the reference solutions —
-    to teach from or to check your own work — get in touch:
+    run everything yourself; nothing to install. The published notebooks ship
+    <b>without worked solutions</b>; if you would like the reference solutions
+    (to teach from or to check your own work), get in touch:
     <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

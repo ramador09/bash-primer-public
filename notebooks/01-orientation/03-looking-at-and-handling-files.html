@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/01-orientation/03-looking-at-and-handling-files.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: Notebook 2 got you to a file: you can find any file in the tree. Now you do the two things you actually came for — look inside a..." />
+<meta property="og:description" content="What this notebook is about: Notebook 2 got you to a file: you can find any file in the tree. Now you do the two things you actually came for: look inside a ..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: Notebook 2 got you to a file: you can find any file in the tree. Now you do the two things you actually came for — look inside a..." />
+<meta name="description" content="What this notebook is about: Notebook 2 got you to a file: you can find any file in the tree. Now you do the two things you actually came for: look inside a ..." />
 
     <title>3 Looking at and handling files &#8212; Introduction to the Bash Shell</title>
   
@@ -455,12 +455,12 @@
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>Notebook 2 got you <em>to</em> a file: you can find any file in the tree. Now you do the
-two things you actually came for — look <em>inside</em> a file, and move files around.</p>
+two things you actually came for: look <em>inside</em> a file, and move files around.</p>
 <p>As before, the playground is the course’s real <code class="docutils literal notranslate"><span class="pre">data/</span></code> folder: <code class="docutils literal notranslate"><span class="pre">.xyz</span></code>
 trajectories and simulation inputs from the Molecular and Materials Modelling
 course. <strong>You do not need to understand any of it.</strong> The only thing that matters
-here is that these are <em>text files</em>, and the skills — viewing them and organising
-them — are the same whether a file holds atomic coordinates or a shopping list.</p>
+here is that these are <em>text files</em>, and the skills (viewing them and organising
+them) are the same whether a file holds atomic coordinates or a shopping list.</p>
 <p>One ground rule for this notebook: we treat <code class="docutils literal notranslate"><span class="pre">data/</span></code> as <strong>read-only</strong>. Anything we
 create, copy, or delete happens in a throwaway <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> directory, so there is
 no way to harm the real files. (This is also just good practice.)</p>
@@ -483,7 +483,7 @@ file’s contents and tells you its type.</p>
 </div>
 </div>
 </div>
-<p>Plain text — safe to read. That check matters more than it looks: opening a
+<p>Plain text, safe to read. That check matters more than it looks: opening a
 <em>binary</em> file as if it were text can spray control characters across your terminal
 and garble it. <code class="docutils literal notranslate"><span class="pre">file</span></code> is how you avoid that.</p>
 </section>
@@ -535,7 +535,7 @@ scrubbed: usernames and cluster hostnames removed (none were present)
 </div>
 </div>
 <p>But heed the gotcha on the card. The optimisation trajectory in <code class="docutils literal notranslate"><span class="pre">data/</span></code> is <strong>2,520
-lines</strong> long — <code class="docutils literal notranslate"><span class="pre">cat</span></code>-ing it would bury your screen in coordinates. When a file is
+lines</strong> long; <code class="docutils literal notranslate"><span class="pre">cat</span></code>-ing it would bury your screen in coordinates. When a file is
 big, you do not want all of it; you want a <em>piece</em> of it. That is the next two
 commands.</p>
 </section>
@@ -544,7 +544,7 @@ commands.</p>
 <p><code class="docutils literal notranslate"><span class="pre">head</span></code> shows the first few lines of a file; <code class="docutils literal notranslate"><span class="pre">tail</span></code> shows the last few. They are how
 you sample a big file without drowning in it.</p>
 <div class="bp-card" id="cmd-head"><span class="bp-card-cmd">head</span> &mdash; <span class="bp-card-job">show the first lines of a file.</span><table><tr><td>-n N</td><td>show the first N lines (default 10)</td></tr><tr><td>-c N</td><td>show the first N bytes instead of lines</td></tr></table><div class="bp-card-more">more: <code>man head</code></div></div><div class="bp-card" id="cmd-tail"><span class="bp-card-cmd">tail</span> &mdash; <span class="bp-card-job">show the last lines of a file.</span><table><tr><td>-n N</td><td>show the last N lines (default 10)</td></tr><tr><td>-c N</td><td>show the last N bytes instead of lines</td></tr><tr><td>-f</td><td>follow — keep printing new lines as the file grows (watch a running job&#x27;s log live); stop with Ctrl+C</td></tr></table><div class="bp-card-more">more: <code>man tail</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>tail -f</code> never returns on its own — it waits for more; press <code>Ctrl+C</code> to get your prompt back</div><p>A one-line motivation, then the release valve: in an <code class="docutils literal notranslate"><span class="pre">.xyz</span></code> trajectory the first
-line is the atom count and the second carries the step and energy — but <strong>you do
+line is the atom count and the second carries the step and energy. But <strong>you do
 not need to know that</strong>. The point is simply that <code class="docutils literal notranslate"><span class="pre">head</span></code> pulls the top:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -577,7 +577,7 @@ trajectory, fetched instantly without reading the rest:</p>
 </div>
 </div>
 <p>One flag on <code class="docutils literal notranslate"><span class="pre">tail</span></code> is worth singling out: <strong><code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span></code></strong> <em>follows</em> a file, printing
-new lines as they are added. This is how you watch a running job’s log live — an
+new lines as they are added. This is how you watch a running job’s log live, an
 everyday move on a cluster. It is interactive (it keeps waiting), so it belongs in
 a real terminal, not a static cell:</p>
 <div class="tip admonition">
@@ -591,7 +591,7 @@ as they are written. Press <code class="docutils literal notranslate"><span clas
 <h3><code class="docutils literal notranslate"><span class="pre">less</span></code> — page through a big file<a class="headerlink" href="#less-page-through-a-big-file" title="Link to this heading">#</a></h3>
 <p>To actually <em>read</em> a long file (not just its ends), use the pager, <code class="docutils literal notranslate"><span class="pre">less</span></code>. It shows
 one screen at a time and lets you scroll and search.</p>
-<div class="bp-card" id="cmd-less"><span class="bp-card-cmd">less</span> &mdash; <span class="bp-card-job">page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</span><table><tr><td>Space / b</td><td>page down / page up</td></tr><tr><td>/pattern → n / N</td><td>search forward, then jump to the next / previous match</td></tr><tr><td>g / G</td><td>jump to the top / the bottom</td></tr><tr><td>q</td><td>quit</td></tr></table><div class="bp-card-more">more: <code>man less</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>man</code> shows its pages through <code>less</code>, so the same keys work in both — <code>q</code> quits each, <code>/</code> searches each. It is interactive: practise it in the terminal</div><p><code class="docutils literal notranslate"><span class="pre">less</span></code> is interactive — there is nothing to print on a page, only keys to press —
+<div class="bp-card" id="cmd-less"><span class="bp-card-cmd">less</span> &mdash; <span class="bp-card-job">page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</span><table><tr><td>Space / b</td><td>page down / page up</td></tr><tr><td>/pattern → n / N</td><td>search forward, then jump to the next / previous match</td></tr><tr><td>g / G</td><td>jump to the top / the bottom</td></tr><tr><td>q</td><td>quit</td></tr></table><div class="bp-card-more">more: <code>man less</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>man</code> shows its pages through <code>less</code>, so the same keys work in both — <code>q</code> quits each, <code>/</code> searches each. It is interactive: practise it in the terminal</div><p><code class="docutils literal notranslate"><span class="pre">less</span></code> is interactive (there is nothing to print on a page, only keys to press),
 so this one, too, is for your terminal. There is a payoff for a habit you already
 have: <code class="docutils literal notranslate"><span class="pre">man</span></code> displays its pages <em>through</em> <code class="docutils literal notranslate"><span class="pre">less</span></code>, so every key you learn here works
 in <code class="docutils literal notranslate"><span class="pre">man</span></code> as well. <code class="docutils literal notranslate"><span class="pre">q</span></code> quits both; <code class="docutils literal notranslate"><span class="pre">/</span></code> searches both.</p>
@@ -622,7 +622,7 @@ directory.</p>
 </div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">touch</span></code> printed nothing — like most of these commands, silence means success.
+<p><code class="docutils literal notranslate"><span class="pre">touch</span></code> printed nothing; like most of these commands, silence means success.
 <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> with <code class="docutils literal notranslate"><span class="pre">-p</span></code> makes a whole nested path at once (and never complains if it
 already exists):</p>
 <div class="cell docutils container">
@@ -632,7 +632,7 @@ already exists):</p>
 </div>
 </div>
 </div>
-<p>Let us see what we built:</p>
+<p>Let’s see what we built:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-R<span class="w"> </span>scratch
@@ -675,7 +675,7 @@ scratch/results/raw:
 </section>
 <section id="mv-move-and-rename">
 <h3><code class="docutils literal notranslate"><span class="pre">mv</span></code> — move and rename<a class="headerlink" href="#mv-move-and-rename" title="Link to this heading">#</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">mv</span></code> moves a file somewhere else — and <strong>renaming is the same operation</strong>, just
+<p><code class="docutils literal notranslate"><span class="pre">mv</span></code> moves a file somewhere else, and <strong>renaming is the same operation</strong>, just
 moving a file to a new name in the same directory.</p>
 <div class="bp-card" id="cmd-mv"><span class="bp-card-cmd">mv</span> &mdash; <span class="bp-card-job">move a file — or rename it (same command: renaming is just moving within a directory).</span><table><tr><td>-i</td><td>prompt before overwriting an existing file</td></tr><tr><td>-v</td><td>verbose — print what was moved</td></tr></table><div class="bp-card-more">more: <code>man mv</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> like <code>cp</code>, <code>mv</code> overwrites the destination silently — add <code>-i</code> if there is any chance it already exists</div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -720,23 +720,23 @@ moving a file to a new name in the same directory.</p>
 </div>
 </div>
 </div>
-<p>That file is now gone — and here is the thing about “gone”:</p>
+<p>That file is now gone. A word about what “gone” really means:</p>
 <div class="danger admonition">
 <p class="admonition-title">⚠ rm has no undo, and no trash</p>
 <p>This is the most consequential warning in the course so far, so read it once,
-properly. When <code class="docutils literal notranslate"><span class="pre">rm</span></code> deletes a file, it is <strong>gone</strong> — there is no Recycle Bin, no
+properly. When <code class="docutils literal notranslate"><span class="pre">rm</span></code> deletes a file, it is <strong>gone</strong>: there is no Recycle Bin, no
 Trash, no “are you sure?”. <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">somedir</span></code> will silently erase an entire directory
 tree, and <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">*</span></code> in the wrong directory has ruined many a day. Three habits
 keep you safe:</p>
 <ul class="simple">
 <li><p><strong>Look before you leap.</strong> Before <code class="docutils literal notranslate"><span class="pre">rm</span></code>-ing with a wildcard, run the same pattern
-through <code class="docutils literal notranslate"><span class="pre">ls</span></code> first — <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">*.tmp</span></code> shows you exactly what <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">*.tmp</span></code> will destroy.</p></li>
+through <code class="docutils literal notranslate"><span class="pre">ls</span></code> first: <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">*.tmp</span></code> shows you exactly what <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">*.tmp</span></code> will destroy.</p></li>
 <li><p><strong>Use <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-i</span></code> when it matters.</strong> It prompts before each deletion; the half-second
 pause has saved many files.</p></li>
 <li><p><strong>Reach for <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> when you mean “empty”.</strong> It <em>refuses</em> to delete a non-empty
 directory, so it cannot take anything down with it by surprise.</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">rm</span></code> is not to be feared — it is to be respected, like any sharp tool.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rm</span></code> is not to be feared; it is to be respected, like any sharp tool.</p>
 </div>
 </section>
 </section>
@@ -778,7 +778,7 @@ last few lines with <code class="docutils literal notranslate"><span class="pre"
 <h3>Exercise 2 (your turn) — First and last of a trajectory<a class="headerlink" href="#exercise-2-your-turn-first-and-last-of-a-trajectory" title="Link to this heading">#</a></h3>
 <p>Show the <strong>first 5</strong> lines and the <strong>last 5</strong> lines of the big trajectory
 <code class="docutils literal notranslate"><span class="pre">data/trajectories/lj38-optimization.xyz</span></code>, without reading the 2,510 lines in
-between.</p>
+between. Reach for <code class="docutils literal notranslate"><span class="pre">head</span> <span class="pre">-n</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-n</span> <span class="pre">5</span></code>.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -830,7 +830,7 @@ list the result with <code class="docutils literal notranslate"><span class="pre
 <section id="exercise-4-your-turn-safe-removal">
 <h3>Exercise 4 (your turn) — Safe removal<a class="headerlink" href="#exercise-4-your-turn-safe-removal" title="Link to this heading">#</a></h3>
 <p>In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>: <code class="docutils literal notranslate"><span class="pre">touch</span></code> two files, <code class="docutils literal notranslate"><span class="pre">keep.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">delete-me.txt</span></code>, then remove only
-<code class="docutils literal notranslate"><span class="pre">delete-me.txt</span></code>. Afterwards <code class="docutils literal notranslate"><span class="pre">keep.txt</span></code> must still be there — removing one thing
+<code class="docutils literal notranslate"><span class="pre">delete-me.txt</span></code>. Afterwards <code class="docutils literal notranslate"><span class="pre">keep.txt</span></code> must still be there; removing one thing
 should never take its neighbours with it.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -851,30 +851,31 @@ should never take its neighbours with it.</p>
 </section>
 <section id="exercise-5-terminal-only-paging-and-following">
 <h3>Exercise 5 (terminal-only) — Paging and following<a class="headerlink" href="#exercise-5-terminal-only-paging-and-following" title="Link to this heading">#</a></h3>
-<p>No ✓ for this one — it is interactive. In the
+<p>No ✓ for this one: it is interactive. In the
 <a class="reference external" href="https://mybinder.org/v2/gh/ramador09/bash-primer-public/HEAD?urlpath=shell/">live terminal</a>:
 open <code class="docutils literal notranslate"><span class="pre">less</span> <span class="pre">data/results/sn2-neb.ener</span></code>, search it with <code class="docutils literal notranslate"><span class="pre">/</span></code>, and quit with <code class="docutils literal notranslate"><span class="pre">q</span></code>. Then
 pick a file and <code class="docutils literal notranslate"><span class="pre">tail</span> <span class="pre">-f</span></code> it while you append to it from elsewhere, and watch the
-new lines arrive live. These two habits — paging and following — are everyday moves
+new lines arrive live. These two habits, paging and following, are everyday moves
 once you are working on real runs.</p>
 </section>
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now see what is inside a file and move files around the tree — which closes
-out the orientation part of the course. Part II is where it gets powerful. Instead
-of reading a file by eye, you will <strong>extract</strong> from it: feed <code class="docutils literal notranslate"><span class="pre">cat</span></code> or <code class="docutils literal notranslate"><span class="pre">head</span></code> into
-tools that filter and reshape text, starting with <strong>redirection and pipes</strong>, then
-<code class="docutils literal notranslate"><span class="pre">grep</span></code>, the stream toolkit, and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code>. Everything you have built — moving
-through the tree, peeking at files — is the ground that stands on.</p>
+<p>You can now see what is inside a file and move files around the tree, which closes
+out the orientation part of the course. Part II is where it turns from handling
+files to mining them. Instead of reading a file by eye, you will <strong>extract</strong> from
+it: feed <code class="docutils literal notranslate"><span class="pre">cat</span></code> or <code class="docutils literal notranslate"><span class="pre">head</span></code> into tools that filter and reshape text, starting with
+<strong>redirection and pipes</strong>, then <code class="docutils literal notranslate"><span class="pre">grep</span></code>, the stream toolkit, and <code class="docutils literal notranslate"><span class="pre">awk</span></code>/<code class="docutils literal notranslate"><span class="pre">sed</span></code>.
+Everything you have built (moving through the tree, peeking at files) is the
+ground that stands on.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-file"><code class="bp-cmd-name">file</code></a> &mdash; identify what kind of file something is, before you open it.</li><li><a href="#cmd-cat"><code class="bp-cmd-name">cat</code></a> &mdash; print a file&#x27;s contents straight to the screen.</li><li><a href="#cmd-head"><code class="bp-cmd-name">head</code></a> &mdash; show the first lines of a file.</li><li><a href="#cmd-tail"><code class="bp-cmd-name">tail</code></a> &mdash; show the last lines of a file.</li><li><a href="#cmd-less"><code class="bp-cmd-name">less</code></a> &mdash; page through a file one screen at a time — the pager. (Its “flags” are keys you press while it is open.)</li><li><a href="#cmd-touch"><code class="bp-cmd-name">touch</code></a> &mdash; create an empty file, or update an existing file&#x27;s timestamp.</li><li><a href="#cmd-mkdir"><code class="bp-cmd-name">mkdir</code></a> &mdash; make a new directory.</li><li><a href="#cmd-cp"><code class="bp-cmd-name">cp</code></a> &mdash; copy a file (or, with -r, a directory).</li><li><a href="#cmd-mv"><code class="bp-cmd-name">mv</code></a> &mdash; move a file — or rename it (same command: renaming is just moving within a directory).</li><li><a href="#cmd-rm"><code class="bp-cmd-name">rm</code></a> &mdash; remove (delete) a file. Permanently.</li><li><a href="#cmd-rmdir"><code class="bp-cmd-name">rmdir</code></a> &mdash; remove an empty directory — and only an empty one.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>
