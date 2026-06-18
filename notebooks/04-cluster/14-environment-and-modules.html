@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/04-cluster/14-environment-and-modules.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: Part IV is about taking everything you have built — scripts that read, write, decide, and repeat — to the place the real work ha..." />
+<meta property="og:description" content="What this notebook is about: Part IV is about taking everything you have built (scripts that read, write, decide, and repeat) to the place the real work happ..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: Part IV is about taking everything you have built — scripts that read, write, decide, and repeat — to the place the real work ha..." />
+<meta name="description" content="What this notebook is about: Part IV is about taking everything you have built (scripts that read, write, decide, and repeat) to the place the real work happ..." />
 
     <title>14 Environment and modules &#8212; Introduction to the Bash Shell</title>
   
@@ -436,8 +436,8 @@
     <span class="bp-meta">Notebook&nbsp;14</span>
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
-    The environment your shell runs inside — variables, <code>$PATH</code>,
-    startup files, and loaded modules — and why a cluster job so often can't find
+    The environment your shell runs inside (variables, <code>$PATH</code>,
+    startup files, and loaded modules), and why a cluster job so often can't find
     the software you swear you set up.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -448,8 +448,8 @@
 </div>
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
-<p>Part IV is about taking everything you have built — scripts that read, write,
-decide, and repeat — to the place the real work happens: a shared cluster. And the
+<p>Part IV is about taking everything you have built (scripts that read, write,
+decide, and repeat) to the place the real work happens: a shared cluster. And the
 very first thing that goes wrong there is almost never your science. It is the
 <strong>environment</strong>.</p>
 <p>Your shell does not run in a vacuum. It runs inside a set of <strong>variables</strong> (and, on
@@ -458,22 +458,22 @@ a cluster, <strong>loaded modules</strong>) that every command and every script 
 available; getting it subtly wrong is the single most common cluster bug, the one
 behind the classic cry: <em>“but it worked when I ran it by hand!”</em></p>
 <p>This notebook is the map of that environment: shell variables versus exported ones
-(§A), <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> (§B), the startup files that set it all up — and the login-versus-batch
+(§A), <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> (§B), the startup files that set it all up, and the login-versus-batch
 trap that breaks jobs (§C), the <code class="docutils literal notranslate"><span class="pre">source</span></code>-versus-run distinction that makes it all
 work (§D), <code class="docutils literal notranslate"><span class="pre">alias</span></code> (§E), and finally the <strong>module</strong> system clusters use to hand you
-software (§F). (As ever: <strong>no physics</strong> — we load a stand-in “code” without caring
+software (§F). (As ever: <strong>no physics</strong>: we load a stand-in “code” without caring
 what it computes.)</p>
 </section>
 <section id="a-variables-versus-the-environment">
 <h2>A. Variables versus the environment<a class="headerlink" href="#a-variables-versus-the-environment" title="Link to this heading">#</a></h2>
 <p>In Notebook 12 you set variables: <code class="docutils literal notranslate"><span class="pre">name=value</span></code>. Such a variable is <strong>private to the
-current shell</strong>. The moment you run a script, you start a <em>child</em> shell — and the
+current shell</strong>. The moment you run a script, you start a <em>child</em> shell, and the
 child does <strong>not</strong> inherit your private variables. It inherits only the ones you
 have <strong>exported</strong> into the <strong>environment</strong>. Here is that fact, felt. We have a tiny
 child script that just reports one variable:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
-<p>Set the variable the ordinary way and run the child — it sees <strong>nothing</strong>, because
+<p>Set the variable the ordinary way and run the child: it sees <strong>nothing</strong>, because
 a plain variable does not cross into the child:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -487,8 +487,8 @@ a plain variable does not cross into the child:</p>
 </div>
 </div>
 </div>
-<p>Now <strong><code class="docutils literal notranslate"><span class="pre">export</span></code></strong> it — promoting it from a shell variable to an <em>environment</em>
-variable — and run the very same child again:</p>
+<p>Now <strong><code class="docutils literal notranslate"><span class="pre">export</span></code></strong> it (promoting it from a shell variable to an <em>environment</em>
+variable) and run the very same child again:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span>GREETING<span class="p">;</span><span class="w"> </span>bash<span class="w"> </span>scratch/child.sh
@@ -502,10 +502,10 @@ variable — and run the very same child again:</p>
 </div>
 </div>
 <p>This time it crosses. That is the whole mental model of the environment: <strong>a child
-inherits exactly the exported variables, and nothing else.</strong> Hold onto it — almost
+inherits exactly the exported variables, and nothing else.</strong> Hold onto it: almost
 every “my job can’t see X” problem is this picture with X unexported.</p>
 <div class="bp-card" id="cmd-export"><span class="bp-card-cmd">export</span> &mdash; <span class="bp-card-job">promote a shell variable to an ENVIRONMENT variable, so every child process and script inherits it.</span><table><tr><td>export NAME=value</td><td>set a variable AND mark it for inheritance, in one step</td></tr><tr><td>export NAME</td><td>mark an already-set variable for inheritance</td></tr><tr><td>-p</td><td>list every exported variable currently in the environment</td></tr></table><div class="bp-card-more">more: <code>help export</code>; see the whole environment with <code>printenv</code> or <code>env</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> an UNexported variable is private to the current shell — a script you run sees an empty value for it. This is the single most common &quot;why doesn&#x27;t my job see my setting&quot; bug</div><p>The flip side of <code class="docutils literal notranslate"><span class="pre">export</span></code> is <em>seeing</em> what is in the environment, with <strong><code class="docutils literal notranslate"><span class="pre">printenv</span></code></strong>
-(or the <code class="docutils literal notranslate"><span class="pre">env</span></code> command) — and note that our newly-exported <code class="docutils literal notranslate"><span class="pre">GREETING</span></code> is now in it,
+(or the <code class="docutils literal notranslate"><span class="pre">env</span></code> command), and note that our newly-exported <code class="docutils literal notranslate"><span class="pre">GREETING</span></code> is now in it,
 while a plain shell variable would not be:</p>
 <div class="bp-card" id="cmd-printenv"><span class="bp-card-cmd">printenv</span> &mdash; <span class="bp-card-job">print the environment — the exported variables the shell passes down to its children.</span><table><tr><td>printenv</td><td>list the whole environment, one <code>NAME=value</code> per line</td></tr><tr><td>printenv NAME</td><td>print just one variable&#x27;s value (empty, non-zero exit, if it is unset)</td></tr></table><div class="bp-card-more">more: <code>man printenv</code>; the <code>env</code> command with no arguments does the same listing</div></div><div class="bp-watchout"><strong>Watch out:</strong> printenv shows only EXPORTED variables — a plain shell variable (set without <code>export</code>) does not appear, which is exactly the environment-vs-shell-variable distinction made visible</div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -524,7 +524,7 @@ while a plain shell variable would not be:</p>
 <h2>B. <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> revisited<a class="headerlink" href="#b-path-revisited" title="Link to this heading">#</a></h2>
 <p>You already met the most important environment variable in Notebook 11: <strong><code class="docutils literal notranslate"><span class="pre">$PATH</span></code></strong>,
 the colon-separated list of directories the shell searches for a command you type by
-name. It is just an environment variable — so you shape it with <code class="docutils literal notranslate"><span class="pre">export</span></code>. The
+name. It is just an environment variable, so you shape it with <code class="docutils literal notranslate"><span class="pre">export</span></code>. The
 canonical move, the one that finally delivers Notebook 11’s “promote your script to
 a command,” is to <strong>prepend</strong> your own <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
@@ -547,11 +547,11 @@ make a script callable by bare name:</p>
 </div>
 </div>
 </div>
-<p>The bare name resolved — no <code class="docutils literal notranslate"><span class="pre">./</span></code> — because its directory is now on <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>. One
+<p>The bare name resolved (no <code class="docutils literal notranslate"><span class="pre">./</span></code>) because its directory is now on <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>. One
 rule guards this:</p>
 <div class="warning admonition">
 <p class="admonition-title">⚠ Extend PATH, never replace it</p>
-<p>Always write <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;newdir:$PATH&quot;</span></code> — <em>keeping</em> the old <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> on the end.
+<p>Always write <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;newdir:$PATH&quot;</span></code>, <em>keeping</em> the old <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> on the end.
 If you write a bare <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=&quot;newdir&quot;</span></code> you have <strong>clobbered</strong> it: the shell can
 no longer find <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">grep</span></code>, or anything else, and your session is effectively
 broken until you fix it. The <code class="docutils literal notranslate"><span class="pre">:$PATH</span></code> on the end is not optional decoration; it is
@@ -562,19 +562,19 @@ the rest of your system.</p>
 <h2>C. Startup files: login versus non-login<a class="headerlink" href="#c-startup-files-login-versus-non-login" title="Link to this heading">#</a></h2>
 <p>Where do all these exports and PATH tweaks usually live? In a <strong>startup file</strong> that
 the shell reads automatically. But <em>which</em> file, and <em>whether it is read at all</em>,
-depends on the kind of shell — and this is the linchpin of the whole notebook.</p>
+depends on the kind of shell, and this is the linchpin of the whole notebook.</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Which startup file runs</span> — <span class="bp-card-job">depends on how the shell was started. This is the source of most "it works by hand but not in my job" bugs.</span>
   <table>
-    <tr><td>~/.bash_profile&nbsp;·&nbsp;~/.profile</td><td><b>login</b> shells — when you <code>ssh</code> in or log in at a console</td></tr>
-    <tr><td>~/.bashrc</td><td><b>non-login, interactive</b> shells — opening a new terminal tab</td></tr>
-    <tr><td><i>(none)</i></td><td><b>non-interactive</b> shells — a script, or a batch job — read <b>no</b> rc file</td></tr>
+    <tr><td>~/.bash_profile&nbsp;·&nbsp;~/.profile</td><td><b>login</b> shells: when you <code>ssh</code> in or log in at a console</td></tr>
+    <tr><td>~/.bashrc</td><td><b>non-login, interactive</b> shells: opening a new terminal tab</td></tr>
+    <tr><td><i>(none)</i></td><td><b>non-interactive</b> shells (a script, or a batch job) read <b>no</b> rc file</td></tr>
   </table>
 </div>
 <p>The common convention is that <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code> simply <code class="docutils literal notranslate"><span class="pre">source</span></code>s <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, so a
 login shell ends up with your interactive setup too. But look at that last row,
 because it is the trap. The shell running <em>these very cells</em> is non-interactive,
-exactly like a batch job — ask it:</p>
+exactly like a batch job; ask it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="nv">$-</span><span class="w"> </span><span class="k">in</span>
@@ -593,7 +593,7 @@ exactly like a batch job — ask it:</p>
 <div class="warning admonition">
 <p class="admonition-title">⚠ Why your cluster job can’t find your modules</p>
 <p>A scheduler runs your job script in a <strong>non-login, non-interactive</strong> shell. So it
-<strong>never sources your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code></strong> — none of your aliases, your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> edits, or
+<strong>never sources your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code></strong>: none of your aliases, your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> edits, or
 your <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code> lines from there exist inside the job. This is <em>the</em> reason for
 “it ran when I typed it, but the batch job says command not found.” The fix is not
 to fight the shell: it is to put the setup your job needs <strong>inside the job script
@@ -603,13 +603,13 @@ itself</strong> (Notebook 16), so it does not depend on being inherited.</p>
 <section id="d-source-versus-execute-the-key-distinction">
 <h2>D. <code class="docutils literal notranslate"><span class="pre">source</span></code> versus execute — the key distinction<a class="headerlink" href="#d-source-versus-execute-the-key-distinction" title="Link to this heading">#</a></h2>
 <p>That fix rests on one idea, and it is the most important tool in this notebook. When
-you run <code class="docutils literal notranslate"><span class="pre">./script</span></code> (Notebook 11), it runs in a <strong>child</strong> shell — so anything it
+you run <code class="docutils literal notranslate"><span class="pre">./script</span></code> (Notebook 11), it runs in a <strong>child</strong> shell, so anything it
 changes (variables, <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, loaded modules) vanishes the instant it finishes. When
 you <strong><code class="docutils literal notranslate"><span class="pre">source</span></code></strong> it instead, its lines run in your <strong>current</strong> shell, so its changes
 <strong>stay</strong>. We have a script that sets a variable:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
-<p>Run it as a child with <code class="docutils literal notranslate"><span class="pre">./</span></code> (here, <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">…</span></code>) and the variable does <strong>not</strong> survive —
+<p>Run it as a child with <code class="docutils literal notranslate"><span class="pre">./</span></code> (here, <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">…</span></code>) and the variable does <strong>not</strong> survive:
 the child set it, then exited and took it with it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -623,7 +623,7 @@ the child set it, then exited and took it with it:</p>
 </div>
 </div>
 </div>
-<p>Now <strong><code class="docutils literal notranslate"><span class="pre">source</span></code></strong> the same script — its line runs <em>here</em>, so the variable persists:</p>
+<p>Now <strong><code class="docutils literal notranslate"><span class="pre">source</span></code></strong> the same script: its line runs <em>here</em>, so the variable persists:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>scratch/setvar.sh<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;after sourcing it: [</span><span class="nv">$MSG</span><span class="s2">]&quot;</span>
@@ -673,7 +673,7 @@ worth stating plainly, and it ties straight back to Notebook 12:</p>
 </div>
 </div>
 </div>
-<p>A script cannot see your aliases — they are an interactive-only convenience. So when
+<p>A script cannot see your aliases: they are an interactive-only convenience. So when
 a <em>script</em> needs a reusable shorthand, you do not reach for an alias; you write a
 <strong>function</strong> (Notebook 12), which a script defines for itself.</p>
 </section>
@@ -683,10 +683,10 @@ a <em>script</em> needs a reusable shorthand, you do not reach for an alias; you
 waiting for you. There are dozens of programs, often several <strong>versions</strong> of each
 with conflicting dependencies, and you opt into exactly the ones you want with the
 <strong>module</strong> system. It is the cluster embodiment of everything in this notebook:
-<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code> works precisely by <strong>modifying your current environment</strong> — adding to
-<code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, setting variables — the way a <code class="docutils literal notranslate"><span class="pre">source</span></code>d script does.</p>
+<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code> works precisely by <strong>modifying your current environment</strong> (adding to
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, setting variables) the way a <code class="docutils literal notranslate"><span class="pre">source</span></code>d script does.</p>
 <div class="bp-card" id="cmd-module"><span class="bp-card-cmd">module</span> &mdash; <span class="bp-card-job">load and unload software on a cluster — adding a chosen version of a tool to your environment on demand.</span><table><tr><td>module avail</td><td>list the software (and versions) available to load</td></tr><tr><td>module load NAME/VER</td><td>add a module to your environment (puts it on <code>PATH</code>, sets its variables)</td></tr><tr><td>module list</td><td>show what you currently have loaded</td></tr><tr><td>module purge</td><td>unload everything — back to a clean environment</td></tr><tr><td>module swap A B  /  module unload NAME</td><td>replace one module with another / drop a single one</td></tr></table><div class="bp-card-more">more: <code>module help</code>; on Euler and most clusters this is the Lmod or environment-modules system</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>module</code> modifies the CURRENT environment (like <code>source</code>, not <code>./</code>), so its effect is session-local — which is why a batch job must <code>module load</code> what it needs INSIDE the job script (Notebook 16), not lean on your login setup</div><p>Start by asking what is available. (We have set up a demo “simulation code” in two
-versions, plus a second tool family — on a real cluster the list runs to hundreds.)
+versions, plus a second tool family; on a real cluster the list runs to hundreds.)
 <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">avail</span></code> writes its listing to standard error, which is normal:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -703,7 +703,7 @@ Key:
 </div>
 </div>
 </div>
-<p>Before loading anything, the <code class="docutils literal notranslate"><span class="pre">democode</span></code> command does not exist — it is not on
+<p>Before loading anything, the <code class="docutils literal notranslate"><span class="pre">democode</span></code> command does not exist: it is not on
 <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -718,7 +718,7 @@ Key:
 </div>
 </div>
 <p>Now <strong>load</strong> version 1.0. With no fanfare, it puts <code class="docutils literal notranslate"><span class="pre">democode</span></code> on your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> and
-sets a variable — and suddenly the command runs:</p>
+sets a variable, and suddenly the command runs:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>democode/1.0<span class="p">;</span><span class="w"> </span>democode
@@ -770,8 +770,8 @@ everything, taking <code class="docutils literal notranslate"><span class="pre">
 </div>
 </div>
 </div>
-<p>That is the whole loop — <code class="docutils literal notranslate"><span class="pre">avail</span></code>, <code class="docutils literal notranslate"><span class="pre">load</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, <code class="docutils literal notranslate"><span class="pre">purge</span></code> (plus <code class="docutils literal notranslate"><span class="pre">swap</span></code> to change
-versions) — and the reason it matters here: because a module only changes the
+<p>That is the whole loop (<code class="docutils literal notranslate"><span class="pre">avail</span></code>, <code class="docutils literal notranslate"><span class="pre">load</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, <code class="docutils literal notranslate"><span class="pre">purge</span></code>, plus <code class="docutils literal notranslate"><span class="pre">swap</span></code> to change
+versions), and the reason it matters here: because a module only changes the
 <em>current</em> environment, a batch job must run these <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code> lines <strong>inside
 itself</strong>. That is exactly where Notebook 16 picks up.</p>
 </section>
@@ -782,7 +782,7 @@ and module loads we purge afterwards. <code class="docutils literal notranslate"
 with here-documents for reproducibility; in your terminal you would use Vim.)</p>
 <section id="warm-up-1-worked-inheritance-felt">
 <h3>Warm-up 1 (worked) — Inheritance, felt<a class="headerlink" href="#warm-up-1-worked-inheritance-felt" title="Link to this heading">#</a></h3>
-<p>Set a variable, run a child script that reads it — first <strong>unexported</strong> (the child
+<p>Set a variable, run a child script that reads it: first <strong>unexported</strong> (the child
 sees nothing), then <strong>exported</strong> (the child sees it).</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -827,7 +827,7 @@ script by its <strong>bare name</strong> (no <code class="docutils literal notra
 </section>
 <section id="applied-1-your-turn-source-versus">
 <h3>Applied 1 (your turn) — <code class="docutils literal notranslate"><span class="pre">source</span></code> versus <code class="docutils literal notranslate"><span class="pre">./</span></code><a class="headerlink" href="#applied-1-your-turn-source-versus" title="Link to this heading">#</a></h3>
-<p>A script sets a variable. Run it with <code class="docutils literal notranslate"><span class="pre">./</span></code> (a child — the variable does not persist)
+<p>A script sets a variable. Run it with <code class="docutils literal notranslate"><span class="pre">./</span></code> (a child, where the variable does not persist)
 and then <code class="docutils literal notranslate"><span class="pre">source</span></code> it (it does). Report the variable after each.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -878,8 +878,8 @@ after purge: none
 <section id="composite-putting-it-together-prepare-an-environment">
 <h3>Composite — putting it together (prepare an environment)<a class="headerlink" href="#composite-putting-it-together-prepare-an-environment" title="Link to this heading">#</a></h3>
 <p>The capstone, and the shape of every cluster setup you will ever write. Compose one
-small <strong>env-setup file</strong> that does three things — <code class="docutils literal notranslate"><span class="pre">export</span></code>s a variable, extends
-<code class="docutils literal notranslate"><span class="pre">$PATH</span></code> with your scratch <code class="docutils literal notranslate"><span class="pre">bin/</span></code>, and <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>s the demo code — then <strong><code class="docutils literal notranslate"><span class="pre">source</span></code></strong>
+small <strong>env-setup file</strong> that does three things (<code class="docutils literal notranslate"><span class="pre">export</span></code>s a variable, extends
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code> with your scratch <code class="docutils literal notranslate"><span class="pre">bin/</span></code>, and <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span></code>s the demo code), then <strong><code class="docutils literal notranslate"><span class="pre">source</span></code></strong>
 it and confirm that <em>both</em> your own tool and the loaded code now run. (In Notebook
 16 this exact block moves inside a job script.)</p>
 <div class="cell tag_remove-input docutils container">
@@ -903,7 +903,7 @@ democode 1.0 — stand-in simulation code (loaded via the module system)
 <section id="optional-stretch-your-turn-a-bashrc-style-file">
 <h3>Optional stretch (your turn) — A <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>-style file<a class="headerlink" href="#optional-stretch-your-turn-a-bashrc-style-file" title="Link to this heading">#</a></h3>
 <p>Build a scratch rc file with an <strong>export</strong>, a <strong>function</strong>, and an <strong>alias</strong>;
-<code class="docutils literal notranslate"><span class="pre">source</span></code> it; and confirm the export and the function work — while a child <strong>script</strong>
+<code class="docutils literal notranslate"><span class="pre">source</span></code> it; and confirm the export and the function work, while a child <strong>script</strong>
 cannot see the alias (so a script would use the function instead).</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -928,21 +928,21 @@ child: no ll alias
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You can now read and shape the environment your scripts run in — exported variables,
-<code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, startup files, <code class="docutils literal notranslate"><span class="pre">source</span></code> versus run, and the module system — and, crucially,
+<p>You can now read and shape the environment your scripts run in (exported variables,
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, startup files, <code class="docutils literal notranslate"><span class="pre">source</span></code> versus run, and the module system), and, crucially,
 you know <em>why</em> a batch job may inherit none of it. That last point is the bridge to
 the rest of Part IV. Next (Notebook 15): actually getting onto a remote machine and
-moving your scripts and data there — <code class="docutils literal notranslate"><span class="pre">ssh</span></code>, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code>, archiving with <code class="docutils literal notranslate"><span class="pre">tar</span></code>, and
+moving your scripts and data there: <code class="docutils literal notranslate"><span class="pre">ssh</span></code>, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code>, archiving with <code class="docutils literal notranslate"><span class="pre">tar</span></code>, and
 keeping a long job alive after you log out.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-export"><code class="bp-cmd-name">export</code></a> &mdash; promote a shell variable to an ENVIRONMENT variable, so every child process and script inherits it.</li><li><a href="#cmd-printenv"><code class="bp-cmd-name">printenv</code></a> &mdash; print the environment — the exported variables the shell passes down to its children.</li><li><a href="#cmd-source"><code class="bp-cmd-name">source</code></a> &mdash; run a script in the CURRENT shell (not a child), so the variables, functions, and PATH changes it makes persist.</li><li><a href="#cmd-alias"><code class="bp-cmd-name">alias</code></a> &mdash; give a short name to a longer command — typed shorthand for interactive use.</li><li><a href="#cmd-module"><code class="bp-cmd-name">module</code></a> &mdash; load and unload software on a cluster — adding a chosen version of a tool to your environment on demand.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to export, source, and <code>module load</code> for yourself — the
+    section to export, source, and <code>module load</code> for yourself; the
     demo modules are real and installed. The published notebooks ship
-    <b>without worked solutions</b>; if you would like the reference solutions —
-    to teach from or to check your own work — get in touch:
+    <b>without worked solutions</b>; if you would like the reference solutions
+    (to teach from or to check your own work), get in touch:
     <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

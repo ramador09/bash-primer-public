@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/05-automation/18-make-and-makefiles.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this — and it does the whole th..." />
+<meta property="og:description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this, and it does the whole thi..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this — and it does the whole th..." />
+<meta name="description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this, and it does the whole thi..." />
 
     <title>18 make and Makefiles &#8212; Introduction to the Bash Shell</title>
   
@@ -448,18 +448,18 @@
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>Everything you have automated so far has been <strong>imperative</strong>: a script says <em>do this,
-then this, then this</em> — and it does the whole thing, start to finish, every single
+then this, then this</em>, and it does the whole thing, start to finish, every single
 time. That is fine until the pipeline is long and only one input changed: re-running
 the entire analysis to update one result is wasteful, and remembering the right order
 by hand is error-prone.</p>
 <p><strong><code class="docutils literal notranslate"><span class="pre">make</span></code> is declarative.</strong> Instead of writing the steps, you describe the
 <strong>dependencies</strong>: what each output is built <em>from</em>, and the recipe to build it.
-<code class="docutils literal notranslate"><span class="pre">make</span></code> then works out the order itself and — the whole point — <strong>rebuilds only what
+<code class="docutils literal notranslate"><span class="pre">make</span></code> then works out the order itself and, the whole point, <strong>rebuilds only what
 is out of date.</strong> Change one trajectory, type <code class="docutils literal notranslate"><span class="pre">make</span></code>, and only that trajectory’s
 analysis re-runs; everything else is left untouched.</p>
 <p>This is the <strong>capstone</strong>. A single Makefile will tie together the threads of the
 entire course: the Part II extraction (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>), the Part III scripts, and the
-Part IV sweep, composed into one <code class="docutils literal notranslate"><span class="pre">make</span></code>. And there is a fitting closing note — the
+Part IV sweep, composed into one <code class="docutils literal notranslate"><span class="pre">make</span></code>. And there is a fitting closing note: the
 website you are reading these notebooks on is itself built with <code class="docutils literal notranslate"><span class="pre">make</span></code>. You are about
 to learn the tool that built the course.</p>
 </section>
@@ -467,7 +467,7 @@ to learn the tool that built the course.</p>
 <h2>A. The problem <code class="docutils literal notranslate"><span class="pre">make</span></code> solves<a class="headerlink" href="#a-the-problem-make-solves" title="Link to this heading">#</a></h2>
 <p>Picture the pipeline you have been building by hand: for each trajectory, <strong>extract</strong>
 its energies, <strong>compute</strong> a result, then <strong>aggregate</strong> the results into a table. As a
-script it is a wall of commands that runs everything, in full, on every invocation —
+script it is a wall of commands that runs everything, in full, on every invocation,
 and if you reorder two steps by mistake, it silently does the wrong thing.</p>
 <p><code class="docutils literal notranslate"><span class="pre">make</span></code> inverts this. You declare three things per output: its <strong>name</strong> (the target),
 what it <strong>depends on</strong> (the prerequisites), and <strong>how to build it</strong> (the recipe).
@@ -490,7 +490,7 @@ recipe <strong>only if its target is older than something it depends on</strong>
 <code class="docutils literal notranslate"><span class="pre">data.txt</span></code>. The recipe <strong>must</strong> be indented with a real <strong>TAB</strong> (more on that footgun
 in a moment). Throughout this notebook a small helper, <strong><code class="docutils literal notranslate"><span class="pre">maketab</span></code></strong>, writes the
 Makefile and converts the leading spaces you see in the cell into that required tab,
-so the pages render cleanly — in your own editor you simply press Tab. Write it and
+so the pages render cleanly; in your own editor you simply press Tab. Write it and
 run <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -523,7 +523,7 @@ make
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">make</span></code> saw that <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> did not exist, found the rule for it, and ran the
-recipe. Run <code class="docutils literal notranslate"><span class="pre">make</span></code> <strong>again</strong> and it does nothing — the target is now newer than its
+recipe. Run <code class="docutils literal notranslate"><span class="pre">make</span></code> <strong>again</strong> and it does nothing: the target is now newer than its
 prerequisite, so there is nothing to rebuild:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -537,7 +537,7 @@ prerequisite, so there is nothing to rebuild:</p>
 </div>
 </div>
 </div>
-<p>That “Nothing to be done” <em>is</em> the feature. Now change the input and re-run — <code class="docutils literal notranslate"><span class="pre">make</span></code>
+<p>That “Nothing to be done” <em>is</em> the feature. Now change the input and re-run: <code class="docutils literal notranslate"><span class="pre">make</span></code>
 notices and rebuilds:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -570,7 +570,7 @@ make
 <p class="admonition-title">⚠ The TAB, not spaces — the one error everyone hits</p>
 <p>Recipe lines <strong>must</strong> be indented with a real <strong>TAB</strong> character, never spaces. It is
 the single most common Makefile mistake, and the error message is famously cryptic.
-Here is the same rule with its recipe indented by spaces — watch it fail:</p>
+Here is the same rule with its recipe indented by spaces: watch it fail:</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -589,14 +589,14 @@ Here is the same rule with its recipe indented by spaces — watch it fail:</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">***</span> <span class="pre">missing</span> <span class="pre">separator</span></code> almost always means <strong>spaces where a TAB belongs.</strong> A
 companion subtlety: each recipe line runs in its <strong>own</strong> shell, so a <code class="docutils literal notranslate"><span class="pre">cd</span></code> on one line
-does not carry to the next — chain with <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>, or keep each line self-contained.</p>
+does not carry to the next: chain with <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>, or keep each line self-contained.</p>
 <div class="docutils">
 <h2 class="rubric" id="c-running-make">C. Running <code class="docutils literal notranslate"><span class="pre">make</span></code></h2>
 <div class="bp-card" id="cmd-make"><span class="bp-card-cmd">make</span> &mdash; <span class="bp-card-job">run a Makefile — build each target from its prerequisites, rebuilding only what is out of date.</span><table><tr><td>make</td><td>build the first (default) target in <code>Makefile</code></td></tr><tr><td>make TARGET</td><td>build a specific target by name (e.g. <code>make clean</code>, <code>make results.txt</code>)</td></tr><tr><td>-n</td><td>dry-run — PRINT the commands it would run, without running them (the <code>--dry-run</code> habit, Notebook 15)</td></tr><tr><td>-j N</td><td>run independent recipes in parallel across N jobs (the <code>xargs -P</code> idea, Notebooks 5 &amp; 17)</td></tr></table><div class="bp-card-more">more: <code>man make</code>; the GNU manual is thorough (<code>info make</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> recipe lines MUST be indented with a real TAB, never spaces, or make stops with <code>*** missing separator</code> — the single most common Makefile mistake</div></div>
 <div class="cell tag_remove-input docutils container">
 </div>
 <p>Plain <strong><code class="docutils literal notranslate"><span class="pre">make</span></code></strong> builds the first (default) target; <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">TARGET</span></code></strong> builds a named
-one. <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-n</span></code></strong> is the dry run — it prints the commands it <em>would</em> run without
+one. <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-n</span></code></strong> is the dry run: it prints the commands it <em>would</em> run without
 running them, the same “look before you leap” habit as <code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">--dry-run</span></code> (Notebook
 15):</p>
 <div class="cell docutils container">
@@ -612,22 +612,22 @@ make<span class="w"> </span>-n
 </div>
 </div>
 </div>
-<p>Nothing was built (no <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> yet — check if you like); <code class="docutils literal notranslate"><span class="pre">-n</span></code> only <em>showed</em> the
-plan. And <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span> <span class="pre">N</span></code></strong> runs independent recipes in <strong>parallel</strong> across N jobs —
+<p>Nothing was built (no <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> yet, check if you like); <code class="docutils literal notranslate"><span class="pre">-n</span></code> only <em>showed</em> the
+plan. And <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span> <span class="pre">N</span></code></strong> runs independent recipes in <strong>parallel</strong> across N jobs,
 the same idea as <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code> (Notebook 5) and the speedup you measured in Notebook 17,
 now applied to the build graph.</p>
 </section>
 <section id="d-variables-automatic-variables-and-phony">
 <h2>D. Variables, automatic variables, and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code><a class="headerlink" href="#d-variables-automatic-variables-and-phony" title="Link to this heading">#</a></h2>
 <p>Three pieces of Makefile vocabulary make rules concise and reusable.</p>
-<p><strong>Variables</strong> hold values you reuse — and <code class="docutils literal notranslate"><span class="pre">$(wildcard</span> <span class="pre">...)</span></code> pulls in files by glob,
+<p><strong>Variables</strong> hold values you reuse, and <code class="docutils literal notranslate"><span class="pre">$(wildcard</span> <span class="pre">...)</span></code> pulls in files by glob,
 the Notebook-5 idea in Makefile form:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>FILES    = $(wildcard *.xyz)        # every .xyz, like a glob
 ENERGIES = $(FILES:.xyz=.energy)    # the same names with .energy instead
 </pre></div>
 </div>
 <p><strong>Automatic variables</strong> stand for parts of the current rule, so a recipe need not
-repeat filenames — they are to recipes what <code class="docutils literal notranslate"><span class="pre">$1</span> <span class="pre">$2</span> <span class="pre">&quot;$&#64;&quot;</span></code> (Notebook 12) are to scripts:</p>
+repeat filenames: they are to recipes what <code class="docutils literal notranslate"><span class="pre">$1</span> <span class="pre">$2</span> <span class="pre">&quot;$&#64;&quot;</span></code> (Notebook 12) are to scripts:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Automatic variables</span> — <span class="bp-card-job">set by make inside each recipe; you read them, never assign them.</span>
   <table>
@@ -636,7 +636,7 @@ repeat filenames — they are to recipes what <code class="docutils literal notr
     <tr><td>$^</td><td><b>all</b> the prerequisites</td></tr>
   </table>
 </div>
-<p><strong><code class="docutils literal notranslate"><span class="pre">.PHONY</span></code></strong> marks targets that are <em>not</em> files — <code class="docutils literal notranslate"><span class="pre">clean</span></code>, <code class="docutils literal notranslate"><span class="pre">all</span></code>, and the like — so
+<p><strong><code class="docutils literal notranslate"><span class="pre">.PHONY</span></code></strong> marks targets that are <em>not</em> files (<code class="docutils literal notranslate"><span class="pre">clean</span></code>, <code class="docutils literal notranslate"><span class="pre">all</span></code>, and the like) so
 <code class="docutils literal notranslate"><span class="pre">make</span></code> always runs them and never confuses them with a real file of the same name:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -663,7 +663,7 @@ make
 </div>
 </div>
 <p>The recipe wrote to <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code> (which is <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code>), and a variable named the output in
-one place. Now <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> — a phony target — removes it:</p>
+one place. Now <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> (a phony target) removes it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>clean
@@ -682,14 +682,14 @@ summary.txt is gone — clean did its job
 <div class="note admonition">
 <p class="admonition-title">Why <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code> matters</p>
 <p>If a file named <code class="docutils literal notranslate"><span class="pre">clean</span></code> ever appeared in the directory, then without <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> would see that the “target” <code class="docutils literal notranslate"><span class="pre">clean</span></code> already exists, decide it is up to date,
-and <strong>do nothing</strong>. <code class="docutils literal notranslate"><span class="pre">.PHONY:</span> <span class="pre">clean</span></code> tells <code class="docutils literal notranslate"><span class="pre">make</span></code> “this is an action, not a file” — so
+and <strong>do nothing</strong>. <code class="docutils literal notranslate"><span class="pre">.PHONY:</span> <span class="pre">clean</span></code> tells <code class="docutils literal notranslate"><span class="pre">make</span></code> “this is an action, not a file”, so
 it always runs. Same for <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">install</span></code>.</p>
 </div>
 </section>
 <section id="e-pattern-rules">
 <h2>E. Pattern rules<a class="headerlink" href="#e-pattern-rules" title="Link to this heading">#</a></h2>
 <p>You rarely want one rule per file. A <strong>pattern rule</strong> uses <code class="docutils literal notranslate"><span class="pre">%</span></code> as a wildcard to say
-“to make any <code class="docutils literal notranslate"><span class="pre">X.energy</span></code> from the matching <code class="docutils literal notranslate"><span class="pre">X.xyz</span></code>, do this” — one rule for <em>every</em>
+“to make any <code class="docutils literal notranslate"><span class="pre">X.energy</span></code> from the matching <code class="docutils literal notranslate"><span class="pre">X.xyz</span></code>, do this”: one rule for <em>every</em>
 trajectory. It is the Notebook-5 goal (“do X to all my files”), now <strong>incremental and
 declarative</strong>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>%.energy: %.xyz
@@ -702,14 +702,14 @@ smallest to <code class="docutils literal notranslate"><span class="pre">$&#64;<
 <p>One detail in that recipe: <strong><code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">'{print</span> <span class="pre">$$NF}'</span></code>, with a double dollar.</strong> <code class="docutils literal notranslate"><span class="pre">make</span></code>
 claims a single <code class="docutils literal notranslate"><span class="pre">$</span></code> for its own variables, so to pass a literal <code class="docutils literal notranslate"><span class="pre">$</span></code> through to the
 shell (here, awk’s <code class="docutils literal notranslate"><span class="pre">$NF</span></code> last-field) you double it: <code class="docutils literal notranslate"><span class="pre">$$</span></code> in the Makefile becomes <code class="docutils literal notranslate"><span class="pre">$</span></code>
-by the time the recipe runs. A single <code class="docutils literal notranslate"><span class="pre">$NF</span></code> would be eaten by <code class="docutils literal notranslate"><span class="pre">make</span></code> — a quiet
+by the time the recipe runs. A single <code class="docutils literal notranslate"><span class="pre">$NF</span></code> would be eaten by <code class="docutils literal notranslate"><span class="pre">make</span></code>: a quiet
 cousin of the TAB gotcha.</p>
 </section>
 <section id="f-the-synthesis-makefile">
 <h2>F. The synthesis Makefile<a class="headerlink" href="#f-the-synthesis-makefile" title="Link to this heading">#</a></h2>
 <p>Here is where the whole course converges. We have a set of trajectories; for <strong>each</strong>
 we extract energies (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>, Part II), reduce to a per-file result, then
-<strong>aggregate</strong> into one table — and <code class="docutils literal notranslate"><span class="pre">make</span></code> runs it all, in order, rebuilding only what
+<strong>aggregate</strong> into one table, and <code class="docutils literal notranslate"><span class="pre">make</span></code> runs it all, in order, rebuilding only what
 changed. Set up three trajectories and the Makefile:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -761,7 +761,7 @@ gamma	-7.7
 </div>
 </div>
 </div>
-<p>Now the payoff. Change <strong>one</strong> trajectory and re-run — <code class="docutils literal notranslate"><span class="pre">make</span></code> rebuilds only that
+<p>Now the payoff. Change <strong>one</strong> trajectory and re-run: <code class="docutils literal notranslate"><span class="pre">make</span></code> rebuilds only that
 file’s energy (and the table that depends on it), leaving the other two untouched:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -779,7 +779,7 @@ for f in alpha.energy beta.energy gamma.energy; do printf &#39;%s\t%s\n&#39; &qu
 </div>
 </div>
 </div>
-<p>Only <code class="docutils literal notranslate"><span class="pre">beta.energy</span></code> and <code class="docutils literal notranslate"><span class="pre">results.txt</span></code> rebuilt — <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">gamma</span></code> were already up to
+<p>Only <code class="docutils literal notranslate"><span class="pre">beta.energy</span></code> and <code class="docutils literal notranslate"><span class="pre">results.txt</span></code> rebuilt; <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">gamma</span></code> were already up to
 date, so <code class="docutils literal notranslate"><span class="pre">make</span></code> skipped them. On a real analysis of hundreds of trajectories, that
 incremental rebuild is the difference between seconds and hours. And <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span></code> would
 run the independent per-file extractions in parallel (Notebook 17). One declarative
@@ -898,7 +898,7 @@ BETA2
 <section id="composite-putting-it-together-the-course-pipeline">
 <h3>Composite — putting it together (the course pipeline)<a class="headerlink" href="#composite-putting-it-together-the-course-pipeline" title="Link to this heading">#</a></h3>
 <p>The grand synthesis. Build the Makefile that, for every trajectory, extracts its
-minimum energy and aggregates the results into a table — composing globs (Notebook 5),
+minimum energy and aggregates the results into a table, composing globs (Notebook 5),
 extraction (Notebooks 6/8), automatic vars and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code> (Notebook 12-ish), incremental
 rebuilds, and a parallel-capable build. Then exercise it: <code class="docutils literal notranslate"><span class="pre">make</span></code>, change one file and
 re-<code class="docutils literal notranslate"><span class="pre">make</span></code>, and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>.</p>
@@ -933,18 +933,18 @@ all build products removed
 </section>
 <section id="optional-stretch-parallel-timing-or-the-per-line-shell-gotcha">
 <h3>Optional stretch — Parallel timing, or the per-line-shell gotcha<a class="headerlink" href="#optional-stretch-parallel-timing-or-the-per-line-shell-gotcha" title="Link to this heading">#</a></h3>
-<p>No grade. Two directions. <strong>(a)</strong> Time a full rebuild serially versus in parallel —
+<p>No grade. Two directions. <strong>(a)</strong> Time a full rebuild serially versus in parallel:
 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span></code> runs independent recipes at once (Notebook 17’s speedup, now for builds):</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>serial:
-real	0m0.021s
-user	0m0.012s
-sys	0m0.018s
+real	0m0.017s
+user	0m0.010s
+sys	0m0.013s
 parallel:
-real	0m0.020s
-user	0m0.006s
-sys	0m0.025s
+real	0m0.016s
+user	0m0.010s
+sys	0m0.014s
 (on this tiny pipeline the times are dominated by noise — the point is -j runs them at once)
 </pre></div>
 </div>
@@ -952,7 +952,7 @@ sys	0m0.025s
 </div>
 <p><strong>(b)</strong> Or feel the “each recipe line is its own shell” gotcha: a <code class="docutils literal notranslate"><span class="pre">cd</span></code> on one line does
 <strong>not</strong> persist to the next, so chain with <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>. Try writing a two-line recipe where
-the second line assumes the first’s <code class="docutils literal notranslate"><span class="pre">cd</span></code> — and watch it not work — then fix it with
+the second line assumes the first’s <code class="docutils literal notranslate"><span class="pre">cd</span></code> (and watch it not work) then fix it with
 <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>.</p>
 </section>
 </section>
@@ -962,11 +962,11 @@ the second line assumes the first’s <code class="docutils literal notranslate"
 now move through a filesystem, find and pull what you need out of files, edit and write
 robust scripts, take work to a cluster and reason about its resources, and tie the
 whole pipeline together with a single <code class="docutils literal notranslate"><span class="pre">make</span></code>. The very tool in this last notebook is
-the one that builds the website these lessons live on — you have, quite literally,
+the one that builds the website these lessons live on: you have, quite literally,
 learned how the course is made.</p>
 <p>From here the path is the work this was always a preparation for: the <strong>Molecular and
 Materials Modelling</strong> course, and the real research that lives on the command line.
-Keep the <strong>Compendium Scriptorum</strong> close — it is the map of every command you have met,
+Keep the <strong>Compendium Scriptorum</strong> close: it is the map of every command you have met,
 and where to find each again. You are ready. Go build something.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-make"><code class="bp-cmd-name">make</code></a> &mdash; run a Makefile — build each target from its prerequisites, rebuilding only what is out of date.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
@@ -974,8 +974,8 @@ and where to find each again. You are ready. Go build something.</p>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box to write your
     own Makefiles and watch incremental rebuilds for real. The published notebooks ship
-    <b>without worked solutions</b>; if you would like the reference solutions — to
-    teach from or to check your own work — get in touch:
+    <b>without worked solutions</b>; if you would like the reference solutions (to
+    teach from or to check your own work), get in touch:
     <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

@@ -465,24 +465,24 @@
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>Everything so far you could do on the machine in front of you. The cluster changes
-one thing: <strong>you are not sitting at it.</strong> It is a computer somewhere else — in a
-machine room, reached over the network — and that single fact creates three needs.
+one thing: <strong>you are not sitting at it.</strong> It is a computer somewhere else (in a
+machine room, reached over the network), and that single fact creates three needs.
 You have to <strong>get on and stay on</strong> it (<code class="docutils literal notranslate"><span class="pre">ssh</span></code>, <code class="docutils literal notranslate"><span class="pre">tmux</span></code>). You have to <strong>move your data
 across</strong> to it and your results back (<code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code>). And because the real
 work takes hours or days, you have to <strong>launch it, disconnect, and come back</strong> to
-find it still running and watchable (<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code>, <code class="docutils literal notranslate"><span class="pre">ps</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>, <code class="docutils literal notranslate"><span class="pre">kill</span></code>). One frame
-— <em>a machine you’re not at</em> — holds this whole wide toolkit together.</p>
+find it still running and watchable (<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code>, <code class="docutils literal notranslate"><span class="pre">ps</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>, <code class="docutils literal notranslate"><span class="pre">kill</span></code>). One frame,
+<em>a machine you’re not at</em>, holds this whole wide toolkit together.</p>
 <div class="note admonition">
 <p class="admonition-title">Which cells run here, and which are “type it yourself”</p>
 <p>There is no second machine inside this page, so some of these tools cannot run in
 the grey cells. We label every command:</p>
 <ul class="simple">
-<li><p>A <strong>live grey cell</strong> with output below it runs for real, right here — the
+<li><p>A <strong>live grey cell</strong> with output below it runs for real, right here: the
 transfer and process mechanics (<code class="docutils literal notranslate"><span class="pre">tar</span></code>, <code class="docutils literal notranslate"><span class="pre">rsync</span></code> <em>local-to-local</em>, <code class="docutils literal notranslate"><span class="pre">du</span></code>, <code class="docutils literal notranslate"><span class="pre">ps</span></code>,
 <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, …) are all genuine.</p></li>
 <li><p>A plain code block tagged <strong><code class="docutils literal notranslate"><span class="pre">[your</span> <span class="pre">terminal]</span></code></strong> needs a real remote machine or an
 interactive screen (<code class="docutils literal notranslate"><span class="pre">ssh</span></code> to a cluster, <code class="docutils literal notranslate"><span class="pre">scp</span></code>, <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, <code class="docutils literal notranslate"><span class="pre">top</span></code>). Type those in the
-<strong>Practice here</strong> terminal, or — for the connect-and-copy ones — against a real
+<strong>Practice here</strong> terminal, or (for the connect-and-copy ones) against a real
 cluster like ETH’s <strong>Euler</strong>.</p></li>
 </ul>
 <p>The good news: the <em>mechanics</em> of moving data are identical whether the
@@ -495,7 +495,7 @@ the real thing; you just add <code class="docutils literal notranslate"><span cl
 <p><strong><code class="docutils literal notranslate"><span class="pre">ssh</span></code></strong> (“secure shell”) is the front door to every cluster. Point it at a
 machine and it opens a shell there, encrypted end to end, exactly as if you had sat
 down at its keyboard:</p>
-<div class="bp-card" id="cmd-ssh"><span class="bp-card-cmd">ssh</span> &mdash; <span class="bp-card-job">open a shell on a remote machine — or run a single command there — over an encrypted connection.</span><table><tr><td>user@host</td><td>log in as <code>user</code> on <code>host</code> and get an interactive remote shell</td></tr><tr><td>host CMD</td><td>run ONE command on the remote and return (e.g. <code>ssh euler squeue</code>)</td></tr><tr><td>-i keyfile</td><td>authenticate with a specific private key</td></tr><tr><td>-p N</td><td>connect on port N (the default is 22)</td></tr></table><div class="bp-card-more">more: <code>man ssh</code>; host aliases live in <code>~/.ssh/config</code> (<code>Host euler …</code> lets you just type <code>ssh euler</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> ssh REFUSES a private key that others can read — <code>chmod 600 ~/.ssh/id_*</code> (Notebook 11). Keys beat passwords: generate with <code>ssh-keygen</code>, install on the remote with <code>ssh-copy-id</code></div><p>It comes in two shapes — an interactive session, or a single remote command:</p>
+<div class="bp-card" id="cmd-ssh"><span class="bp-card-cmd">ssh</span> &mdash; <span class="bp-card-job">open a shell on a remote machine — or run a single command there — over an encrypted connection.</span><table><tr><td>user@host</td><td>log in as <code>user</code> on <code>host</code> and get an interactive remote shell</td></tr><tr><td>host CMD</td><td>run ONE command on the remote and return (e.g. <code>ssh euler squeue</code>)</td></tr><tr><td>-i keyfile</td><td>authenticate with a specific private key</td></tr><tr><td>-p N</td><td>connect on port N (the default is 22)</td></tr></table><div class="bp-card-more">more: <code>man ssh</code>; host aliases live in <code>~/.ssh/config</code> (<code>Host euler …</code> lets you just type <code>ssh euler</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> ssh REFUSES a private key that others can read — <code>chmod 600 ~/.ssh/id_*</code> (Notebook 11). Keys beat passwords: generate with <code>ssh-keygen</code>, install on the remote with <code>ssh-copy-id</code></div><p>It comes in two shapes: an interactive session, or a single remote command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
 ssh<span class="w"> </span>you@euler.ethz.ch<span class="w">        </span><span class="c1"># opens an interactive shell ON Euler</span>
 ssh<span class="w"> </span>euler<span class="w"> </span>squeue<span class="w">             </span><span class="c1"># runs ONE command there and returns its output</span>
@@ -504,8 +504,8 @@ ssh<span class="w"> </span>euler<span class="w"> </span>squeue<span class="w">  
 <section id="keys-not-passwords">
 <h3>Keys, not passwords<a class="headerlink" href="#keys-not-passwords" title="Link to this heading">#</a></h3>
 <p>Typing your password on every connection is both tedious and less secure than the
-standard alternative: a <strong>key pair</strong>. You generate two matching files — a <em>private</em>
-key you keep, and a <em>public</em> key you install on the cluster — and ssh proves your
+standard alternative: a <strong>key pair</strong>. You generate two matching files (a <em>private</em>
+key you keep, and a <em>public</em> key you install on the cluster) and ssh proves your
 identity with them automatically. Generating the pair is real, so run it here:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -520,24 +520,24 @@ identity with them automatically. Generating the pair is real, so run it here:</
 Your identification has been saved in scratch/demo_key
 Your public key has been saved in scratch/demo_key.pub
 The key fingerprint is:
-SHA256:ymswE/UD4jpdJ2jTTKLwnpdP4yHK1MIJ6czZJLvlPNI you@laptop
+SHA256:l5baBSfaRGXtqsvDt3OHVi69vqWnh7d/L7/V8AfovWo you@laptop
 The key&#39;s randomart image is:
 +--[ED25519 256]--+
-|                 |
-|.   o +          |
-| + o O o         |
-|o.o.* = +        |
-|++*B = oS.       |
-| *XoX.+.         |
-| o*= Ooo         |
-| ooE  +.         |
-|  . ...          |
+|          ..o.   |
+|         . .  .  |
+|          + ..   |
+|         + * ..  |
+|        S * o.o  |
+|         = o.. +o|
+|        ..... .**|
+|         .+ E Bo%|
+|          o=o*=/%|
 +----[SHA256]-----+
 </pre></div>
 </div>
 </div>
 </div>
-<p>That made two files. Look at their permissions — and notice ssh-keygen has already
+<p>That made two files. Look at their permissions, and notice ssh-keygen has already
 done the Notebook-11 chmod for you:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -546,18 +546,18 @@ done the Notebook-11 chmod for you:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jun 18 22:35 scratch/demo_key
--rw-r--r-- 1 runner runner  92 Jun 18 22:35 scratch/demo_key.pub
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jun 18 22:51 scratch/demo_key
+-rw-r--r-- 1 runner runner  92 Jun 18 22:51 scratch/demo_key.pub
 </pre></div>
 </div>
 </div>
 </div>
-<p>The private key is <code class="docutils literal notranslate"><span class="pre">-rw-------</span></code> (mode <strong>600</strong>) — readable only by you. That is not
+<p>The private key is <code class="docutils literal notranslate"><span class="pre">-rw-------</span></code> (mode <strong>600</strong>), readable only by you. That is not
 optional:</p>
 <div class="warning admonition">
 <p class="admonition-title">⚠ ssh refuses a private key others can read</p>
 <p>If your private key’s file is readable by group or others, <strong>ssh ignores it</strong> and
-falls back to asking for a password — the classic “but I set up my key!” confusion.
+falls back to asking for a password: the classic “but I set up my key!” confusion.
 The fix is the Notebook-11 one: <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">600</span> <span class="pre">~/.ssh/id_ed25519</span></code>. Keys are private;
 the filesystem has to agree.</p>
 </div>
@@ -580,7 +580,7 @@ ssh<span class="w"> </span>euler
 <h2>B. Moving data — <code class="docutils literal notranslate"><span class="pre">tar</span></code>, then <code class="docutils literal notranslate"><span class="pre">rsync</span></code><a class="headerlink" href="#b-moving-data-tar-then-rsync" title="Link to this heading">#</a></h2>
 <p>Before you transfer a result directory, you usually <strong>bundle and compress</strong> it: one
 file moves faster and more reliably than ten thousand. That is <strong><code class="docutils literal notranslate"><span class="pre">tar</span></code></strong> (+ gzip):</p>
-<div class="bp-card" id="cmd-tar"><span class="bp-card-cmd">tar</span> &mdash; <span class="bp-card-job">bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</span><table><tr><td>-czf a.tar.gz dir/</td><td>CREATE a gzip-compressed archive of dir/ (c=create, z=gzip, f=file)</td></tr><tr><td>-xzf a.tar.gz</td><td>EXTRACT a gzip archive</td></tr><tr><td>-tzf a.tar.gz</td><td>LIST an archive&#x27;s contents without extracting</td></tr><tr><td>-C dir</td><td>change to dir first — archive from, or extract into, a chosen directory</td></tr></table><div class="bp-card-more">more: <code>man tar</code>; the create mnemonic is <code>czf</code> — &quot;compress, zip, file&quot;</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>f</code> comes LAST among the bundled flags because the filename follows it (<code>-czf name</code>); a gzip-compressed tar is conventionally <code>.tar.gz</code> (or <code>.tgz</code>)</div><div class="bp-card" id="cmd-gzip"><span class="bp-card-cmd">gzip</span> &mdash; <span class="bp-card-job">compress a single file in place (and gunzip to restore it) — the compression behind tar&#x27;s -z.</span><table><tr><td>file</td><td>compress to <code>file.gz</code>, removing the original</td></tr><tr><td>-d  /  gunzip</td><td>decompress (<code>gunzip file.gz</code> is the same as <code>gzip -d</code>)</td></tr><tr><td>-k</td><td>keep the original alongside the compressed copy</td></tr><tr><td>-9  /  -1</td><td>best compression (slow) / fastest (less compression)</td></tr></table><div class="bp-card-more">more: <code>man gzip</code>; for a whole directory, <code>tar -czf</code> first and you get one compressed bundle</div></div><div class="bp-watchout"><strong>Watch out:</strong> plain <code>gzip file</code> REPLACES the file with <code>file.gz</code> (add <code>-k</code> to keep both); gzip handles ONE file — <code>tar</code> is what bundles many</div><p>Create an archive, list it without unpacking, and extract it again — all real:</p>
+<div class="bp-card" id="cmd-tar"><span class="bp-card-cmd">tar</span> &mdash; <span class="bp-card-job">bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</span><table><tr><td>-czf a.tar.gz dir/</td><td>CREATE a gzip-compressed archive of dir/ (c=create, z=gzip, f=file)</td></tr><tr><td>-xzf a.tar.gz</td><td>EXTRACT a gzip archive</td></tr><tr><td>-tzf a.tar.gz</td><td>LIST an archive&#x27;s contents without extracting</td></tr><tr><td>-C dir</td><td>change to dir first — archive from, or extract into, a chosen directory</td></tr></table><div class="bp-card-more">more: <code>man tar</code>; the create mnemonic is <code>czf</code> — &quot;compress, zip, file&quot;</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>f</code> comes LAST among the bundled flags because the filename follows it (<code>-czf name</code>); a gzip-compressed tar is conventionally <code>.tar.gz</code> (or <code>.tgz</code>)</div><div class="bp-card" id="cmd-gzip"><span class="bp-card-cmd">gzip</span> &mdash; <span class="bp-card-job">compress a single file in place (and gunzip to restore it) — the compression behind tar&#x27;s -z.</span><table><tr><td>file</td><td>compress to <code>file.gz</code>, removing the original</td></tr><tr><td>-d  /  gunzip</td><td>decompress (<code>gunzip file.gz</code> is the same as <code>gzip -d</code>)</td></tr><tr><td>-k</td><td>keep the original alongside the compressed copy</td></tr><tr><td>-9  /  -1</td><td>best compression (slow) / fastest (less compression)</td></tr></table><div class="bp-card-more">more: <code>man gzip</code>; for a whole directory, <code>tar -czf</code> first and you get one compressed bundle</div></div><div class="bp-watchout"><strong>Watch out:</strong> plain <code>gzip file</code> REPLACES the file with <code>file.gz</code> (add <code>-k</code> to keep both); gzip handles ONE file — <code>tar</code> is what bundles many</div><p>Create an archive, list it without unpacking, and extract it again, all real:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell docutils container">
@@ -619,7 +619,7 @@ scratch/restored/run/logs/run.log
 </div>
 </div>
 <p>The archive round-tripped: bundled with <code class="docutils literal notranslate"><span class="pre">c</span></code>, inspected with <code class="docutils literal notranslate"><span class="pre">t</span></code>, unpacked with <code class="docutils literal notranslate"><span class="pre">x</span></code>.
-(<code class="docutils literal notranslate"><span class="pre">gzip</span></code> on its own compresses a <em>single</em> file — <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">big.log</span></code> → <code class="docutils literal notranslate"><span class="pre">big.log.gz</span></code>; <code class="docutils literal notranslate"><span class="pre">tar</span></code>
+(<code class="docutils literal notranslate"><span class="pre">gzip</span></code> on its own compresses a <em>single</em> file: <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">big.log</span></code> → <code class="docutils literal notranslate"><span class="pre">big.log.gz</span></code>; <code class="docutils literal notranslate"><span class="pre">tar</span></code>
 is what bundles many.)</p>
 <section id="scp-the-one-shot-copy">
 <h3><code class="docutils literal notranslate"><span class="pre">scp</span></code> — the one-shot copy<a class="headerlink" href="#scp-the-one-shot-copy" title="Link to this heading">#</a></h3>
@@ -634,8 +634,8 @@ scp<span class="w"> </span>-r<span class="w"> </span>mydir<span class="w"> </spa
 </section>
 <section id="rsync-the-workhorse">
 <h3><code class="docutils literal notranslate"><span class="pre">rsync</span></code> — the workhorse<a class="headerlink" href="#rsync-the-workhorse" title="Link to this heading">#</a></h3>
-<p>For anything you will transfer more than once — a results directory you re-sync as a
-job produces more — <strong><code class="docutils literal notranslate"><span class="pre">rsync</span></code></strong> is the right tool. It copies only what has
+<p>For anything you will transfer more than once (a results directory you re-sync as a
+job produces more), <strong><code class="docutils literal notranslate"><span class="pre">rsync</span></code></strong> is the right tool. It copies only what has
 <em>changed</em>, so the second sync is near-instant. Crucially, its local-to-local form is
 the <em>same tool</em> you use for the cluster, so we practise it for real:</p>
 <div class="bp-card" id="cmd-rsync"><span class="bp-card-cmd">rsync</span> &mdash; <span class="bp-card-job">sync files and directories — locally or over ssh — copying only what has changed. The workhorse for moving data on and off a cluster.</span><table><tr><td>-a</td><td>archive mode: recurse and preserve permissions, times, and symlinks (the everyday default)</td></tr><tr><td>-v  /  --progress</td><td>verbose / show a progress bar on large transfers</td></tr><tr><td>-z</td><td>compress data in transit (helps over a slow link)</td></tr><tr><td>--dry-run</td><td>show what WOULD transfer, changing NOTHING — run this first</td></tr><tr><td>--delete</td><td>delete files on the destination that are gone from the source (dangerous — see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man rsync</code>; the SAME command syncs to a remote by writing <code>host:path</code> for either side</div></div><div class="bp-watchout"><strong>Watch out:</strong> the TRAILING SLASH matters: <code>rsync -a src/ dst</code> copies the CONTENTS of src into dst, while <code>rsync -a src dst</code> copies the src DIRECTORY into dst. And <code>--delete</code> can wipe the destination — <code>--dry-run</code> first, every time</div><div class="cell tag_remove-input docutils container">
@@ -650,13 +650,13 @@ the <em>same tool</em> you use for the cluster, so we practise it for real:</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 a.txt
 b.txt
-sent 184 bytes  received 54 bytes  476.00 bytes/sec
+sent 187 bytes  received 54 bytes  482.00 bytes/sec
 total size is 4  speedup is 0.02
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now change one file and re-sync — rsync transfers <strong>only the changed file</strong>, not the
+<p>Now change one file and re-sync: rsync transfers <strong>only the changed file</strong>, not the
 whole set:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -667,8 +667,8 @@ whole set:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 a.txt
-sent 148 bytes  received 35 bytes  366.00 bytes/sec
-total size is 12  speedup is 0.07
+sent 150 bytes  received 35 bytes  370.00 bytes/sec
+total size is 12  speedup is 0.06
 </pre></div>
 </div>
 </div>
@@ -684,8 +684,8 @@ total size is 12  speedup is 0.07
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 c.txt
-sent 115 bytes  received 19 bytes  268.00 bytes/sec
-total size is 14  speedup is 0.10 (DRY RUN)
+sent 112 bytes  received 19 bytes  262.00 bytes/sec
+total size is 14  speedup is 0.11 (DRY RUN)
 </pre></div>
 </div>
 </div>
@@ -702,15 +702,15 @@ total size is 14  speedup is 0.10 (DRY RUN)
 </div>
 </div>
 </div>
-<p>The dry run named <code class="docutils literal notranslate"><span class="pre">c.txt</span></code> as pending, but <code class="docutils literal notranslate"><span class="pre">scratch/dst</span></code> still has only <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> —
+<p>The dry run named <code class="docutils literal notranslate"><span class="pre">c.txt</span></code> as pending, but <code class="docutils literal notranslate"><span class="pre">scratch/dst</span></code> still has only <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>;
 nothing changed. One footgun deserves a hard stop:</p>
 <div class="warning admonition">
 <p class="admonition-title">⚠ The trailing slash, and <code class="docutils literal notranslate"><span class="pre">--delete</span></code></p>
 <p><strong>Trailing slash:</strong> <code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-a</span> <span class="pre">src/</span> <span class="pre">dst</span></code> copies the <em>contents</em> of <code class="docutils literal notranslate"><span class="pre">src</span></code> into <code class="docutils literal notranslate"><span class="pre">dst</span></code>;
 <code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-a</span> <span class="pre">src</span> <span class="pre">dst</span></code> copies the <em>directory</em> <code class="docutils literal notranslate"><span class="pre">src</span></code> into <code class="docutils literal notranslate"><span class="pre">dst</span></code> (giving <code class="docutils literal notranslate"><span class="pre">dst/src/…</span></code>).
-Mixing these up is the most common rsync surprise — be deliberate about the <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+Mixing these up is the most common rsync surprise: be deliberate about the <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
 <p><strong><code class="docutils literal notranslate"><span class="pre">--delete</span></code>:</strong> this makes the destination an exact mirror by <strong>deleting files there
-that are gone from the source</strong>. It is exactly what you want for a true mirror — and
+that are gone from the source</strong>. It is exactly what you want for a true mirror, and
 a disaster if you point it at the wrong directory. So: <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> first, <em>every
 time</em>, and read the list before you run it for real.</p>
 </div>
@@ -719,7 +719,7 @@ time</em>, and read the list before you run it for real.</p>
 <section id="c-staying-on-tmux-and-job-control">
 <h2>C. Staying on — <code class="docutils literal notranslate"><span class="pre">tmux</span></code> and job control<a class="headerlink" href="#c-staying-on-tmux-and-job-control" title="Link to this heading">#</a></h2>
 <p>Here is the problem the cluster forces on you. You start a six-hour job over <code class="docutils literal notranslate"><span class="pre">ssh</span></code>,
-close your laptop to go home, and — your connection drops, the shell receives a
+close your laptop to go home, and your connection drops, the shell receives a
 <strong>hang-up signal (<code class="docutils literal notranslate"><span class="pre">SIGHUP</span></code>)</strong>, and your job dies with it. Two tools solve this.</p>
 <section id="tmux-a-session-that-outlives-the-connection">
 <h3><code class="docutils literal notranslate"><span class="pre">tmux</span></code> — a session that outlives the connection<a class="headerlink" href="#tmux-a-session-that-outlives-the-connection" title="Link to this heading">#</a></h3>
@@ -744,7 +744,7 @@ tmux<span class="w"> </span>attach<span class="w">                  </span><span
 <h3>Job control — <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">jobs</span></code>, <code class="docutils literal notranslate"><span class="pre">nohup</span></code><a class="headerlink" href="#job-control-jobs-nohup" title="Link to this heading">#</a></h3>
 <p>For a single command, lighter tools suffice. End a command with <strong><code class="docutils literal notranslate"><span class="pre">&amp;</span></code></strong> to run it in
 the <strong>background</strong>, freeing your prompt; <strong><code class="docutils literal notranslate"><span class="pre">jobs</span></code></strong> lists what is backgrounded. Run
-it for real — start a long <code class="docutils literal notranslate"><span class="pre">sleep</span></code>, see it listed, and we will stop it in §D:</p>
+it for real: start a long <code class="docutils literal notranslate"><span class="pre">sleep</span></code>, see it listed, and we will stop it in §D:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell docutils container">
@@ -755,8 +755,8 @@ it for real — start a long <code class="docutils literal notranslate"><span cl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4478
-backgrounded as PID 4478
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4461
+backgrounded as PID 4461
 </pre></div>
 </div>
 </div>
@@ -795,8 +795,8 @@ even without tmux:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4479
-nohup PID 4479 — still running after logout; output in nohup.out
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4462
+nohup PID 4462 — still running after logout; output in nohup.out
 </pre></div>
 </div>
 </div>
@@ -810,7 +810,7 @@ nohup PID 4479 — still running after logout; output in nohup.out
 <section id="d-watching-and-resources">
 <h2>D. Watching and resources<a class="headerlink" href="#d-watching-and-resources" title="Link to this heading">#</a></h2>
 <p>Now to <em>watch</em> those processes and stop them. <strong><code class="docutils literal notranslate"><span class="pre">ps</span></code></strong> takes a snapshot of what is
-running — pair it with <code class="docutils literal notranslate"><span class="pre">grep</span></code> to find one. Both <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we backgrounded are alive:</p>
+running: pair it with <code class="docutils literal notranslate"><span class="pre">grep</span></code> to find one. Both <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we backgrounded are alive:</p>
 <div class="bp-card" id="cmd-ps"><span class="bp-card-cmd">ps</span> &mdash; <span class="bp-card-job">take a snapshot of the processes running right now — what is alive, with their PIDs.</span><table><tr><td>aux</td><td>ALL processes for all users, with CPU/memory (the common BSD-style form)</td></tr><tr><td>-ef</td><td>the same idea in System-V style; pipe into <code>grep</code> to find one</td></tr><tr><td>-p PID</td><td>show just one process by PID</td></tr></table><div class="bp-card-more">more: <code>man ps</code>; for a LIVE, updating view rather than a snapshot, use <code>top</code> / <code>htop</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>ps</code> is a still photo, not a live feed — re-run it (or use <code>top</code>) to see change. Find your process with <code>ps aux | grep NAME</code></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;[s]leep 300&quot;</span>
@@ -818,22 +818,22 @@ running — pair it with <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4478  0.0  0.0   6124  1976 pts/0    S+   22:35   0:00 sleep 300
-runner      4479  0.0  0.0   6124  1972 pts/0    S+   22:35   0:00 sleep 300
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4461  0.0  0.0   6124  2104 pts/0    S+   22:51   0:00 sleep 300
+runner      4462  0.0  0.0   6124  2100 pts/0    S+   22:51   0:00 sleep 300
 </pre></div>
 </div>
 </div>
 </div>
 <p>For a <strong>live</strong>, continuously updating view there is <strong><code class="docutils literal notranslate"><span class="pre">top</span></code></strong> (and the friendlier
-<code class="docutils literal notranslate"><span class="pre">htop</span></code>) — interactive, so it belongs in a real terminal:</p>
+<code class="docutils literal notranslate"><span class="pre">htop</span></code>), interactive, so it belongs in a real terminal:</p>
 <div class="bp-card" id="cmd-top"><span class="bp-card-cmd">top</span> &mdash; <span class="bp-card-job">watch processes live — a continuously updating table of what is using the CPU and memory.</span><table><tr><td>top</td><td>start the live view (press <code>q</code> to quit)</td></tr><tr><td>htop</td><td>a friendlier colour version, if installed — scrollable, with click-to-kill</td></tr></table><div class="bp-card-more">more: <code>man top</code>; it is interactive, so practise it in a real terminal</div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>top</code> takes over the screen and never returns on its own — press <code>q</code> to quit (like <code>less</code> and <code>man</code>)</div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
 top<span class="w">        </span><span class="c1"># live process table; press &#39;q&#39; to quit</span>
 htop<span class="w">       </span><span class="c1"># the nicer colour version, if installed</span>
 </pre></div>
 </div>
 <p>To stop a process, <strong><code class="docutils literal notranslate"><span class="pre">kill</span></code></strong> sends it a signal by PID. Plain <code class="docutils literal notranslate"><span class="pre">kill</span></code> asks politely
-(it can clean up first); <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code> is the no-mercy hammer. Let us stop the
-background <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we started — politely:</p>
+(it can clean up first); <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code> is the no-mercy hammer. Let’s stop the
+background <code class="docutils literal notranslate"><span class="pre">sleep</span></code>s we started, politely:</p>
 <div class="bp-card" id="cmd-kill"><span class="bp-card-cmd">kill</span> &mdash; <span class="bp-card-job">send a signal to a process — most often to stop one — by its PID.</span><table><tr><td>kill PID</td><td>politely ask it to terminate (SIGTERM — it can clean up first)</td></tr><tr><td>kill -9 PID</td><td>force-kill (SIGKILL — immediate, no cleanup; the last resort)</td></tr><tr><td>kill %1</td><td>refer to a background job by its <code>jobs</code> number instead of its PID</td></tr></table><div class="bp-card-more">more: <code>man kill</code>; get the PID from <code>ps</code> or <code>jobs</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> try plain <code>kill</code> first; <code>kill -9</code> cannot be caught, so the process gets NO chance to flush files or shut down cleanly — reach for it only when something is truly stuck</div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">kill</span><span class="w"> </span>%1<span class="w"> </span>%2<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">wait</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">jobs</span>
@@ -845,7 +845,7 @@ background <code class="docutils literal notranslate"><span class="pre">sleep</s
 only when a process ignores a polite <code class="docutils literal notranslate"><span class="pre">kill</span></code>.)</p>
 <section id="watch-re-run-something-to-see-it-change">
 <h3><code class="docutils literal notranslate"><span class="pre">watch</span></code> — re-run something to see it change<a class="headerlink" href="#watch-re-run-something-to-see-it-change" title="Link to this heading">#</a></h3>
-<p><strong><code class="docutils literal notranslate"><span class="pre">watch</span></code></strong> re-runs a command every couple of seconds in place — perfect for
+<p><strong><code class="docutils literal notranslate"><span class="pre">watch</span></code></strong> re-runs a command every couple of seconds in place: perfect for
 keeping an eye on a job queue. It is interactive, so it too is a terminal tool:</p>
 <div class="bp-card" id="cmd-watch"><span class="bp-card-cmd">watch</span> &mdash; <span class="bp-card-job">re-run a command every couple of seconds and show its latest output in place — to watch something change.</span><table><tr><td>watch CMD</td><td>re-run CMD every 2 seconds (e.g. <code>watch squeue</code> to watch a job queue)</td></tr><tr><td>-n N</td><td>set the interval to N seconds</td></tr><tr><td>-d</td><td>highlight what changed since last time</td></tr></table><div class="bp-card-more">more: <code>man watch</code>; quit with <code>Ctrl-C</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> it is interactive and never returns on its own (<code>Ctrl-C</code> to stop) — practise it in a real terminal</div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [your terminal]</span>
 watch<span class="w"> </span>squeue<span class="w">          </span><span class="c1"># refresh the SLURM queue every 2s (Notebook 16)</span>
@@ -880,7 +880,7 @@ commands keep you ahead of it. <strong><code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   56G   16G  79% /
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   56G   16G  78% /
 </pre></div>
 </div>
 </div>
@@ -891,7 +891,7 @@ commands keep you ahead of it. <strong><code class="docutils literal notranslate
 <section id="e-symlinks-ln-s">
 <h2>E. Symlinks — <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span></code><a class="headerlink" href="#e-symlinks-ln-s" title="Link to this heading">#</a></h2>
 <p>One last cluster staple. Your big working space (often <code class="docutils literal notranslate"><span class="pre">/scratch/$USER</span></code>) is somewhere
-inconvenient, so you make a <strong>symbolic link</strong> — a lightweight signpost — to reach it
+inconvenient, so you make a <strong>symbolic link</strong> (a lightweight signpost) to reach it
 by a short name from where you work:</p>
 <div class="bp-card" id="cmd-ln"><span class="bp-card-cmd">ln</span> &mdash; <span class="bp-card-job">create a link — most usefully a symbolic link, a lightweight pointer from one path to another.</span><table><tr><td>-s target link</td><td>create a SYMBOLIC link named <code>link</code> pointing at <code>target</code></td></tr><tr><td>-sf</td><td>force — replace an existing link of that name</td></tr></table><div class="bp-card-more">more: <code>man ln</code>; <code>ls -l</code> shows a symlink as <code>link -&gt; target</code> (Notebooks 2–3)</div></div><div class="bp-watchout"><strong>Watch out:</strong> almost always use <code>-s</code> (symbolic). The classic cluster move is <code>ln -s /scratch/$USER scratch</code>, so a short local name points at your big scratch space</div><div class="cell tag_remove-input docutils container">
 </div>
@@ -902,7 +902,7 @@ by a short name from where you work:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jun 18 22:35 scratch/link-to-realdir -&gt; realdir
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jun 18 22:51 scratch/link-to-realdir -&gt; realdir
 </pre></div>
 </div>
 </div>
@@ -969,7 +969,7 @@ sent 150 bytes  received 35 bytes  370.00 bytes/sec
 total size is 8  speedup is 0.04
 sending incremental file list
 three.txt
-sent 124 bytes  received 19 bytes  286.00 bytes/sec
+sent 120 bytes  received 19 bytes  278.00 bytes/sec
 total size is 10  speedup is 0.07 (DRY RUN)
 dst still holds:
 one.txt  two.txt
@@ -995,7 +995,7 @@ identify the larger.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>496K	scratch/heavy
 8.0K	scratch/light
-/dev/root        72G   56G   16G  79% /
+/dev/root        72G   56G   16G  78% /
 largest: scratch/heavy
 </pre></div>
 </div>
@@ -1017,7 +1017,7 @@ to reach a file inside the target.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jun 18 22:35 scratch/shortcut -&gt; store
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jun 18 22:51 scratch/shortcut -&gt; store
 payload
 </pre></div>
 </div>
@@ -1039,11 +1039,11 @@ confirm it is gone.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4565
-running in background as PID 4565
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4527
+running in background as PID 4527
 [1]+  Running                 sleep 300 &amp;
     PID COMMAND
-   4565 sleep
+   4527 sleep
 after kill, still alive? no
 </pre></div>
 </div>
@@ -1051,7 +1051,7 @@ after kill, still alive? no
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4569
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4531
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command backgrounded, appeared in the process table, then was killed
 </pre></div>
 </div>
@@ -1060,7 +1060,7 @@ after kill, still alive? no
 </section>
 <section id="remote-terminal-conceptual-ssh-and-transfer">
 <h3>Remote (terminal / conceptual) — ssh and transfer<a class="headerlink" href="#remote-terminal-conceptual-ssh-and-transfer" title="Link to this heading">#</a></h3>
-<p>No grade here — there is no remote machine on this page. In the <strong>Practice here</strong>
+<p>No grade here: there is no remote machine on this page. In the <strong>Practice here</strong>
 terminal, generate a key with <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code> and read the connect-and-copy syntax;
 then, if you have access to a real cluster (ETH’s <strong>Euler</strong>, say), do the real
 thing:</p>
@@ -1084,8 +1084,8 @@ directory standing in for the remote), and verify it arrived intact.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 job-results.tar.gz
-sent 346 bytes  received 35 bytes  762.00 bytes/sec
-total size is 225  speedup is 0.59
+sent 344 bytes  received 35 bytes  758.00 bytes/sec
+total size is 223  speedup is 0.59
 4.0K	scratch/job-results.tar.gz
 --- arrived, contents: ---
 output/
@@ -1106,30 +1106,30 @@ output/run.log
 <section id="optional-stretch-terminal-tmux-or-a-careful-delete">
 <h3>Optional stretch (terminal) — <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, or a careful <code class="docutils literal notranslate"><span class="pre">--delete</span></code><a class="headerlink" href="#optional-stretch-terminal-tmux-or-a-careful-delete" title="Link to this heading">#</a></h3>
 <p>No grade. In the <strong>Practice here</strong> terminal: start <code class="docutils literal notranslate"><span class="pre">tmux</span></code>, run something, press
-<code class="docutils literal notranslate"><span class="pre">Ctrl-b</span> <span class="pre">d</span></code> to detach, then <code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">attach</span></code> to return. Or practise a <strong>mirror</strong> sync —
-<code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-av</span> <span class="pre">--delete</span> <span class="pre">--dry-run</span> <span class="pre">src/</span> <span class="pre">dst/</span></code> — and read the would-delete list carefully
+<code class="docutils literal notranslate"><span class="pre">Ctrl-b</span> <span class="pre">d</span></code> to detach, then <code class="docutils literal notranslate"><span class="pre">tmux</span> <span class="pre">attach</span></code> to return. Or practise a <strong>mirror</strong> sync
+(<code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">-av</span> <span class="pre">--delete</span> <span class="pre">--dry-run</span> <span class="pre">src/</span> <span class="pre">dst/</span></code>) and read the would-delete list carefully
 before ever dropping the <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> (heed the §B admonition).</p>
 </section>
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
 <p>You can now reach a cluster, carry your scripts and data on and off it, and keep
-long work alive and watched after you disconnect — the whole “machine you’re not
+long work alive and watched after you disconnect: the whole “machine you’re not
 at” toolkit. One thing is still missing: on a real cluster you do not just <code class="docutils literal notranslate"><span class="pre">ssh</span></code> in
 and run your job by hand, because hundreds of people share the machine. You hand it
 to a <strong>scheduler</strong>, which queues it and runs it when resources are free. Next
-(Notebook 16): writing a <strong>SLURM submission script</strong> — loading the environment from
-Notebook 14 inside it — submitting it with <code class="docutils literal notranslate"><span class="pre">sbatch</span></code>, and watching the queue.</p>
+(Notebook 16): writing a <strong>SLURM submission script</strong> (loading the environment from
+Notebook 14 inside it), submitting it with <code class="docutils literal notranslate"><span class="pre">sbatch</span></code>, and watching the queue.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-ssh"><code class="bp-cmd-name">ssh</code></a> &mdash; open a shell on a remote machine — or run a single command there — over an encrypted connection.</li><li><a href="#cmd-scp"><code class="bp-cmd-name">scp</code></a> &mdash; copy files to or from a remote machine over ssh — a simple one-shot transfer.</li><li><a href="#cmd-rsync"><code class="bp-cmd-name">rsync</code></a> &mdash; sync files and directories — locally or over ssh — copying only what has changed. The workhorse for moving data on and off a cluster.</li><li><a href="#cmd-tar"><code class="bp-cmd-name">tar</code></a> &mdash; bundle many files and directories into one archive (and, with -z, compress it) — for transport or backup.</li><li><a href="#cmd-gzip"><code class="bp-cmd-name">gzip</code></a> &mdash; compress a single file in place (and gunzip to restore it) — the compression behind tar&#x27;s -z.</li><li><a href="#cmd-tmux"><code class="bp-cmd-name">tmux</code></a> &mdash; run a persistent terminal that survives disconnects — detach, log out, and reattach later with your work still running.</li><li><a href="#cmd-nohup"><code class="bp-cmd-name">nohup</code></a> &mdash; run a command immune to hangups, so it keeps going after you log out.</li><li><a href="#cmd-ps"><code class="bp-cmd-name">ps</code></a> &mdash; take a snapshot of the processes running right now — what is alive, with their PIDs.</li><li><a href="#cmd-top"><code class="bp-cmd-name">top</code></a> &mdash; watch processes live — a continuously updating table of what is using the CPU and memory.</li><li><a href="#cmd-kill"><code class="bp-cmd-name">kill</code></a> &mdash; send a signal to a process — most often to stop one — by its PID.</li><li><a href="#cmd-du"><code class="bp-cmd-name">du</code></a> &mdash; report how much disk space files and directories use — for finding what is filling your quota.</li><li><a href="#cmd-df"><code class="bp-cmd-name">df</code></a> &mdash; report free and used space on the mounted filesystems — how full the disk (or your cluster quota) is.</li><li><a href="#cmd-ln"><code class="bp-cmd-name">ln</code></a> &mdash; create a link — most usefully a symbolic link, a lightweight pointer from one path to another.</li><li><a href="#cmd-watch"><code class="bp-cmd-name">watch</code></a> &mdash; re-run a command every couple of seconds and show its latest output in place — to watch something change.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run the archive, sync, and process commands yourself — and to
+    section to run the archive, sync, and process commands yourself, and to
     practise the terminal-only ones (<code>tmux</code>, <code>top</code>,
     <code>watch</code>). The published notebooks ship <b>without worked
-    solutions</b>; if you would like the reference solutions — to teach from or to
-    check your own work — get in touch:
+    solutions</b>; if you would like the reference solutions (to teach from or to
+    check your own work), get in touch:
     <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>
