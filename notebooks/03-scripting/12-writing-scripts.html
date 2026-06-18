@@ -11,10 +11,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/03-scripting/12-writing-scripts.html" />
 <meta property="og:site_name" content="Introduction to the Bash Shell" />
-<meta property="og:description" content="What this notebook is about: In Notebook 11 you made a file runnable — a shebang, the executable bit,./. But that script did one fixed thing. A real tool is ..." />
+<meta property="og:description" content="What this notebook is about: In Notebook 11 you made a file runnable: a shebang, the executable bit,./. But that script did one fixed thing. A real tool is d..." />
 <meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
 <meta property="og:image:alt" content="Introduction to the Bash Shell" />
-<meta name="description" content="What this notebook is about: In Notebook 11 you made a file runnable — a shebang, the executable bit,./. But that script did one fixed thing. A real tool is ..." />
+<meta name="description" content="What this notebook is about: In Notebook 11 you made a file runnable: a shebang, the executable bit,./. But that script did one fixed thing. A real tool is d..." />
 
     <title>12 Writing scripts &#8212; Introduction to the Bash Shell</title>
   
@@ -450,20 +450,20 @@
 </div>
 <section id="what-this-notebook-is-about">
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
-<p>In Notebook 11 you made a file <em>runnable</em> — a shebang, the executable bit, <code class="docutils literal notranslate"><span class="pre">./</span></code>.
+<p>In Notebook 11 you made a file <em>runnable</em>: a shebang, the executable bit, <code class="docutils literal notranslate"><span class="pre">./</span></code>.
 But that script did one fixed thing. A real tool is different: you hand it an
 input, it names its data in readable variables, organizes its work into functions,
-prints clean output, and — when something is wrong — fails early and loudly instead
+prints clean output, and, when something is wrong, fails early and loudly instead
 of limping on with garbage.</p>
 <p>This notebook grows exactly that. We start from “a few commands in a file” and, one
-idea at a time, build up to <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> — a script that takes a trajectory file
+idea at a time, build up to <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code>: a script that takes a trajectory file
 and a flag, extracts and averages its energies, prints a formatted result, and
 writes a summary file, all under a header that makes it fail safely. Everything you
 have learned in Part III converges here.</p>
 <p>One boundary, stated up front. This notebook’s script is <strong>linear</strong>: one input →
 process → output. Making a script <em>decide</em> (with <code class="docutils literal notranslate"><span class="pre">if</span></code>) and <em>repeat</em> (loop over many
 files) is the next notebook. So our capstone processes <strong>one</strong> trajectory; Notebook
-13 will make it sweep a whole directory of them. (As ever — the data is a
+13 will make it sweep a whole directory of them. (As ever, the data is a
 playground, <strong>no physics required.</strong>)</p>
 </section>
 <section id="a-anatomy-a-script-is-commands-in-a-file-with-a-safe-header">
@@ -477,7 +477,7 @@ though, we give every script the same two-line header:</p>
 </div>
 <p>The first line is the shebang from Notebook 11. The second, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code>, is
 the single most valuable habit in script-writing: it makes the script <strong>fail
-safely</strong> — stop the moment something goes wrong, rather than barrel on. We unpack
+safely</strong>, stopping the moment something goes wrong rather than barreling on. We unpack
 exactly what it does in §H; for now, treat it as boilerplate that every script
 wears, and we will model it throughout. Here is a first script under that header:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
@@ -505,7 +505,7 @@ wears, and we will model it throughout. Here is a first script under that header
 <section id="b-variables-naming-your-data">
 <h2>B. Variables: naming your data<a class="headerlink" href="#b-variables-naming-your-data" title="Link to this heading">#</a></h2>
 <p>A variable gives a name to a value, so the script reads like a description of what
-it does instead of a wall of literals. Assignment has one famous trap — <strong>no spaces
+it does instead of a wall of literals. Assignment has one famous trap: <strong>no spaces
 around the <code class="docutils literal notranslate"><span class="pre">=</span></code></strong>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -520,7 +520,7 @@ around the <code class="docutils literal notranslate"><span class="pre">=</span>
 </div>
 </div>
 <p>Put a space around the <code class="docutils literal notranslate"><span class="pre">=</span></code> and the shell reads the first word as a <em>command</em> name,
-not an assignment — a confusing error the first time you meet it:</p>
+not an assignment: a confusing error the first time you meet it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">system</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lj38&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;with spaces, bash thinks &#39;system&#39; is a command to run — assignment needs NONE around =&quot;</span>
@@ -533,25 +533,25 @@ not an assignment — a confusing error the first time you meet it:</p>
 </div>
 </div>
 </div>
-<p>You <em>use</em> a variable by writing <code class="docutils literal notranslate"><span class="pre">$name</span></code> — and, per Notebook 10, you <strong>quote it on
+<p>You <em>use</em> a variable by writing <code class="docutils literal notranslate"><span class="pre">$name</span></code>, and, per Notebook 10, you <strong>quote it on
 use</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;$name&quot;</span></code>. The everyday forms:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Variables</span> — <span class="bp-card-job">naming values (shell syntax, not a command). Quote on use; assign with no spaces around <code>=</code>.</span>
   <table>
-    <tr><td>name=value</td><td>assign — <b>no spaces</b> around the <code>=</code></td></tr>
-    <tr><td>"$name"</td><td>use the value — always quote on use (Notebook 10)</td></tr>
+    <tr><td>name=value</td><td>assign: <b>no spaces</b> around the <code>=</code></td></tr>
+    <tr><td>"$name"</td><td>use the value: always quote on use (Notebook 10)</td></tr>
     <tr><td>"${name:-default}"</td><td>use <i>default</i> if name is unset or empty (Notebook 10)</td></tr>
     <tr><td>local name=value</td><td>a variable confined to its function (§E)</td></tr>
     <tr><td>name="$(cmd)"</td><td>capture a command's output into the value (Notebook 10)</td></tr>
   </table>
 </div>
 <p>(These are <em>script-local</em> variables. Making a variable part of the <strong>environment</strong>,
-so other programs see it — <code class="docutils literal notranslate"><span class="pre">export</span></code> — belongs to Notebook 14.)</p>
+so other programs see it, via <code class="docutils literal notranslate"><span class="pre">export</span></code>, belongs to Notebook 14.)</p>
 </section>
 <section id="c-positional-parameters-acting-on-what-you-pass">
 <h2>C. Positional parameters: acting on what you pass<a class="headerlink" href="#c-positional-parameters-acting-on-what-you-pass" title="Link to this heading">#</a></h2>
 <p>A tool earns its keep by working on <em>whatever you give it</em>. The arguments after the
-script’s name arrive as the <strong>positional parameters</strong> <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, and so on — with
+script’s name arrive as the <strong>positional parameters</strong> <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, and so on, with
 <code class="docutils literal notranslate"><span class="pre">$#</span></code> counting them and <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code> standing for all of them:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Positional parameters</span> — <span class="bp-card-job">the arguments a script (or function) was called with.</span>
@@ -559,8 +559,8 @@ script’s name arrive as the <strong>positional parameters</strong> <code class
     <tr><td>$0</td><td>the script's own name</td></tr>
     <tr><td>$1&nbsp;&nbsp;$2&nbsp;…</td><td>the first, second, … argument</td></tr>
     <tr><td>$#</td><td>how many arguments were passed</td></tr>
-    <tr><td>"$@"</td><td><b>all</b> arguments, each kept as a separate word — quote it (Notebook 10)</td></tr>
-    <tr><td>$*</td><td>all arguments mashed into <b>one</b> word — rarely what you want</td></tr>
+    <tr><td>"$@"</td><td><b>all</b> arguments, each kept as a separate word: quote it (Notebook 10)</td></tr>
+    <tr><td>$*</td><td>all arguments mashed into <b>one</b> word: rarely what you want</td></tr>
     <tr><td>shift</td><td>drop <code>$1</code>; <code>$2</code> becomes <code>$1</code>, and so on</td></tr>
   </table>
 </div>
@@ -590,7 +590,7 @@ all args:    lj38.xyz pt-slab.xyz
 </div>
 </div>
 </div>
-<p>The script now does different work depending on its input — the difference between a
+<p>The script now does different work depending on its input: the difference between a
 one-off and a tool.</p>
 </section>
 <section id="d-flags-via-getopts-options-the-standard-way">
@@ -616,10 +616,10 @@ and any value in <strong><code class="docutils literal notranslate"><span class=
 <code class="docutils literal notranslate"><span class="pre">shift</span></code> discards the flags and leaves your real arguments as <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, …</p>
 <div class="note admonition">
 <p class="admonition-title">On the while/case machinery</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">…</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code> loop and the <code class="docutils literal notranslate"><span class="pre">case</span> <span class="pre">…</span> <span class="pre">esac</span></code> choice are <strong>control flow</strong> —
+<p>The <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">…</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code> loop and the <code class="docutils literal notranslate"><span class="pre">case</span> <span class="pre">…</span> <span class="pre">esac</span></code> choice are <strong>control flow</strong>,
 the subject of Notebook 13. Here, treat the skeleton above as boilerplate to copy
 and fill in; you will understand its mechanics fully next notebook. Two curation
-notes: <code class="docutils literal notranslate"><span class="pre">getopts</span></code> handles <strong>short</strong> options only — long ones like <code class="docutils literal notranslate"><span class="pre">--verbose</span></code> need
+notes: <code class="docutils literal notranslate"><span class="pre">getopts</span></code> handles <strong>short</strong> options only; long ones like <code class="docutils literal notranslate"><span class="pre">--verbose</span></code> need
 more than it offers, and we leave them out of scope.</p>
 </div>
 <p>Here that skeleton is, wired into a small script that shows the first <em>N</em> lines of a
@@ -645,16 +645,16 @@ lines instead of the default three.</p>
 </section>
 <section id="e-functions-naming-a-piece-of-work">
 <h2>E. Functions: naming a piece of work<a class="headerlink" href="#e-functions-naming-a-piece-of-work" title="Link to this heading">#</a></h2>
-<p>When a script repeats a step — or just grows long enough to need sections — you give
+<p>When a script repeats a step (or just grows long enough to need sections) you give
 that piece of work a name. A <strong>function</strong> is a mini-script inside your script, with
 its <strong>own</strong> <code class="docutils literal notranslate"><span class="pre">$1</span></code>, <code class="docutils literal notranslate"><span class="pre">$2</span></code>, and its own <code class="docutils literal notranslate"><span class="pre">local</span></code> variables:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Functions</span> — <span class="bp-card-job">name a reusable piece of work; it gets its own arguments.</span>
   <table>
     <tr><td>name() { …; }</td><td>define a function</td></tr>
-    <tr><td>name arg1 arg2</td><td>call it — inside, <code>$1</code> <code>$2</code> are <b>its</b> arguments</td></tr>
+    <tr><td>name arg1 arg2</td><td>call it: inside, <code>$1</code> <code>$2</code> are <b>its</b> arguments</td></tr>
     <tr><td>local v=…</td><td>a variable local to the function, not leaking out</td></tr>
-    <tr><td>return N</td><td>set the function's <b>exit code</b> (0–255) — not a value</td></tr>
+    <tr><td>return N</td><td>set the function's <b>exit code</b> (0–255), not a value</td></tr>
     <tr><td>echo … → "$(name)"</td><td>to hand back <b>data</b>, echo it and capture with <code>$( )</code></td></tr>
   </table>
 </div>
@@ -674,7 +674,7 @@ is_even<span class="w"> </span><span class="m">4</span><span class="p">;</span><
 </div>
 </div>
 <p>So to hand <strong>data</strong> back from a function, you <code class="docutils literal notranslate"><span class="pre">echo</span></code> it and <strong>capture</strong> it with
-<code class="docutils literal notranslate"><span class="pre">$(…)</span></code> at the call site — exactly the command-substitution idea from Notebook 10.
+<code class="docutils literal notranslate"><span class="pre">$(…)</span></code> at the call site: exactly the command-substitution idea from Notebook 10.
 Here is a function that averages a log’s energies (the <code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code> from Notebooks 6
 and 8) and returns the number:</p>
 <div class="cell docutils container">
@@ -700,7 +700,7 @@ and 8) and returns the number:</p>
 <section id="f-printf-clean-formatted-output">
 <h2>F. <code class="docutils literal notranslate"><span class="pre">printf</span></code>: clean, formatted output<a class="headerlink" href="#f-printf-clean-formatted-output" title="Link to this heading">#</a></h2>
 <p>Scripts report results, and for that <code class="docutils literal notranslate"><span class="pre">printf</span></code> beats <code class="docutils literal notranslate"><span class="pre">echo</span></code>. It takes a <strong>format
-string</strong> with placeholders, then the values to drop in — so columns line up and
+string</strong> with placeholders, then the values to drop in, so columns line up and
 numbers carry the precision you choose.</p>
 <div class="bp-card" id="cmd-printf"><span class="bp-card-cmd">printf</span> &mdash; <span class="bp-card-job">print formatted output from a template — the dependable, portable way a script reports its results.</span><table><tr><td>%s</td><td>insert a string argument as-is (e.g. a name or a path)</td></tr><tr><td>%d  /  %.3f</td><td>an integer / a float to 3 decimals — <code>%.Nf</code> sets the precision, <code>%-8s</code> / <code>%8.3f</code> set a field width</td></tr><tr><td>\n  /  \t</td><td>a newline / a tab in the template — printf adds NO trailing newline of its own (unlike echo), so you write <code>\n</code> yourself</td></tr></table><div class="bp-card-more">more: <code>help printf</code> (bash has its own builtin) · <code>man printf</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the format string is REUSED for any leftover arguments — <code>printf &#x27;%s\n&#x27; a b c</code> prints three lines, not one; surprising until you expect it, then handy. Prefer <code>printf</code> over <code>echo</code> in scripts: no <code>-e</code>/<code>-n</code> portability ambiguity</div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -733,24 +733,24 @@ gamma
 </div>
 </div>
 <p>Three arguments, one <code class="docutils literal notranslate"><span class="pre">%s\n</span></code> template, three lines. (This is <em>why</em> <code class="docutils literal notranslate"><span class="pre">printf</span></code> is the
-scripting choice over <code class="docutils literal notranslate"><span class="pre">echo</span></code>: no <code class="docutils literal notranslate"><span class="pre">-e</span></code>/<code class="docutils literal notranslate"><span class="pre">-n</span></code> portability guesswork — the format string
+scripting choice over <code class="docutils literal notranslate"><span class="pre">echo</span></code>: no <code class="docutils literal notranslate"><span class="pre">-e</span></code>/<code class="docutils literal notranslate"><span class="pre">-n</span></code> portability guesswork: the format string
 says exactly what you get.)</p>
 </section>
 <section id="g-heredocs-generating-multi-line-text-and-files">
 <h2>G. Heredocs: generating multi-line text and files<a class="headerlink" href="#g-heredocs-generating-multi-line-text-and-files" title="Link to this heading">#</a></h2>
-<p>Sometimes a script needs to emit a whole block — a config file, a report, a
+<p>Sometimes a script needs to emit a whole block: a config file, a report, a
 submission script. A <strong>here-document</strong> feeds an inline block to a command, and is
 the cleanest way to write a multi-line file:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Heredocs &amp; here-strings</span> — <span class="bp-card-job">feed an inline block (or one line) to a command's input.</span>
   <table>
     <tr><td>cmd &lt;&lt;EOF … EOF</td><td>feed the block to <i>cmd</i>; <code>$vars</code> and <code>$(…)</code> <b>are</b> expanded</td></tr>
-    <tr><td>cmd &lt;&lt;'EOF' … EOF</td><td>quoted delimiter: the block is <b>literal</b> — no expansion</td></tr>
+    <tr><td>cmd &lt;&lt;'EOF' … EOF</td><td>quoted delimiter: the block is <b>literal</b>, no expansion</td></tr>
     <tr><td>cmd &lt;&lt;-EOF … EOF</td><td>the <code>-</code> strips leading <b>tabs</b>, so you can indent the block</td></tr>
     <tr><td>cmd &lt;&lt;&lt; "text"</td><td>here-<i>string</i>: feed a single line as input</td></tr>
   </table>
 </div>
-<p>With a plain <code class="docutils literal notranslate"><span class="pre">EOF</span></code>, the block behaves like a double-quoted string — variables and
+<p>With a plain <code class="docutils literal notranslate"><span class="pre">EOF</span></code>, the block behaves like a double-quoted string: variables and
 command substitutions expand:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -768,8 +768,8 @@ built:   2026-06-18
 </div>
 </div>
 </div>
-<p><strong>Quote</strong> the delimiter — <code class="docutils literal notranslate"><span class="pre">&lt;&lt;'EOF'</span></code> — and the block is taken literally, expanding
-nothing (just like single quotes, Notebook 10) — what you want when the text itself
+<p><strong>Quote</strong> the delimiter (<code class="docutils literal notranslate"><span class="pre">&lt;&lt;'EOF'</span></code>) and the block is taken literally, expanding
+nothing (just like single quotes, Notebook 10): what you want when the text itself
 contains <code class="docutils literal notranslate"><span class="pre">$</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -812,7 +812,7 @@ cat<span class="w"> </span>scratch/run.inp
 </div>
 </div>
 <p>And the one-line cousin, the <strong>here-string</strong> <code class="docutils literal notranslate"><span class="pre">&lt;&lt;&lt;</span></code>, feeds a single string to a
-command’s input — handy for piping a variable in without an <code class="docutils literal notranslate"><span class="pre">echo</span></code>:</p>
+command’s input: handy for piping a variable in without an <code class="docutils literal notranslate"><span class="pre">echo</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wc<span class="w"> </span>-w<span class="w"> </span><span class="o">&lt;&lt;&lt;</span><span class="w"> </span><span class="s2">&quot;one two three four&quot;</span>
@@ -836,12 +836,12 @@ switches that turn silent, limping failure into an immediate, visible stop:</p>
     <tr><td>set -e</td><td>exit immediately if any command fails</td></tr>
     <tr><td>set -u</td><td>treat use of an <b>unset</b> variable as an error (pair with <code>"${v:-default}"</code>)</td></tr>
     <tr><td>set -o pipefail</td><td>a pipeline fails if <b>any</b> stage fails, not only the last</td></tr>
-    <tr><td>set -euo pipefail</td><td>the standard one-line header — all three at once</td></tr>
+    <tr><td>set -euo pipefail</td><td>the standard one-line header: all three at once</td></tr>
     <tr><td>bash -x script&nbsp;&nbsp;/&nbsp;&nbsp;set -x</td><td>trace each command as it runs (debugging)</td></tr>
   </table>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-u</span></code> is the one with a direct line back to Notebook 10: a typo’d or never-set
-variable is no longer silently empty — it stops the script. Watch a script die the
+variable is no longer silently empty; it stops the script. Watch a script die the
 instant it reaches an unset variable (the <code class="docutils literal notranslate"><span class="pre">||</span> <span class="pre">echo</span></code> is only so this page keeps
 running):</p>
 <div class="cell tag_remove-input docutils container">
@@ -860,7 +860,7 @@ running):</p>
 </div>
 </div>
 </div>
-<p>It printed <code class="docutils literal notranslate"><span class="pre">starting</span></code>, hit the unset <code class="docutils literal notranslate"><span class="pre">label</span></code>, and <strong>stopped</strong> — it never reached
+<p>It printed <code class="docutils literal notranslate"><span class="pre">starting</span></code>, hit the unset <code class="docutils literal notranslate"><span class="pre">label</span></code>, and <strong>stopped</strong>; it never reached
 <code class="docutils literal notranslate"><span class="pre">finishing</span></code>. That is the whole point: a broken run ends where it broke, loudly,
 instead of producing a wrong answer. The fix is the Notebook-10 default value:</p>
 <div class="cell tag_remove-input docutils container">
@@ -908,7 +908,7 @@ corrupt file you discover three weeks later.</p>
 <p>One script grows across this set, from a fixed greeting to a real analysis tool.
 Everything is created and run in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; <code class="docutils literal notranslate"><span class="pre">data/</span></code> stays read-only. (On
 this page the scripts are written with here-documents so they are reproducible; in
-your own terminal you would type them into Vim from Notebook 9 — the result is the
+your own terminal you would type them into Vim from Notebook 9, and the result is the
 same file.)</p>
 <section id="warm-up-1-worked-a-first-script-with-variables">
 <h3>Warm-up 1 (worked) — A first script with variables<a class="headerlink" href="#warm-up-1-worked-a-first-script-with-variables" title="Link to this heading">#</a></h3>
@@ -1038,9 +1038,9 @@ mean energy: -143.4444 eV
 <p>The capstone, and the payoff of all of Part III. Write <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> that takes a
 trajectory log as <code class="docutils literal notranslate"><span class="pre">$1</span></code> and an optional <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag; uses a <strong>function</strong> to extract and
 average its energies (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>); prints a <code class="docutils literal notranslate"><span class="pre">printf</span></code>-formatted result; writes a
-heredoc <strong>summary file</strong>; and runs under the <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code> header — invoked
+heredoc <strong>summary file</strong>; and runs under the <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-euo</span> <span class="pre">pipefail</span></code> header, invoked
 with <code class="docutils literal notranslate"><span class="pre">./</span></code>. It composes Notebooks 9–11 (write, quote, run) with 6 and 8 (extract) and
-everything in this notebook. It still processes <strong>one</strong> file — looping over many is
+everything in this notebook. It still processes <strong>one</strong> file; looping over many is
 the next notebook.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -1100,9 +1100,9 @@ temperature: 300 K
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
 <p>Your script now takes inputs, names its data, factors work into functions, prints
-clean output, generates files, and fails safely — a real, reusable tool. But it
-still does one thing, once. Next (Notebook 13): <strong>control flow</strong> — <code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">case</span></code>, exit
-codes and <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>/<code class="docutils literal notranslate"><span class="pre">||</span></code>, and loops — so a script can <strong>decide</strong> and <strong>repeat</strong>. That is
+clean output, generates files, and fails safely: a real, reusable tool. But it
+still does one thing, once. Next (Notebook 13): <strong>control flow</strong> (<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">case</span></code>, exit
+codes and <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>/<code class="docutils literal notranslate"><span class="pre">||</span></code>, and loops), so a script can <strong>decide</strong> and <strong>repeat</strong>. That is
 what turns <code class="docutils literal notranslate"><span class="pre">analyze.sh</span></code> from a one-file tool into one that sweeps an entire directory
 of trajectories in a single run.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-printf"><code class="bp-cmd-name">printf</code></a> &mdash; print formatted output from a template — the dependable, portable way a script reports its results.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
@@ -1110,9 +1110,9 @@ of trajectories in a single run.</p>
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to write and run these scripts yourself — nothing to install. The
+    section to write and run these scripts yourself; nothing to install. The
     published notebooks ship <b>without worked solutions</b>; if you would like
-    the reference solutions — to teach from or to check your own work — get in
+    the reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

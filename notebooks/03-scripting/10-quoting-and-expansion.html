@@ -436,7 +436,7 @@
     <span class="bp-meta">Notebook&nbsp;10</span>
   </div>
   <div style="margin-top:10px;max-width:62ch;color:#46506b;">
-    How the shell rewrites your command line before it runs — and how quoting
+    How the shell rewrites your command line before it runs, and how quoting
     lets you control that rewriting. The most common source of subtle bugs.
   </div>
   <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -451,7 +451,7 @@
 shell expanded <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> before <code class="docutils literal notranslate"><span class="pre">ls</span></code> ran. In Notebooks 6 and 8 you single-quoted
 your <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs so the shell would leave the <code class="docutils literal notranslate"><span class="pre">$1</span></code> alone. Both are
 the same fact: <strong>before any command runs, the shell rewrites your command line.</strong></p>
-<p>This notebook names that fact, lays out the full rewriting, and — most usefully —
+<p>This notebook names that fact, lays out the full rewriting, and, most usefully,
 shows how <strong>quoting</strong> lets you control it. Getting this wrong is the single most
 common subtle bug in the shell, so it earns a whole notebook here at the start of
 Part III, right before you begin writing scripts of your own. (As ever: this is all
@@ -469,7 +469,7 @@ filenames and values, <strong>no physics.</strong>)</p>
 </div>
 </div>
 </div>
-<p>Now look closely. We pass <code class="docutils literal notranslate"><span class="pre">$f</span></code> — unquoted — to a command, and print each argument
+<p>Now look closely. We pass <code class="docutils literal notranslate"><span class="pre">$f</span></code>, unquoted, to a command, and print each argument
 the command actually receives:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -485,7 +485,7 @@ argument: [run.xyz]
 </div>
 </div>
 <p>The command received <strong>two</strong> arguments, not one. The space in the filename tore
-<code class="docutils literal notranslate"><span class="pre">$f</span></code> into <code class="docutils literal notranslate"><span class="pre">scratch/my</span></code> and <code class="docutils literal notranslate"><span class="pre">run.xyz</span></code>. Try to use it and it breaks — <code class="docutils literal notranslate"><span class="pre">cat</span></code> goes
+<code class="docutils literal notranslate"><span class="pre">$f</span></code> into <code class="docutils literal notranslate"><span class="pre">scratch/my</span></code> and <code class="docutils literal notranslate"><span class="pre">run.xyz</span></code>. Try to use it and it breaks: <code class="docutils literal notranslate"><span class="pre">cat</span></code> goes
 looking for two files that do not exist:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -511,17 +511,17 @@ the command on the <em>result</em>. You have already met most of them:</p>
 <div class="bp-card">
   <span class="bp-card-cmd">The expansions, in order</span> — <span class="bp-card-job">the shell applies these to your line before the command runs; the command sees only the result.</span>
   <table>
-    <tr><td>{a,b}  {1..9}</td><td>brace expansion — generate strings (Notebook 5)</td></tr>
-    <tr><td>~</td><td>tilde — your home directory (Notebook 2)</td></tr>
-    <tr><td>$var  ${var}</td><td>parameter expansion — the value of a variable</td></tr>
-    <tr><td>$(cmd)</td><td>command substitution — the output of a command</td></tr>
-    <tr><td>$((expr))</td><td>arithmetic expansion — integer arithmetic</td></tr>
-    <tr><td><b>word splitting</b></td><td>split the <i>unquoted</i> results on whitespace — <b>the culprit in §A</b></td></tr>
-    <tr><td>*  ?  [ ]</td><td>pathname (glob) expansion — match filenames (Notebook 5)</td></tr>
+    <tr><td>{a,b}  {1..9}</td><td>brace expansion: generate strings (Notebook 5)</td></tr>
+    <tr><td>~</td><td>tilde: your home directory (Notebook 2)</td></tr>
+    <tr><td>$var  ${var}</td><td>parameter expansion: the value of a variable</td></tr>
+    <tr><td>$(cmd)</td><td>command substitution: the output of a command</td></tr>
+    <tr><td>$((expr))</td><td>arithmetic expansion: integer arithmetic</td></tr>
+    <tr><td><b>word splitting</b></td><td>split the <i>unquoted</i> results on whitespace: <b>the culprit in §A</b></td></tr>
+    <tr><td>*  ?  [ ]</td><td>pathname (glob) expansion: match filenames (Notebook 5)</td></tr>
   </table>
 </div>
 <p>The whole notebook hangs off the bold row. Word splitting is what chopped <code class="docutils literal notranslate"><span class="pre">$f</span></code> in
-two — it splits <em>unquoted</em> expansion results on spaces. Which means the fix is to
+two: it splits <em>unquoted</em> expansion results on spaces. Which means the fix is to
 stop the result from being unquoted. That is what quoting is for.</p>
 </section>
 <section id="c-quoting-the-control">
@@ -530,12 +530,12 @@ stop the result from being unquoted. That is what quoting is for.</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Quoting</span> — <span class="bp-card-job">shell syntax (not a command) that controls which expansions happen.</span>
   <table>
-    <tr><td>'single'</td><td>literal: <b>no expansion at all</b> — the text is taken exactly as written</td></tr>
+    <tr><td>'single'</td><td>literal: <b>no expansion at all</b>, the text is taken exactly as written</td></tr>
     <tr><td>"double"</td><td>allow <code>$</code>-expansions, but <b>suppress word splitting and globbing</b></td></tr>
     <tr><td>\\  (backslash)</td><td>escape: protect the single next character</td></tr>
   </table>
 </div>
-<p>Single quotes turn <em>everything</em> off — the shell does not touch what is inside:</p>
+<p>Single quotes turn <em>everything</em> off: the shell does not touch what is inside:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;$HOME and *.xyz are left exactly as typed&#39;</span>
@@ -550,7 +550,7 @@ stop the result from being unquoted. That is what quoting is for.</p>
 </div>
 <p>That is precisely <strong>why you single-quote <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs</strong> (Notebooks 6
 and 8): a <code class="docutils literal notranslate"><span class="pre">$1</span></code> inside single quotes reaches <code class="docutils literal notranslate"><span class="pre">awk</span></code> untouched. Double quotes are the
-middle ground — variables <em>do</em> expand, but the result is kept as one piece:</p>
+middle ground: variables <em>do</em> expand, but the result is kept as one piece:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;your home is </span><span class="nv">$HOME</span><span class="s2">&quot;</span>
@@ -563,7 +563,7 @@ middle ground — variables <em>do</em> expand, but the result is kept as one pi
 </div>
 </div>
 </div>
-<p>And a backslash protects just the next character — here, a literal dollar sign:</p>
+<p>And a backslash protects just the next character: here, a literal dollar sign:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;a price tag: \$5&quot;</span>
@@ -586,12 +586,12 @@ of shell scripting:</p>
 <p>Write <code class="docutils literal notranslate"><span class="pre">&quot;$f&quot;</span></code>, not <code class="docutils literal notranslate"><span class="pre">$f</span></code>. An unquoted variable that happens to contain a <strong>space</strong>
 becomes two arguments (the §A bug); one that contains a <strong><code class="docutils literal notranslate"><span class="pre">*</span></code></strong> gets glob-expanded
 against the current directory, matching who-knows-what. Quietly, with no error,
-your command operates on the wrong thing — and when that command is <code class="docutils literal notranslate"><span class="pre">rm</span></code>, the
+your command operates on the wrong thing, and when that command is <code class="docutils literal notranslate"><span class="pre">rm</span></code>, the
 result is the kind of story people tell years later. The fix costs two characters.
 Quote every <code class="docutils literal notranslate"><span class="pre">&quot;$var&quot;</span></code> and every <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code>, every time, and a whole category of bugs
 simply never happens.</p>
 </div>
-<p>Watch the fix retire the §A bug — the <em>same</em> command, the <em>only</em> difference being
+<p>Watch the fix retire the §A bug: the <em>same</em> command, the <em>only</em> difference being
 the quotes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -626,13 +626,13 @@ into just <code class="docutils literal notranslate"><span class="pre">command</
 unquoted <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code> and <code class="docutils literal notranslate"><span class="pre">$*</span></code> both word-split and will mangle any argument with a space.
 (You will use <code class="docutils literal notranslate"><span class="pre">&quot;$&#64;&quot;</span></code> constantly once you write scripts in Notebook 12.)</p></li>
 <li><p><strong>Backticks</strong> <code class="docutils literal notranslate"><span class="pre">`cmd`</span></code> are the old form of command substitution. Use <strong><code class="docutils literal notranslate"><span class="pre">$(cmd)</span></code></strong>
-instead — it nests cleanly and reads better.</p></li>
+instead: it nests cleanly and reads better.</p></li>
 </ul>
 </section>
 <section id="e-the-workhorse-forms">
 <h2>E. The workhorse <code class="docutils literal notranslate"><span class="pre">${</span> <span class="pre">}</span></code> forms<a class="headerlink" href="#e-the-workhorse-forms" title="Link to this heading">#</a></h2>
 <p>Parameter expansion does more than fetch a value. A curated handful of <code class="docutils literal notranslate"><span class="pre">${…}</span></code> forms
-covers almost everything you will reach for — most of it about reshaping filenames,
+covers almost everything you will reach for, most of it about reshaping filenames,
 which is exactly what scripts spend their time doing.</p>
 <div class="bp-card">
   <span class="bp-card-cmd">Parameter expansion</span> — <span class="bp-card-job">the workhorse <code>${…}</code> forms. Case conversion, substrings, indirection, and arrays are out of scope.</span>
@@ -642,8 +642,8 @@ which is exactly what scripts spend their time doing.</p>
     <tr><td>${var%.xyz}</td><td>remove a matching <b>suffix</b> (strip an extension)</td></tr>
     <tr><td>${var#prefix}</td><td>remove a matching <b>prefix</b></td></tr>
     <tr><td>${var/old/new}</td><td>substitute the first <i>old</i> with <i>new</i></td></tr>
-    <tr><td>$(cmd)</td><td>command substitution — capture a command's output</td></tr>
-    <tr><td>$((expr))</td><td>arithmetic — <b>integer only</b></td></tr>
+    <tr><td>$(cmd)</td><td>command substitution: capture a command's output</td></tr>
+    <tr><td>$((expr))</td><td>arithmetic: <b>integer only</b></td></tr>
   </table>
 </div>
 <p>Suffix-stripping is the daily one: take an input name, drop its extension, build the
@@ -688,8 +688,8 @@ integer math:</p>
 </div>
 </div>
 </div>
-<p>Note that <code class="docutils literal notranslate"><span class="pre">3</span></code> — <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> is <strong>integer only</strong>, and it <em>truncates</em> (it does not round).
-The moment you need a real number — a mean, a ratio with decimals — the shell cannot
+<p>Note that <code class="docutils literal notranslate"><span class="pre">3</span></code>: <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> is <strong>integer only</strong>, and it <em>truncates</em> (it does not round).
+The moment you need a real number (a mean, a ratio with decimals) the shell cannot
 help, and you reach back for <code class="docutils literal notranslate"><span class="pre">awk</span></code> (Notebook 8) or <code class="docutils literal notranslate"><span class="pre">bc</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -803,8 +803,8 @@ label is none
 </section>
 <section id="applied-3-worked-arithmetic-and-its-limit">
 <h3>Applied 3 (worked) — Arithmetic and its limit<a class="headerlink" href="#applied-3-worked-arithmetic-and-its-limit" title="Link to this heading">#</a></h3>
-<p>Integer arithmetic with <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> (note the truncation), then a <em>mean</em> — which needs
-floats — with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
+<p>Integer arithmetic with <code class="docutils literal notranslate"><span class="pre">$((</span> <span class="pre">))</span></code> (note the truncation), then a <em>mean</em> (which needs
+floats) with <code class="docutils literal notranslate"><span class="pre">awk</span></code>.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -825,8 +825,8 @@ float mean: -143.4444
 </section>
 <section id="composite-putting-it-together-build-commands-safely">
 <h3>Composite — putting it together (build commands safely)<a class="headerlink" href="#composite-putting-it-together-build-commands-safely" title="Link to this heading">#</a></h3>
-<p>Build output filenames from a set of trajectory files — <strong>one with a space in its
-name</strong> — using trimming and properly quoted expansions. (The <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">…</span> <span class="pre">in</span> <span class="pre">…;</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code>
+<p>Build output filenames from a set of trajectory files (<strong>one with a space in its
+name</strong>) using trimming and properly quoted expansions. (The <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">…</span> <span class="pre">in</span> <span class="pre">…;</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code>
 loop here just means “for each file”; it gets its full introduction in Notebook 12.
 The lesson now is that <em>quoting</em> makes the loop space-safe.)</p>
 <div class="cell tag_remove-input docutils container">
@@ -848,7 +848,7 @@ The lesson now is that <em>quoting</em> makes the loop space-safe.)</p>
 </section>
 <section id="optional-stretch-your-turn-an-expansion-order-puzzle">
 <h3>Optional stretch (your turn) — An expansion-order puzzle<a class="headerlink" href="#optional-stretch-your-turn-an-expansion-order-puzzle" title="Link to this heading">#</a></h3>
-<p>A glob stored in a <em>quoted</em> variable does not expand — because globbing happens to
+<p>A glob stored in a <em>quoted</em> variable does not expand, because globbing happens to
 the line, not to a quoted value. Confirm it: put <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> in a variable, then echo it
 quoted (stays literal) versus letting it expand. Predict each before running.</p>
 <div class="cell tag_remove-input docutils container">
@@ -872,7 +872,7 @@ x.xyz y.xyz
 </section>
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
-<p>You now control how the shell reads what you type — the foundation that keeps a
+<p>You now control how the shell reads what you type: the foundation that keeps a
 script from breaking the first time a filename has a space in it. That foundation
 matters because Part III is about turning your one-liners into <strong>scripts you keep
 and re-run</strong>. The next missing piece is mechanical: what makes a file <em>runnable</em> in
@@ -881,7 +881,7 @@ the first place. Next (Notebook 11): permissions and execution.</p>
   <div class="bp-series">No new commands this time</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Quoting and expansion are shell <b>syntax</b>, not commands, so this notebook
-    adds nothing to the Compendium — its reference is the three tables above. The
+    adds nothing to the Compendium: its reference is the three tables above. The
     next command card returns in Notebook 11.
   </div>
 </div>
@@ -889,9 +889,9 @@ the first place. Next (Notebook 11): permissions and execution.</p>
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>

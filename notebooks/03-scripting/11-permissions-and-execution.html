@@ -448,15 +448,15 @@
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>In Notebook 9 you learned to <em>write</em> a file, and in Notebook 10 you learned how
 the shell <em>reads</em> the line you type. Put them together and you can author a little
-script — a shebang line and a couple of commands. Then you type its name, and the
+script: a shebang line and a couple of commands. Then you type its name, and the
 shell says:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></code></p>
 </div></blockquote>
 <p>The file is right there. You can <code class="docutils literal notranslate"><span class="pre">cat</span></code> it. Why won’t it run? Because nothing has
 yet told the system that this file <em>may</em> be run. A file is, by default, just data.
-This notebook is about the small set of conventions — the <strong>permission bits</strong>, the
-<strong>executable bit</strong>, the <strong>shebang</strong>, and <strong><code class="docutils literal notranslate"><span class="pre">$PATH</span></code></strong> — that promote a plain text
+This notebook is about the small set of conventions (the <strong>permission bits</strong>, the
+<strong>executable bit</strong>, the <strong>shebang</strong>, and <strong><code class="docutils literal notranslate"><span class="pre">$PATH</span></code></strong>) that promote a plain text
 file to a command. It is the bridge to Notebook 12, where you write real scripts.</p>
 <p>(As ever, this is about files and the system, <strong>not physics</strong>.)</p>
 </section>
@@ -478,8 +478,8 @@ in <code class="docutils literal notranslate"><span class="pre">data/</span></co
 </div>
 </div>
 <p>That leading <code class="docutils literal notranslate"><span class="pre">-rw-r--r--</span></code> is the permission string, and it is not cryptic once you
-know it splits into four parts: a <strong>type</strong> character, then three <strong>triads</strong> — one
-each for the <strong>owner</strong>, the <strong>group</strong>, and <strong>everyone else</strong> — where each triad is
+know it splits into four parts: a <strong>type</strong> character, then three <strong>triads</strong> (one
+each for the <strong>owner</strong>, the <strong>group</strong>, and <strong>everyone else</strong>), where each triad is
 some combination of <code class="docutils literal notranslate"><span class="pre">r</span></code> (read), <code class="docutils literal notranslate"><span class="pre">w</span></code> (write), and <code class="docutils literal notranslate"><span class="pre">x</span></code> (execute), with <code class="docutils literal notranslate"><span class="pre">-</span></code> meaning
 “not allowed.”</p>
 <div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
@@ -506,28 +506,28 @@ flag means “the directory itself, not its contents”):</p>
 </div>
 </div>
 </div>
-<p>The line starts with <code class="docutils literal notranslate"><span class="pre">d</span></code> — and notice it has <code class="docutils literal notranslate"><span class="pre">x</span></code> bits, which on a directory mean
+<p>The line starts with <code class="docutils literal notranslate"><span class="pre">d</span></code>, and notice it has <code class="docutils literal notranslate"><span class="pre">x</span></code> bits, which on a directory mean
 something special, as we will see next.</p>
 </section>
 <section id="b-what-r-w-and-x-actually-mean">
 <h2>B. What r, w, and x actually mean<a class="headerlink" href="#b-what-r-w-and-x-actually-mean" title="Link to this heading">#</a></h2>
 <p>For a <strong>file</strong>, the three are what you would guess:</p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">r</span></code></strong> — you may read its contents (<code class="docutils literal notranslate"><span class="pre">cat</span></code>, <code class="docutils literal notranslate"><span class="pre">less</span></code>, <code class="docutils literal notranslate"><span class="pre">cp</span></code> it).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">w</span></code></strong> — you may change it (edit it, or overwrite it).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong> — you may <strong>run</strong> it as a program. This is the one that matters for
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">r</span></code></strong>: you may read its contents (<code class="docutils literal notranslate"><span class="pre">cat</span></code>, <code class="docutils literal notranslate"><span class="pre">less</span></code>, <code class="docutils literal notranslate"><span class="pre">cp</span></code> it).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">w</span></code></strong>: you may change it (edit it, or overwrite it).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong>: you may <strong>run</strong> it as a program. This is the one that matters for
 scripts, and the whole point of this notebook.</p></li>
 </ul>
 <p>For a <strong>directory</strong>, the same three letters mean something slightly different, and
 the third is the classic source of confusion:</p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">r</span></code></strong> — you may <em>list</em> what is inside (<code class="docutils literal notranslate"><span class="pre">ls</span></code> it).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">w</span></code></strong> — you may add, rename, or remove entries in it.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong> — you may <strong>enter</strong> it and reach things inside (<code class="docutils literal notranslate"><span class="pre">cd</span></code> into it, or name a
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">r</span></code></strong>: you may <em>list</em> what is inside (<code class="docutils literal notranslate"><span class="pre">ls</span></code> it).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">w</span></code></strong>: you may add, rename, or remove entries in it.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong>: you may <strong>enter</strong> it and reach things inside (<code class="docutils literal notranslate"><span class="pre">cd</span></code> into it, or name a
 file within it). On a directory, <code class="docutils literal notranslate"><span class="pre">x</span></code> is “may traverse,” <strong>not</strong> “may run.”</p></li>
 </ul>
 <p>That last point trips everyone once: a directory with <code class="docutils literal notranslate"><span class="pre">x</span></code> is not “executable” in
-the script sense — it just means you are allowed to pass <em>through</em> it. Keep the two
+the script sense: it just means you are allowed to pass <em>through</em> it. Keep the two
 readings of <code class="docutils literal notranslate"><span class="pre">x</span></code> separate and the rest stays simple.</p>
 </section>
 <section id="c-changing-permissions-chmod">
@@ -536,7 +536,7 @@ readings of <code class="docutils literal notranslate"><span class="pre">x</span
 notations, and both are worth knowing because you will meet both in the wild.</p>
 <div class="bp-card" id="cmd-chmod"><span class="bp-card-cmd">chmod</span> &mdash; <span class="bp-card-job">change a file&#x27;s permissions — who may read, write, and execute it.</span><table><tr><td>+x  /  u+x  /  go-w  /  a+r</td><td>symbolic: add (<code>+</code>) or remove (<code>-</code>) a permission for user (<code>u</code>) / group (<code>g</code>) / others (<code>o</code>) / all (<code>a</code>) — <code>+x</code> is the one you reach for, it makes a file executable</td></tr><tr><td>755  /  644  /  700</td><td>octal: set all three triads at once — <code>755</code> = <code>rwx</code> for you and <code>r-x</code> for everyone else, <code>644</code> = read/write for you and read-only for others, <code>700</code> = full access for you and nothing for anyone else</td></tr><tr><td>-R</td><td>recurse into a directory tree, applying the change to everything inside (powerful — and easy to misfire; see the admonition)</td></tr></table><div class="bp-card-more">more: <code>man chmod</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>chmod 777</code> makes a file world-writable — the <code>rm -rf</code> of permissions; never reach for it just to &quot;make something work&quot;. And <code>chmod -R</code> aimed at the wrong directory is that same mistake at scale</div><p>The <strong>symbolic</strong> notation reads like a sentence: <em>who</em> (<code class="docutils literal notranslate"><span class="pre">u</span></code> user, <code class="docutils literal notranslate"><span class="pre">g</span></code> group,
 <code class="docutils literal notranslate"><span class="pre">o</span></code> others, <code class="docutils literal notranslate"><span class="pre">a</span></code> all), then <code class="docutils literal notranslate"><span class="pre">+</span></code> or <code class="docutils literal notranslate"><span class="pre">-</span></code>, then the permission. <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">file</span></code> adds
-the execute bit; <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">go-w</span> <span class="pre">file</span></code> removes write for group and others. Let us watch
+the execute bit; <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">go-w</span> <span class="pre">file</span></code> removes write for group and others. Let’s watch
 the execute bit go on. Here is a fresh script with the default permissions:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -547,12 +547,12 @@ the execute bit go on. Here is a fresh script with the default permissions:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 47 Jun 18 22:03 scratch/greet.sh
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 47 Jun 18 22:33 scratch/greet.sh
 </pre></div>
 </div>
 </div>
 </div>
-<p>No <code class="docutils literal notranslate"><span class="pre">x</span></code> anywhere — <code class="docutils literal notranslate"><span class="pre">-rw-r--r--</span></code>. Add the execute bit and look again:</p>
+<p>No <code class="docutils literal notranslate"><span class="pre">x</span></code> anywhere: <code class="docutils literal notranslate"><span class="pre">-rw-r--r--</span></code>. Add the execute bit and look again:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>scratch/greet.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ls<span class="w"> </span>-l<span class="w"> </span>scratch/greet.sh
@@ -560,7 +560,7 @@ the execute bit go on. Here is a fresh script with the default permissions:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 47 Jun 18 22:03 scratch/greet.sh
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 47 Jun 18 22:33 scratch/greet.sh
 </pre></div>
 </div>
 </div>
@@ -571,9 +571,9 @@ documentation. Each triad is a single digit, summing <code class="docutils liter
 (=4+2+1) is <code class="docutils literal notranslate"><span class="pre">rwx</span></code>, <code class="docutils literal notranslate"><span class="pre">6</span></code> (=4+2) is <code class="docutils literal notranslate"><span class="pre">rw-</span></code>, <code class="docutils literal notranslate"><span class="pre">5</span></code> (=4+1) is <code class="docutils literal notranslate"><span class="pre">r-x</span></code>. The three everyday
 values:</p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">644</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rw-r--r--</span></code> — a normal data file (you read/write, others read).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">755</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rwxr-xr-x</span></code> — an executable script or a directory.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">700</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rwx------</span></code> — private to you, no access for anyone else.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">644</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rw-r--r--</span></code>: a normal data file (you read/write, others read).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">755</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rwxr-xr-x</span></code>: an executable script or a directory.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">700</span></code></strong> = <code class="docutils literal notranslate"><span class="pre">rwx------</span></code>: private to you, no access for anyone else.</p></li>
 </ul>
 <p>Watch <code class="docutils literal notranslate"><span class="pre">644</span></code> strip the execute bit back off, then <code class="docutils literal notranslate"><span class="pre">755</span></code> restore it:</p>
 <div class="cell docutils container">
@@ -583,7 +583,7 @@ values:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 47 Jun 18 22:03 scratch/greet.sh
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 47 Jun 18 22:33 scratch/greet.sh
 </pre></div>
 </div>
 </div>
@@ -595,18 +595,18 @@ values:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 47 Jun 18 22:03 scratch/greet.sh
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 47 Jun 18 22:33 scratch/greet.sh
 </pre></div>
 </div>
 </div>
 </div>
 <div class="danger admonition">
 <p class="admonition-title">⚠ Don’t reach for <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">777</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">777</span></code> grants <code class="docutils literal notranslate"><span class="pre">rwx</span></code> to <strong>everyone</strong> — including write. It is the <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span></code> of
+<p><code class="docutils literal notranslate"><span class="pre">777</span></code> grants <code class="docutils literal notranslate"><span class="pre">rwx</span></code> to <strong>everyone</strong>, including write. It is the <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span></code> of
 permissions: a file (or worse, a directory) that anyone on the system may rewrite
 or replace. It is tempting as a “just make it work” hammer when something is
 denied, but it almost never fixes the real problem and quietly opens a hole.
-Reach for the <em>narrowest</em> mode that does the job — usually <code class="docutils literal notranslate"><span class="pre">+x</span></code>, or <code class="docutils literal notranslate"><span class="pre">755</span></code> for a
+Reach for the <em>narrowest</em> mode that does the job: usually <code class="docutils literal notranslate"><span class="pre">+x</span></code>, or <code class="docutils literal notranslate"><span class="pre">755</span></code> for a
 script, <code class="docutils literal notranslate"><span class="pre">644</span></code> for data. And take special care with <strong><code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">-R</span></code></strong>: aimed at the
 wrong directory, it rewrites the permissions of an entire tree in one stroke.</p>
 </div>
@@ -623,7 +623,7 @@ portable form:</p>
 </div>
 <p>You may also see a hard-coded <code class="docutils literal notranslate"><span class="pre">#!/bin/bash</span></code>. Prefer the <code class="docutils literal notranslate"><span class="pre">env</span></code> form: instead of
 demanding bash at one fixed path, it asks <code class="docutils literal notranslate"><span class="pre">env</span></code> to <em>find</em> <code class="docutils literal notranslate"><span class="pre">bash</span></code> on the <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
-(§E) — so the same script runs on a Mac, a cluster, and a container, wherever bash
+(§E), so the same script runs on a Mac, a cluster, and a container, wherever bash
 happens to live.</p>
 <p><strong>2. The executable bit.</strong> As in §C: <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">script.sh</span></code>. Without it, the system
 refuses to run the file at all.</p>
@@ -644,11 +644,11 @@ shebang in place and the file executable, you still cannot run it by its bare na
 </div>
 </div>
 <p>It is executable, yet “command not found.” Why? Because when you type a bare name,
-the shell looks for it only in the directories on your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> — and, for security,
+the shell looks for it only in the directories on your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, and, for security,
 <strong>the current directory is not on <code class="docutils literal notranslate"><span class="pre">$PATH</span></code></strong>. (Imagine downloading a folder with a
 malicious file called <code class="docutils literal notranslate"><span class="pre">ls</span></code> in it; if <code class="docutils literal notranslate"><span class="pre">.</span></code> were on the path, a plain <code class="docutils literal notranslate"><span class="pre">ls</span></code> would run
 <em>their</em> program instead of the real one.) So you must say <em>explicitly</em> “run the
-one right here,” and <code class="docutils literal notranslate"><span class="pre">./</span></code> is how — <code class="docutils literal notranslate"><span class="pre">.</span></code> is the current directory:</p>
+one right here,” and <code class="docutils literal notranslate"><span class="pre">./</span></code> is how: <code class="docutils literal notranslate"><span class="pre">.</span></code> is the current directory:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./greet.sh
@@ -671,7 +671,7 @@ directory, not one somewhere on <code class="docutils literal notranslate"><span
 <h2>E. <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> and finding commands<a class="headerlink" href="#e-path-and-finding-commands" title="Link to this heading">#</a></h2>
 <p>So what <em>is</em> on the path? <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> is a plain variable holding a list of
 directories, separated by colons. When you type a bare command, the shell walks
-that list left to right and runs the first match it finds. Print it — quoted, of
+that list left to right and runs the first match it finds. Print it, quoted, of
 course (Notebook 10):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -686,8 +686,8 @@ course (Notebook 10):</p>
 </div>
 </div>
 <p>Those are the directories searched for every command you have run all course: <code class="docutils literal notranslate"><span class="pre">ls</span></code>,
-<code class="docutils literal notranslate"><span class="pre">grep</span></code>, <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and the rest each live in one of them. To find out <em>which</em> — and,
-more usefully, what a name will actually do — use <strong><code class="docutils literal notranslate"><span class="pre">type</span></code></strong>:</p>
+<code class="docutils literal notranslate"><span class="pre">grep</span></code>, <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and the rest each live in one of them. To find out <em>which</em> (and,
+more usefully, what a name will actually do) use <strong><code class="docutils literal notranslate"><span class="pre">type</span></code></strong>:</p>
 <div class="bp-card" id="cmd-type"><span class="bp-card-cmd">type</span> &mdash; <span class="bp-card-job">tell you what a name actually runs — a shell builtin, a function, an alias, or the path to a program — by searching exactly as the shell would.</span><table><tr><td>-a</td><td>show ALL matches, not just the first one the shell would use</td></tr><tr><td>-t</td><td>print only the kind (<code>builtin</code>, <code>file</code>, <code>alias</code>, <code>function</code>) — handy inside scripts</td></tr></table><div class="bp-card-more">more: <code>help type</code>; the simpler external tool <code>which</code> finds only programs on <code>$PATH</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>type</code> is bash-aware, so it sees builtins, aliases, and functions that the external <code>which</code> cannot — when the two disagree, <code>type</code> is the one telling the truth about what your shell will actually run</div><p><code class="docutils literal notranslate"><span class="pre">type</span></code> is bash-aware: it knows the difference between a program on disk, a shell
 <strong>builtin</strong>, an <strong>alias</strong>, and a <strong>function</strong>. Watch it tell <code class="docutils literal notranslate"><span class="pre">cd</span></code> (a builtin, part
 of the shell itself) apart from <code class="docutils literal notranslate"><span class="pre">ls</span></code> (a program found on <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>):</p>
@@ -731,30 +731,30 @@ programs found on <code class="docutils literal notranslate"><span class="pre">$
 </div>
 <p>This points at the final idea of the notebook, and the reason <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> matters for
 <em>you</em>: if a bare name runs because its directory is on the path, then you can
-<strong>promote your own script to a command</strong> by dropping it in such a directory — and
+<strong>promote your own script to a command</strong> by dropping it in such a directory, and
 then call it by name from anywhere, no <code class="docutils literal notranslate"><span class="pre">./</span></code> needed. Adding a directory to the path
 for the current session is a one-liner (you will try it in the stretch exercise):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="s2">&quot;$HOME/bin:$PATH&quot;</span>
 </pre></div>
 </div>
 <p>Making that change <em>permanent</em>, so it survives a new terminal, means editing a
-startup file like <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> — that belongs to Notebook 14, so we only point at it
+startup file like <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, which belongs to Notebook 14, so we only point at it
 here.</p>
 </section>
 <section id="exercises">
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">chmod</span></code> changes real files, so — as always — everything that creates or modifies a
+<p><code class="docutils literal notranslate"><span class="pre">chmod</span></code> changes real files, so, as always, everything that creates or modifies a
 file happens in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; <code class="docutils literal notranslate"><span class="pre">data/</span></code> and <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> we only read.</p>
 <section id="warm-up-1-worked-read-a-permission-string">
 <h3>Warm-up 1 (worked) — Read a permission string<a class="headerlink" href="#warm-up-1-worked-read-a-permission-string" title="Link to this heading">#</a></h3>
-<p>Make two things in <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> — a data file at mode <code class="docutils literal notranslate"><span class="pre">644</span></code> and a sub-directory —
+<p>Make two things in <code class="docutils literal notranslate"><span class="pre">scratch/</span></code> (a data file at mode <code class="docutils literal notranslate"><span class="pre">644</span></code> and a sub-directory)
 and read their <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span></code> lines: the leading character (<code class="docutils literal notranslate"><span class="pre">-</span></code> vs <code class="docutils literal notranslate"><span class="pre">d</span></code>) and the triads.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 10 Jun 18 22:03 scratch/notes.txt
-drwxr-xr-x 2 runner runner 4096 Jun 18 22:03 scratch/results
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw-r--r-- 1 runner runner 10 Jun 18 22:33 scratch/notes.txt
+drwxr-xr-x 2 runner runner 4096 Jun 18 22:33 scratch/results
 </pre></div>
 </div>
 </div>
@@ -776,9 +776,9 @@ End at <code class="docutils literal notranslate"><span class="pre">755</span></
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 28 Jun 18 22:03 scratch/task.sh
--rw-r--r-- 1 runner runner 28 Jun 18 22:03 scratch/task.sh
--rwxr-xr-x 1 runner runner 28 Jun 18 22:03 scratch/task.sh
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rwxr-xr-x 1 runner runner 28 Jun 18 22:33 scratch/task.sh
+-rw-r--r-- 1 runner runner 28 Jun 18 22:33 scratch/task.sh
+-rwxr-xr-x 1 runner runner 28 Jun 18 22:33 scratch/task.sh
 </pre></div>
 </div>
 </div>
@@ -796,7 +796,7 @@ End at <code class="docutils literal notranslate"><span class="pre">755</span></
 <p>In <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>, write a tiny script: a <code class="docutils literal notranslate"><span class="pre">#!/usr/bin/env</span> <span class="pre">bash</span></code> shebang followed by a
 couple of <code class="docutils literal notranslate"><span class="pre">echo</span></code> lines. Make it executable with <code class="docutils literal notranslate"><span class="pre">chmod</span> <span class="pre">+x</span></code>, then run it with <code class="docutils literal notranslate"><span class="pre">./</span></code>.
 (In your terminal you would type the lines into Vim from Notebook 9; here we drop
-them into the file with a <em>here-document</em> — <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">&lt;&lt;'EOF'</span> <span class="pre">…</span> <span class="pre">EOF</span></code> writes
+them into the file with a <em>here-document</em>: <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">&lt;&lt;'EOF'</span> <span class="pre">…</span> <span class="pre">EOF</span></code> writes
 everything up to the <code class="docutils literal notranslate"><span class="pre">EOF</span></code> marker into the file.)</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -870,7 +870,7 @@ script can work on a file beside it.</p>
 <h3>Optional stretch (your turn) — Promote a script to a command<a class="headerlink" href="#optional-stretch-your-turn-promote-a-script-to-a-command" title="Link to this heading">#</a></h3>
 <p>Take a script out of needing <code class="docutils literal notranslate"><span class="pre">./</span></code>. Put it in a <code class="docutils literal notranslate"><span class="pre">scratch/bin/</span></code> directory, add that
 directory to <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> for this session with <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=…</span></code>, and then call the
-script by its <strong>bare name</strong> — no <code class="docutils literal notranslate"><span class="pre">./</span></code>. (Making such a change permanent is Notebook
+script by its <strong>bare name</strong>, no <code class="docutils literal notranslate"><span class="pre">./</span></code>. (Making such a change permanent is Notebook
 14; here it lasts only for the session.)</p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -893,18 +893,18 @@ script by its <strong>bare name</strong> — no <code class="docutils literal no
 <section id="outlook">
 <h2>Outlook<a class="headerlink" href="#outlook" title="Link to this heading">#</a></h2>
 <p>Your file can now run: you can read its permissions, set the executable bit with
-<code class="docutils literal notranslate"><span class="pre">chmod</span></code>, give it a shebang, and launch it with <code class="docutils literal notranslate"><span class="pre">./</span></code> — or promote it onto <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
+<code class="docutils literal notranslate"><span class="pre">chmod</span></code>, give it a shebang, and launch it with <code class="docutils literal notranslate"><span class="pre">./</span></code>, or promote it onto <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
 and call it by name. That is everything <em>around</em> a script. Next (Notebook 12): what
-goes <em>inside</em> it — variables, arguments and flags, functions, and the robustness
-habits — turning a runnable file into a proper, reusable script.</p>
+goes <em>inside</em> it: variables, arguments and flags, functions, and the robustness
+habits, turning a runnable file into a proper, reusable script.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-chmod"><code class="bp-cmd-name">chmod</code></a> &mdash; change a file&#x27;s permissions — who may read, write, and execute it.</li><li><a href="#cmd-type"><code class="bp-cmd-name">type</code></a> &mdash; tell you what a name actually runs — a shell builtin, a function, an alias, or the path to a program — by searching exactly as the shell would.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>
   <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
     Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box in any
-    section to run everything yourself — nothing to install. The published
+    section to run everything yourself; nothing to install. The published
     notebooks ship <b>without worked solutions</b>; if you would like the
-    reference solutions — to teach from or to check your own work — get in
+    reference solutions (to teach from or to check your own work), get in
     touch: <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
   </div>
 </div></section>
