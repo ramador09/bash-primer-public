@@ -572,7 +572,7 @@ terminal you would just run the command.)</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ls: cannot access &#39;nope-not-here&#39;: No such file or directory
 data:
-README.md  inputs  logs  results  trajectories
+README.md  inputs  logs  results  scaling  trajectories
 </pre></div>
 </div>
 </div>
@@ -587,7 +587,7 @@ with <code class="docutils literal notranslate"><span class="pre">2&gt;</span></
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  logs  results  trajectories
+README.md  inputs  logs  results  scaling  trajectories
 </pre></div>
 </div>
 </div>
@@ -615,7 +615,7 @@ system’s black hole — anything sent there simply vanishes:</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  logs  results  trajectories
+README.md  inputs  logs  results  scaling  trajectories
 </pre></div>
 </div>
 </div>
@@ -673,8 +673,8 @@ form, but keep only the first few lines:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20
--rw-r--r-- 1 runner runner 2433 Jun  1  2023 README.md
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 24
+-rw-r--r-- 1 runner runner 2922 Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
 </pre></div>
 </div>
@@ -738,6 +738,7 @@ listing was saved on the way past:</p>
 inputs
 logs
 results
+scaling
 trajectories
 </pre></div>
 </div>
@@ -823,7 +824,7 @@ appears. (End the line with <code class="docutils literal notranslate"><span cla
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data:
-README.md  inputs  logs  results  trajectories
+README.md  inputs  logs  results  scaling  trajectories
 </pre></div>
 </div>
 </div>
@@ -844,8 +845,8 @@ re-run Notebook 1’s manual pipeline now that you can read it.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 20
--rw-r--r-- 1 runner runner 2433 Jun  1  2023 README.md
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 24
+-rw-r--r-- 1 runner runner 2922 Jun  1  2023 README.md
 drwxr-xr-x 2 runner runner 4096 Mar  1  2023 inputs
 drwxr-xr-x 2 runner runner 4096 Feb  1  2023 logs
 drwxr-xr-x 2 runner runner 4096 May  1  2023 results
@@ -888,7 +889,7 @@ inputs
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> tee saved the full five-entry listing while head showed only the top
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> tee saved the full six-entry listing while head showed only the top
 </pre></div>
 </div>
 </div>
@@ -915,12 +916,13 @@ then append the rest with <code class="docutils literal notranslate"><span class
  Ar         4.5837264705       -2.5298506230        2.8419660895
  Ar        -5.0883572196        1.9357723701        2.4184523727
  Ar        -3.2418290672       -0.9829937359       -3.1034656658
-=== data report — 2026-06-13 ===
+=== data report — 2026-06-18 ===
 Contents of data/:
 README.md
 inputs
 logs
 results
+scaling
 trajectories
 First frame of lj38-relaxed.xyz:
       38

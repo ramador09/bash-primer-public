@@ -407,7 +407,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-amdahl-s-serial-fraction">Applied 1 (your turn) — Amdahl’s serial fraction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-measure-your-own-speedup">Applied 2 (your turn) — Measure your own speedup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-justify-an-allocation">Composite — putting it together (justify an allocation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-in-the-terminal">Optional stretch — Plot it in the terminal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-or-weak-scaling">Optional stretch — Plot it, or weak scaling</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
@@ -450,11 +450,20 @@ compute on it with <code class="docutils literal notranslate"><span class="pre">
 just enough context to read the numbers; this is a shell notebook, not a
 parallel-computing course.</p>
 <p>The data is a table of <code class="docutils literal notranslate"><span class="pre">(cores,</span> <span class="pre">walltime)</span></code> for the <strong>same job</strong> run on different
-core counts — physics-optional, as ever. It is a strong-scaling sweep of the
-<strong>graphene + nitric-acid (<code class="docutils literal notranslate"><span class="pre">gr2hno3</span></code>) system</strong> whose CP2K logs you grepped in
-Notebooks 6–8, run on ETH’s <strong>Euler</strong>. From it you will compute speedup and
-efficiency, find where adding cores stops paying off, and write the short
-data-backed paragraph that justifies an allocation request.</p>
+core counts — physics-optional, as ever. We will treat it as a strong-scaling
+benchmark of a <strong>DFT geometry optimization on Euler</strong> (ETH Zürich), but you need
+know nothing about the calculation: it is a column of cores and a column of
+seconds. From it you will compute speedup and efficiency, find where adding cores
+stops paying off, and write the short data-backed paragraph that justifies an
+allocation request.</p>
+<div class="note admonition">
+<p class="admonition-title">About this dataset</p>
+<p>The timing table is <strong>synthetic</strong> — generated (<code class="docutils literal notranslate"><span class="pre">data/scaling/generate.py</span></code>) from an
+Amdahl model with light, reproducible noise, so the exercises are cleanly gradeable
+while the curve still looks measured. Its schema (<code class="docutils literal notranslate"><span class="pre">cores,walltime_s</span></code>) is the plain
+one a real benchmark produces, so real anonymized scaling data could replace it with
+no change to a single command below.</p>
+</div>
 </section>
 <section id="a-the-question-how-many-cores">
 <h2>A. The question: how many cores?<a class="headerlink" href="#a-the-question-how-many-cores" title="Link to this heading">#</a></h2>
@@ -472,23 +481,25 @@ getting your money’s worth, and stopping there.</p>
 </section>
 <section id="b-strong-scaling-from-data">
 <h2>B. Strong scaling from data<a class="headerlink" href="#b-strong-scaling-from-data" title="Link to this heading">#</a></h2>
-<p>Here is the sweep — one row per run, the same problem on more and more cores:</p>
+<p>Here is the sweep — one row per run, the same problem on more and more cores. It is
+a <strong>CSV</strong> with a header line, so we will tell <code class="docutils literal notranslate"><span class="pre">awk</span></code> to use comma as the separator:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">&#39;^#&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>data/scaling/strong_scaling.csv
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1        1830
-2         921
-4         470
-8         243
-16        129
-32         72
-64         53
-128        41
-256        37
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cores,walltime_s
+1,7200
+2,3781
+4,1952
+8,1021
+16,584
+32,368
+64,249
+128,197
+256,170
 </pre></div>
 </div>
 </div>
@@ -497,78 +508,76 @@ getting your money’s worth, and stopping there.</p>
 you got relative to one core, <strong><code class="docutils literal notranslate"><span class="pre">S(N)</span> <span class="pre">=</span> <span class="pre">T(1)</span> <span class="pre">/</span> <span class="pre">T(N)</span></code></strong>; <strong>efficiency</strong> is how much of
 each core you are actually using, <strong><code class="docutils literal notranslate"><span class="pre">E(N)</span> <span class="pre">=</span> <span class="pre">S(N)</span> <span class="pre">/</span> <span class="pre">N</span></code></strong>. <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">1</span></code> (100%) is the ideal,
 where N cores give exactly N× the speed. Both are pure arithmetic on the table, so
-<code class="docutils literal notranslate"><span class="pre">awk</span></code> computes them in one pass (the <code class="docutils literal notranslate"><span class="pre">T(1)</span></code> baseline is captured from the first row):</p>
+<code class="docutils literal notranslate"><span class="pre">awk</span></code> computes them in one pass — <code class="docutils literal notranslate"><span class="pre">-F,</span></code> sets the comma separator, and we skip the
+header row and capture the 1-core baseline <code class="docutils literal notranslate"><span class="pre">T(1)</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">  /^#/ || NF != 2 { next }                 # skip comments and blanks</span>
-<span class="s1">  NR_data++ == 0  { t1 = $2 }              # first data row is the 1-core baseline</span>
-<span class="s1">  {</span>
-<span class="s1">    S = t1 / $2                            # speedup  S(N) = T(1)/T(N)</span>
-<span class="s1">    E = S / $1                             # efficiency E(N) = S/N</span>
-<span class="s1">    printf &quot;%6d  %9d  %8.1f  %7.0f%%\n&quot;, $1, $2, S, E*100</span>
-<span class="s1">  }</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span>-F,<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  NR == 1 { next }                         # skip the header line</span>
+<span class="s1">  { if (t1 == &quot;&quot;) t1 = $2                   # first data row is the 1-core baseline</span>
+<span class="s1">    S = t1 / $2                             # speedup  S(N) = T(1)/T(N)</span>
+<span class="s1">    E = S / $1                              # efficiency E(N) = S/N</span>
+<span class="s1">    printf &quot;%6d  %9d  %8.1f  %7.0f%%\n&quot;, $1, $2, S, E*100 }</span>
 <span class="s1">  BEGIN { printf &quot;%6s  %9s  %8s  %8s\n&quot;, &quot;cores&quot;, &quot;time_s&quot;, &quot;speedup&quot;, &quot;efficncy&quot; }</span>
-<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+<span class="s1">&#39;</span><span class="w"> </span>data/scaling/strong_scaling.csv
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> cores     time_s   speedup  efficncy
-     1       1830       1.0      100%
-     2        921       2.0       99%
-     4        470       3.9       97%
-     8        243       7.5       94%
-    16        129      14.2       89%
-    32         72      25.4       79%
-    64         53      34.5       54%
-   128         41      44.6       35%
-   256         37      49.5       19%
+     1       7200       1.0      100%
+     2       3781       1.9       95%
+     4       1952       3.7       92%
+     8       1021       7.1       88%
+    16        584      12.3       77%
+    32        368      19.6       61%
+    64        249      28.9       45%
+   128        197      36.5       29%
+   256        170      42.4       17%
 </pre></div>
 </div>
 </div>
 </div>
-<p>Read down the efficiency column and the story jumps out: near-perfect to 32 cores,
-then a cliff. Here it is as a picture:</p>
+<p>Read down the efficiency column and the story jumps out: near-perfect at first, then
+a steady decline. Here it is as a picture:</p>
 <div style="background:#1b2233;border:1px solid #0e1422;border-radius:8px;padding:8px 20px 16px;margin:18px 0;">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Strong scaling of the gr2hno3 job on Euler <span style="text-transform:none;">(32 cores / node)</span></div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c0851a;font-weight:600;margin:8px 0 6px;">Strong scaling of a DFT geometry optimization on Euler <span style="text-transform:none;">(1–256 cores)</span></div>
   <pre style="background:transparent;color:#cdd2db;margin:0;font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.5;">  cores   speedup   parallel efficiency  E = S(N)/N
     1       1.0×    ████████████████████  100%
-    2       2.0×    ████████████████████   99%
-    4       3.9×    ███████████████████    97%
-    8       7.5×    ███████████████████    94%
-   16      14.2×    ██████████████████     89%
-   32      25.4×    ████████████████       79%   ◀ knee — one full node
-   64      34.5×    ███████████            54%   ◀ now across 2 nodes: comm cost
-  128      44.6×    ███████                35%
-  256      49.5×    ████                   19%   communication-bound
-          ideal speedup would be S = N (linear); the gap is parallel overhead</pre>
+    2       1.9×    ███████████████████    95%
+    4       3.7×    ██████████████████     92%
+    8       7.1×    ██████████████████     88%
+   16      12.3×    ███████████████        77%   ◀ knee (E still ≥ 75%)
+   32      19.6×    ████████████           61%
+   64      28.9×    █████████              45%
+  128      36.5×    ██████                 29%
+  256      42.4×    ███                    17%   nearing the Amdahl ceiling (~50×)
+          ideal speedup would be S = N (linear); the gap is the serial fraction</pre>
 </div>
 <p>The <strong>knee</strong> is the useful core count: the largest N where efficiency is still
 respectable — convention puts the line around <strong>75–80%</strong>. Past it, you spend cores
 to buy almost nothing. Find it directly: the largest N with <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">≥</span> <span class="pre">0.75</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">  /^#/ || NF != 2 { next }</span>
-<span class="s1">  NR_data++ == 0  { t1 = $2 }</span>
-<span class="s1">  { if ((t1/$2)/$1 &gt;= 0.75) knee = $1 }</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span>-F,<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  NR == 1 { next }</span>
+<span class="s1">  { if (t1 == &quot;&quot;) t1 = $2</span>
+<span class="s1">    if ((t1/$2)/$1 &gt;= 0.75) knee = $1 }</span>
 <span class="s1">  END { print &quot;knee (largest core count with E &gt;= 0.75):&quot;, knee, &quot;cores&quot; }</span>
-<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+<span class="s1">&#39;</span><span class="w"> </span>data/scaling/strong_scaling.csv
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee (largest core count with E &gt;= 0.75): 32 cores
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee (largest core count with E &gt;= 0.75): 16 cores
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>32 cores</strong> — and that is exactly <strong>one node</strong> of this machine. The reason is
-physical: up to 32 cores the job lives inside a single node, sharing fast memory;
-at 64 it must split across <strong>two</strong> nodes and pay for every byte they exchange over
-the network. That communication cost is what bends the curve down so sharply past
-the node boundary.</p>
+<p><strong>16 cores.</strong> Up to there each added core still pulls its weight; beyond it,
+efficiency slides — 61% at 32, 45% at 64 — because a fixed, un-parallelizable slice
+of the work is becoming an ever-larger share of the shrinking remainder. That slice
+has a name, and a law.</p>
 </section>
 <section id="c-why-it-bends-amdahl-s-law">
 <h2>C. Why it bends: Amdahl’s law<a class="headerlink" href="#c-why-it-bends-amdahl-s-law" title="Link to this heading">#</a></h2>
@@ -581,39 +590,38 @@ fraction</strong> <code class="docutils literal notranslate"><span class="pre">s
 <p>As <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">→</span> <span class="pre">∞</span></code>, the <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">−</span> <span class="pre">s)/N</span></code> term vanishes and speedup hits a <strong>ceiling</strong> of <code class="docutils literal notranslate"><span class="pre">1/s</span></code>,
 no matter how many cores you throw at it. You can estimate <code class="docutils literal notranslate"><span class="pre">s</span></code> straight from the
 data: rearranging Amdahl for a single measured point <code class="docutils literal notranslate"><span class="pre">N</span></code> (using the ratio
-<code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>) gives <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>. Take an in-node point, where the
-formula is clean:</p>
+<code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>) gives <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>. Take a mid-range point:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">  /^#/ || NF != 2 { next }</span>
-<span class="s1">  NR_data++ == 0  { t1 = $2 }</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>awk<span class="w"> </span>-F,<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  NR == 1 { next }</span>
+<span class="s1">  { if (t1 == &quot;&quot;) t1 = $2 }</span>
 <span class="s1">  $1 == 16 {</span>
 <span class="s1">    r = $2 / t1</span>
 <span class="s1">    s = (r*$1 - 1) / ($1 - 1)</span>
 <span class="s1">    printf &quot;serial fraction s = %.3f  -&gt;  Amdahl ceiling S_max = 1/s = %.0f\n&quot;, s, 1/s</span>
 <span class="s1">  }</span>
-<span class="s1">&#39;</span><span class="w"> </span>data/results/gr2hno3-scaling.dat
+<span class="s1">&#39;</span><span class="w"> </span>data/scaling/strong_scaling.csv
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>serial fraction s = 0.009  -&gt;  Amdahl ceiling S_max = 1/s = 117
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>serial fraction s = 0.020  -&gt;  Amdahl ceiling S_max = 1/s = 50
 </pre></div>
 </div>
 </div>
 </div>
-<p>So under one percent of this job is serial — excellent — and Amdahl alone would
-allow a speedup near 100×. Yet the data tops out around <strong>50×</strong>: the extra shortfall
-is the <strong>inter-node communication</strong> of §B, which Amdahl’s single-node model does not
-include. (The mirror image is <strong>Gustafson’s law / weak scaling</strong>: if you grow the
-<em>problem</em> with the cores instead of fixing it, efficiency holds up far better — a
-different question for a different day.)</p>
+<p>About two percent of this job is serial, which caps speedup near <strong>50×</strong> — and sure
+enough the measured curve flattens toward that ceiling (≈42× at 256 cores), never
+approaching the linear ideal. That single number, <code class="docutils literal notranslate"><span class="pre">s</span></code>, explains the whole shape.
+(The mirror image is <strong>Gustafson’s law / weak scaling</strong>: if you grow the <em>problem</em>
+with the cores instead of fixing it, efficiency holds up far better — the optional
+stretch below.)</p>
 </section>
 <section id="d-measure-your-own">
 <h2>D. Measure your own<a class="headerlink" href="#d-measure-your-own" title="Link to this heading">#</a></h2>
-<p>The dataset shows the <strong>node-level</strong> rolloff. You can feel a <strong>core-level</strong> one on
-this very machine. Take a fixed batch of CPU work, run it split across 1, then 2,
+<p>The dataset shows the <strong>serial-fraction</strong> ceiling. You can feel a <em>different</em> limit
+on this very machine. Take a fixed batch of CPU work, run it split across 1, then 2,
 then 4 parallel workers (<code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code>, from Notebook 5), and time each with the
 <code class="docutils literal notranslate"><span class="pre">date</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code> stopwatch from Notebook 13:</p>
 <div class="cell tag_remove-input docutils container">
@@ -646,17 +654,17 @@ bench<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
-      1     1.04     1.00
-      2     1.07     0.97
-      4     1.07     0.97
+      1     1.12     1.00
+      2     0.95     1.17
+      4     0.95     1.17
 </pre></div>
 </div>
 </div>
 </div>
 <p>You should see speedup climb and then <strong>flatten</strong> — going from 2 to 4 workers buys
 much less than 1 to 2 — because once you ask for more workers than the machine has
-physical cores, they fight over the same hardware (<strong>oversubscription</strong>). That is the
-core-level twin of the node-level cliff in §B.</p>
+physical cores, they fight over the same hardware (<strong>oversubscription</strong>). Different
+cause from §C’s serial fraction, same moral.</p>
 <div class="warning admonition">
 <p class="admonition-title">⚠ The shape is the lesson, not the numbers</p>
 <p>This page runs on a small, <strong>shared</strong> cloud machine (often only 1–2 cores you do not
@@ -665,10 +673,10 @@ workers or wobble. That is fine — even expected. Read the <strong>shape</stron
 diminishing returns → a rolloff), not the decimals. Real benchmarking pins a job to
 dedicated cores and averages several runs; here we are after the idea.</p>
 </div>
-<p>Put the two together and you have the whole picture: your single-node run shows the
-rolloff from <strong>oversubscription</strong> (too many workers per core); the dataset shows the
-rolloff from <strong>communication</strong> (too many nodes per job). Both say the same thing —
-<em>there is a point past which more resources stop helping.</em></p>
+<p>Put the two together and you have the whole picture: the <strong>dataset</strong> shows the ceiling
+set by a job’s <strong>serial fraction</strong> (Amdahl), and your <strong>own run</strong> shows the wall you
+hit by asking for <strong>more workers than cores</strong> (oversubscription). Both say the same
+thing — <em>there is a point past which more resources stop helping.</em></p>
 </section>
 <section id="e-the-justification">
 <h2>E. The justification<a class="headerlink" href="#e-the-justification" title="Link to this heading">#</a></h2>
@@ -676,12 +684,12 @@ rolloff from <strong>communication</strong> (too many nodes per job). Both say t
 does not want “we’d like a lot of cores”; it wants a number with evidence. The
 efficiency table writes the paragraph for you:</p>
 <blockquote>
-<div><p><em>We request <strong>32 cores</strong> (one node) per job. Strong-scaling tests of this system
-show parallel efficiency holding above <strong>79%</strong> through 32 cores, then falling
-sharply — to <strong>54%</strong> at 64 cores — as the job spans multiple nodes and
-inter-node communication dominates. Running at 32 cores therefore uses our
-allocation efficiently; larger jobs would burn roughly double the core-hours for
-well under double the speed.</em></p>
+<div><p><em>We request <strong>16 cores</strong> per job. Strong-scaling tests of this calculation show
+parallel efficiency holding at <strong>77%</strong> through 16 cores, then falling steadily —
+to <strong>61%</strong> at 32 cores and below half by 64 — as the job’s fixed serial fraction
+(≈2%) comes to dominate. Running at 16 cores therefore uses our allocation
+efficiently; larger jobs would burn roughly double the core-hours for well under
+double the speed.</em></p>
 </div></blockquote>
 <p>Numbers in, a defensible decision out. That is the entire point of the exercise — and
 the reason the shell work mattered: it turned a raw timing table into the one sentence
@@ -695,28 +703,28 @@ right rows, a rolloff), not exact seconds. Saved results go to a fresh <code cla
 <section id="warm-up-1-worked-speedup-and-efficiency">
 <h3>Warm-up 1 (worked) — Speedup and efficiency<a class="headerlink" href="#warm-up-1-worked-speedup-and-efficiency" title="Link to this heading">#</a></h3>
 <p>Compute the full <code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">E</span></code> table from the dataset with <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and read off the
-efficiency at 32 cores.</p>
+efficiency at 16 cores.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> cores     time_s   speedup    effic.
-     1       1830      1.00      100%
-     2        921      1.99       99%
-     4        470      3.89       97%
-     8        243      7.53       94%
-    16        129     14.19       89%
-    32         72     25.42       79%
-    64         53     34.53       54%
-   128         41     44.63       35%
-   256         37     49.46       19%
+     1       7200      1.00      100%
+     2       3781      1.90       95%
+     4       1952      3.69       92%
+     8       1021      7.05       88%
+    16        584     12.33       77%
+    32        368     19.57       61%
+    64        249     28.92       45%
+   128        197     36.55       29%
+   256        170     42.35       17%
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk computed the speedup/efficiency table correctly (S=25.4x, E=79% at 32 cores)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk computed the speedup/efficiency table correctly (S=12.3x, E=77% at 16 cores)
 </pre></div>
 </div>
 </div>
@@ -729,14 +737,14 @@ efficiency at 32 cores.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee: 32 cores (efficiency stays &gt;= 75% up to here)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>knee: 16 cores (efficiency stays &gt;= 75% up to here)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the knee — the largest core count with E &gt;= 0.75 — is 32
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the knee — the largest core count with E &gt;= 0.75 — is 16
 </pre></div>
 </div>
 </div>
@@ -744,20 +752,20 @@ efficiency at 32 cores.</p>
 </section>
 <section id="applied-1-your-turn-amdahl-s-serial-fraction">
 <h3>Applied 1 (your turn) — Amdahl’s serial fraction<a class="headerlink" href="#applied-1-your-turn-amdahl-s-serial-fraction" title="Link to this heading">#</a></h3>
-<p>Estimate the serial fraction <code class="docutils literal notranslate"><span class="pre">s</span></code> from an in-node data point with
-<code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)/(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>, <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>, and report the Amdahl ceiling <code class="docutils literal notranslate"><span class="pre">1/s</span></code>.</p>
+<p>Estimate the serial fraction <code class="docutils literal notranslate"><span class="pre">s</span></code> from a data point with <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">(r·N</span> <span class="pre">−</span> <span class="pre">1)/(N</span> <span class="pre">−</span> <span class="pre">1)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">T(N)/T(1)</span></code>, and report the Amdahl ceiling <code class="docutils literal notranslate"><span class="pre">1/s</span></code>.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>from N=8:  s = 0.0089  -&gt;  S_max = 1/s = 112
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>from N=8:  s = 0.0192  -&gt;  S_max = 1/s = 52
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the estimated serial fraction s (0.0089) is small and in the expected range (~0.005-0.02)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the estimated serial fraction s (0.0192) is small and in the expected range (~0.02)
 </pre></div>
 </div>
 </div>
@@ -773,9 +781,9 @@ vary, so only the structure is graded.</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
-      1     1.04     1.00
-      2     1.07     0.97
-      4     1.07     0.97
+      1     1.11     1.00
+      2     0.96     1.16
+      4     0.95     1.17
 </pre></div>
 </div>
 </div>
@@ -792,52 +800,70 @@ vary, so only the structure is graded.</p>
 <h3>Composite — putting it together (justify an allocation)<a class="headerlink" href="#composite-putting-it-together-justify-an-allocation" title="Link to this heading">#</a></h3>
 <p>The real proposal skill: from the dataset, recommend a core count and back it with the
 efficiency evidence. Compute the knee, then write a short justification paragraph that
-cites the efficiency at the knee and the collapse beyond it. Save it to a file.</p>
+cites the efficiency at the knee and the decline beyond it. Save it to a file.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We request 32 cores (one node) per job. Strong-scaling tests show parallel
-efficiency holding at 79% through 32 cores, then falling to 54%
-once the job spans multiple nodes and inter-node communication dominates. Running at
-32 cores uses the allocation efficiently; larger jobs would cost far more
-core-hours for little extra speed.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>We request 16 cores per job. Strong-scaling tests show parallel efficiency
+holding at 77% through 16 cores, then falling to 61% at the next
+step as the job&#39;s fixed serial fraction comes to dominate. Running at 16 cores
+uses the allocation efficiently; larger jobs would cost far more core-hours for
+little extra speed.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the justification recommends 32 cores and cites the efficiency evidence
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the justification recommends 16 cores and cites the efficiency evidence
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="optional-stretch-plot-it-in-the-terminal">
-<h3>Optional stretch — Plot it in the terminal<a class="headerlink" href="#optional-stretch-plot-it-in-the-terminal" title="Link to this heading">#</a></h3>
-<p>No grade. Turn the speedup column into a quick ASCII bar chart with <code class="docutils literal notranslate"><span class="pre">awk</span></code> (no new
-tools) — the shell’s instant plot:</p>
+<section id="optional-stretch-plot-it-or-weak-scaling">
+<h3>Optional stretch — Plot it, or weak scaling<a class="headerlink" href="#optional-stretch-plot-it-or-weak-scaling" title="Link to this heading">#</a></h3>
+<p>No grade. Two directions. <strong>(a)</strong> Turn the speedup column into a quick ASCII bar chart
+with <code class="docutils literal notranslate"><span class="pre">awk</span></code> (no new tools) — the shell’s instant plot:</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   1 cores  S=  1.0  #
-   2 cores  S=  2.0  ##
-   4 cores  S=  3.9  ####
-   8 cores  S=  7.5  ########
-  16 cores  S= 14.2  ##############
-  32 cores  S= 25.4  #########################
-  64 cores  S= 34.5  ###################################
- 128 cores  S= 44.6  #############################################
- 256 cores  S= 49.5  #################################################
+   2 cores  S=  1.9  ##
+   4 cores  S=  3.7  ####
+   8 cores  S=  7.1  #######
+  16 cores  S= 12.3  ############
+  32 cores  S= 19.6  ####################
+  64 cores  S= 28.9  #############################
+ 128 cores  S= 36.5  #####################################
+ 256 cores  S= 42.4  ##########################################
 </pre></div>
 </div>
 </div>
 </div>
-<p>For a real plot, pipe the two columns to <strong><code class="docutils literal notranslate"><span class="pre">gnuplot</span></code></strong> in your terminal
-(<code class="docutils literal notranslate"><span class="pre">gnuplot</span> <span class="pre">-p</span> <span class="pre">-e</span> <span class="pre">&quot;plot</span> <span class="pre">'data/results/gr2hno3-scaling.dat'</span> <span class="pre">using</span> <span class="pre">1:2</span> <span class="pre">with</span> <span class="pre">linespoints&quot;</span></code>)
-— or load them into Python/matplotlib. Same data, prettier axes.</p>
+<p><strong>(b)</strong> The second dataset, <code class="docutils literal notranslate"><span class="pre">weak_scaling.csv</span></code>, is a <strong>weak</strong>-scaling run — the work
+grows <em>with</em> the cores, so the ideal is <em>constant</em> walltime and weak efficiency is
+<code class="docutils literal notranslate"><span class="pre">T(1)/T(N)</span></code>. Compute it and see how much better it holds up than strong scaling:</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   1 cores   T= 600 s   weak efficiency 100%
+   2 cores   T= 633 s   weak efficiency  95%
+   4 cores   T= 640 s   weak efficiency  94%
+   8 cores   T= 681 s   weak efficiency  88%
+  16 cores   T= 686 s   weak efficiency  87%
+  32 cores   T= 727 s   weak efficiency  83%
+  64 cores   T= 744 s   weak efficiency  81%
+ 128 cores   T= 771 s   weak efficiency  78%
+ 256 cores   T= 788 s   weak efficiency  76%
+</pre></div>
+</div>
+</div>
+</div>
+<p>Weak efficiency stays high (still ~76% at 256 cores) where strong efficiency had
+collapsed to ~17% — because each core keeps a full, fixed share of work. (For a real
+plot, pipe the columns to <strong><code class="docutils literal notranslate"><span class="pre">gnuplot</span></code></strong> in your terminal, or into Python/matplotlib.)</p>
 </section>
 </section>
 <section id="outlook">
@@ -945,7 +971,7 @@ you have already met. The Compendium is unchanged.</em></p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-amdahl-s-serial-fraction">Applied 1 (your turn) — Amdahl’s serial fraction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-your-turn-measure-your-own-speedup">Applied 2 (your turn) — Measure your own speedup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-justify-an-allocation">Composite — putting it together (justify an allocation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-in-the-terminal">Optional stretch — Plot it in the terminal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-plot-it-or-weak-scaling">Optional stretch — Plot it, or weak scaling</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook">Outlook</a></li>
