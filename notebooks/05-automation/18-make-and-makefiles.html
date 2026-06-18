@@ -1,0 +1,1120 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="18 make and Makefiles" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ramador.me/bash-primer-public/notebooks/05-automation/18-make-and-makefiles.html" />
+<meta property="og:site_name" content="Introduction to the Bash Shell" />
+<meta property="og:description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this — and it does the whole th..." />
+<meta property="og:image" content="https://ramador.me/bash-primer-public/_static/og.png" />
+<meta property="og:image:alt" content="Introduction to the Bash Shell" />
+<meta name="description" content="What this notebook is about: Everything you have automated so far has been imperative: a script says do this, then this, then this — and it does the whole th..." />
+
+    <title>18 make and Makefiles &#8212; Introduction to the Bash Shell</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bashprimer.css?v=ebb97fb0" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/05-automation/18-make-and-makefiles';</script>
+    <script src="../../_static/home-button.js?v=6d5ef4fc"></script>
+    <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/05-automation/18-make-and-makefiles.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compendium Scriptorum" href="../../reference/compendium.html" />
+    <link rel="prev" title="17 Speedup vs resources" href="../04-cluster/17-speedup-vs-resources.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../00-front-matter/preface.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Introduction to the Bash Shell - Home"/>
+    <img src="../../_static/logo.svg" class="logo__image only-dark pst-js-only" alt="Introduction to the Bash Shell - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Part I — Orientation: the terminal and the filesystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/01-shell-and-terminal.html">1 The shell and the terminal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/02-navigating-the-filesystem.html">2 Navigating the filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01-orientation/03-looking-at-and-handling-files.html">3 Looking at and handling files</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part II — Pipelines and text extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/04-redirection-and-pipes.html">4 Redirection and pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/05-selecting-files.html">5 Selecting files: globbing, brace expansion, and find</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/06-grep-and-regular-expressions.html">6 grep and regular expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/07-the-stream-toolkit.html">7 The stream toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02-pipelines/08-awk-and-sed.html">8 awk and sed</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part III — From commands to scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/09-editing-in-the-terminal.html">9 Editing in the terminal: Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/10-quoting-and-expansion.html">10 Quoting and expansion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/11-permissions-and-execution.html">11 Permissions and execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/12-writing-scripts.html">12 Writing scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03-scripting/13-control-flow.html">13 Control flow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part IV — Working on a cluster</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04-cluster/14-environment-and-modules.html">14 Environment and modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-cluster/15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-cluster/16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04-cluster/17-speedup-vs-resources.html">17 Speedup vs resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V — Automation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18 make and Makefiles</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/compendium.html">Compendium Scriptorum</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ramador09/bash-primer-public/issues/new?title=Issue%20on%20page%20%2Fnotebooks/05-automation/18-make-and-makefiles.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/05-automation/18-make-and-makefiles.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>18 make and Makefiles</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-problem-make-solves">A. The problem <code class="docutils literal notranslate"><span class="pre">make</span></code> solves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-anatomy-of-a-rule">B. Anatomy of a rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-variables-automatic-variables-and-phony">D. Variables, automatic variables, and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-pattern-rules">E. Pattern rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-the-synthesis-makefile">F. The synthesis Makefile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-a-first-makefile-felt">Warm-up 1 (worked) — A first Makefile, felt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-a-variable-and-a-phony-clean">Warm-up 2 (your turn) — A variable and a <code class="docutils literal notranslate"><span class="pre">.PHONY</span> <span class="pre">clean</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-automatic-variables-and-a-dry-run">Applied 1 (your turn) — Automatic variables and a dry run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-a-pattern-rule-incremental">Applied 2 (worked) — A pattern rule, incremental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-course-pipeline">Composite — putting it together (the course pipeline)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-parallel-timing-or-the-per-line-shell-gotcha">Optional stretch — Parallel timing, or the per-line-shell gotcha</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook-the-end-of-the-course">Outlook — the end of the course</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="make-and-makefiles">
+<h1>18 make and Makefiles<a class="headerlink" href="#make-and-makefiles" title="Link to this heading">#</a></h1>
+<div class="bp-banner">
+  <div class="bp-series">Introduction to the Bash Shell</div>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="bp-title">Part V — Automation</span>
+    <span class="bp-meta">Notebook&nbsp;18</span>
+  </div>
+  <div style="margin-top:10px;max-width:62ch;color:#46506b;">
+    The capstone: describing a pipeline as <b>dependencies</b> and letting
+    <code>make</code> rebuild only what is out of date — one command that
+    orchestrates the extraction, the scripts, and the sweep from the whole course.
+  </div>
+  <div class="bp-rule" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <span class="bp-meta">Raymond Amador</span>
+    <span class="bp-meta">v0.1.0&nbsp;·&nbsp;CC&nbsp;BY&nbsp;4.0 (text) / MIT (code)</span>
+  </div>
+</div><div class="cell tag_remove-input docutils container">
+</div>
+<section id="what-this-notebook-is-about">
+<h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
+<p>Everything you have automated so far has been <strong>imperative</strong>: a script says <em>do this,
+then this, then this</em> — and it does the whole thing, start to finish, every single
+time. That is fine until the pipeline is long and only one input changed: re-running
+the entire analysis to update one result is wasteful, and remembering the right order
+by hand is error-prone.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">make</span></code> is declarative.</strong> Instead of writing the steps, you describe the
+<strong>dependencies</strong>: what each output is built <em>from</em>, and the recipe to build it.
+<code class="docutils literal notranslate"><span class="pre">make</span></code> then works out the order itself and — the whole point — <strong>rebuilds only what
+is out of date.</strong> Change one trajectory, type <code class="docutils literal notranslate"><span class="pre">make</span></code>, and only that trajectory’s
+analysis re-runs; everything else is left untouched.</p>
+<p>This is the <strong>capstone</strong>. A single Makefile will tie together the threads of the
+entire course: the Part II extraction (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>), the Part III scripts, and the
+Part IV sweep, composed into one <code class="docutils literal notranslate"><span class="pre">make</span></code>. And there is a fitting closing note — the
+website you are reading these notebooks on is itself built with <code class="docutils literal notranslate"><span class="pre">make</span></code>. You are about
+to learn the tool that built the course.</p>
+</section>
+<section id="a-the-problem-make-solves">
+<h2>A. The problem <code class="docutils literal notranslate"><span class="pre">make</span></code> solves<a class="headerlink" href="#a-the-problem-make-solves" title="Link to this heading">#</a></h2>
+<p>Picture the pipeline you have been building by hand: for each trajectory, <strong>extract</strong>
+its energies, <strong>compute</strong> a result, then <strong>aggregate</strong> the results into a table. As a
+script it is a wall of commands that runs everything, in full, on every invocation —
+and if you reorder two steps by mistake, it silently does the wrong thing.</p>
+<p><code class="docutils literal notranslate"><span class="pre">make</span></code> inverts this. You declare three things per output: its <strong>name</strong> (the target),
+what it <strong>depends on</strong> (the prerequisites), and <strong>how to build it</strong> (the recipe).
+<code class="docutils literal notranslate"><span class="pre">make</span></code> reads the whole web of dependencies, computes a correct order, and runs a
+recipe <strong>only if its target is older than something it depends on</strong>. Declare the
+<em>what</em>; let <code class="docutils literal notranslate"><span class="pre">make</span></code> decide the <em>when</em>.</p>
+</section>
+<section id="b-anatomy-of-a-rule">
+<h2>B. Anatomy of a rule<a class="headerlink" href="#b-anatomy-of-a-rule" title="Link to this heading">#</a></h2>
+<p>A Makefile is a list of <strong>rules</strong>. Each rule is a <code class="docutils literal notranslate"><span class="pre">target</span></code>, a colon, its
+<code class="docutils literal notranslate"><span class="pre">prerequisites</span></code>, then one or more <strong>TAB-indented</strong> recipe lines:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">A rule</span> — <span class="bp-card-job">"to make <code>target</code> you need <code>prerequisites</code>; here is how." make runs the recipe only when the target is older than a prerequisite.</span>
+  <table>
+    <tr><td>target:&nbsp;prereqs</td><td>the thing to build, and what it is built from</td></tr>
+    <tr><td>⇥ recipe</td><td>the shell command(s) that build it — indented with a real <b>TAB</b></td></tr>
+  </table>
+</div>
+<p>Here is the smallest useful Makefile: one rule that builds <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> from
+<code class="docutils literal notranslate"><span class="pre">data.txt</span></code>. The recipe <strong>must</strong> be indented with a real <strong>TAB</strong> (more on that footgun
+in a moment). Throughout this notebook a small helper, <strong><code class="docutils literal notranslate"><span class="pre">maketab</span></code></strong>, writes the
+Makefile and converts the leading spaces you see in the cell into that required tab,
+so the pages render cleanly — in your own editor you simply press Tab. Write it and
+run <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>maketab<span class="w"> </span>Makefile<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">summary.txt: data.txt</span>
+<span class="s">    wc -l &lt; data.txt &gt; summary.txt</span>
+<span class="s">EOF</span>
+make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; data.txt &gt; summary.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>summary.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">make</span></code> saw that <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> did not exist, found the rule for it, and ran the
+recipe. Run <code class="docutils literal notranslate"><span class="pre">make</span></code> <strong>again</strong> and it does nothing — the target is now newer than its
+prerequisite, so there is nothing to rebuild:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>make: &#39;summary.txt&#39; is up to date.
+</pre></div>
+</div>
+</div>
+</div>
+<p>That “Nothing to be done” <em>is</em> the feature. Now change the input and re-run — <code class="docutils literal notranslate"><span class="pre">make</span></code>
+notices and rebuilds:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;date\n&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>data.txt
+make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; data.txt &gt; summary.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>summary.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="warning admonition">
+<p class="admonition-title">⚠ The TAB, not spaces — the one error everyone hits</p>
+<p>Recipe lines <strong>must</strong> be indented with a real <strong>TAB</strong> character, never spaces. It is
+the single most common Makefile mistake, and the error message is famously cryptic.
+Here is the same rule with its recipe indented by spaces — watch it fail:</p>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>-f<span class="w"> </span>Makefile.bad<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;(make stopped — exactly the error to recognise)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Makefile.bad:2: *** missing separator.  Stop.
+(make stopped — exactly the error to recognise)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">***</span> <span class="pre">missing</span> <span class="pre">separator</span></code> almost always means <strong>spaces where a TAB belongs.</strong> A
+companion subtlety: each recipe line runs in its <strong>own</strong> shell, so a <code class="docutils literal notranslate"><span class="pre">cd</span></code> on one line
+does not carry to the next — chain with <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>, or keep each line self-contained.</p>
+<div class="docutils">
+<h2 class="rubric" id="c-running-make">C. Running <code class="docutils literal notranslate"><span class="pre">make</span></code></h2>
+<div class="bp-card" id="cmd-make"><span class="bp-card-cmd">make</span> &mdash; <span class="bp-card-job">run a Makefile — build each target from its prerequisites, rebuilding only what is out of date.</span><table><tr><td>make</td><td>build the first (default) target in <code>Makefile</code></td></tr><tr><td>make TARGET</td><td>build a specific target by name (e.g. <code>make clean</code>, <code>make results.txt</code>)</td></tr><tr><td>-n</td><td>dry-run — PRINT the commands it would run, without running them (the <code>--dry-run</code> habit, Notebook 15)</td></tr><tr><td>-j N</td><td>run independent recipes in parallel across N jobs (the <code>xargs -P</code> idea, Notebooks 5 &amp; 17)</td></tr></table><div class="bp-card-more">more: <code>man make</code>; the GNU manual is thorough (<code>info make</code>)</div></div><div class="bp-watchout"><strong>Watch out:</strong> recipe lines MUST be indented with a real TAB, never spaces, or make stops with <code>*** missing separator</code> — the single most common Makefile mistake</div></div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>Plain <strong><code class="docutils literal notranslate"><span class="pre">make</span></code></strong> builds the first (default) target; <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">TARGET</span></code></strong> builds a named
+one. <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-n</span></code></strong> is the dry run — it prints the commands it <em>would</em> run without
+running them, the same “look before you leap” habit as <code class="docutils literal notranslate"><span class="pre">rsync</span> <span class="pre">--dry-run</span></code> (Notebook
+15):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>-f<span class="w"> </span>summary.txt
+make<span class="w"> </span>-n
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; data.txt &gt; summary.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nothing was built (no <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code> yet — check if you like); <code class="docutils literal notranslate"><span class="pre">-n</span></code> only <em>showed</em> the
+plan. And <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span> <span class="pre">N</span></code></strong> runs independent recipes in <strong>parallel</strong> across N jobs —
+the same idea as <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P</span></code> (Notebook 5) and the speedup you measured in Notebook 17,
+now applied to the build graph.</p>
+</section>
+<section id="d-variables-automatic-variables-and-phony">
+<h2>D. Variables, automatic variables, and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code><a class="headerlink" href="#d-variables-automatic-variables-and-phony" title="Link to this heading">#</a></h2>
+<p>Three pieces of Makefile vocabulary make rules concise and reusable.</p>
+<p><strong>Variables</strong> hold values you reuse — and <code class="docutils literal notranslate"><span class="pre">$(wildcard</span> <span class="pre">...)</span></code> pulls in files by glob,
+the Notebook-5 idea in Makefile form:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>FILES    = $(wildcard *.xyz)        # every .xyz, like a glob
+ENERGIES = $(FILES:.xyz=.energy)    # the same names with .energy instead
+</pre></div>
+</div>
+<p><strong>Automatic variables</strong> stand for parts of the current rule, so a recipe need not
+repeat filenames — they are to recipes what <code class="docutils literal notranslate"><span class="pre">$1</span> <span class="pre">$2</span> <span class="pre">&quot;$&#64;&quot;</span></code> (Notebook 12) are to scripts:</p>
+<div class="bp-card">
+  <span class="bp-card-cmd">Automatic variables</span> — <span class="bp-card-job">set by make inside each recipe; you read them, never assign them.</span>
+  <table>
+    <tr><td>$@</td><td>the <b>target</b> being built</td></tr>
+    <tr><td>$&lt;</td><td>the <b>first</b> prerequisite</td></tr>
+    <tr><td>$^</td><td><b>all</b> the prerequisites</td></tr>
+  </table>
+</div>
+<p><strong><code class="docutils literal notranslate"><span class="pre">.PHONY</span></code></strong> marks targets that are <em>not</em> files — <code class="docutils literal notranslate"><span class="pre">clean</span></code>, <code class="docutils literal notranslate"><span class="pre">all</span></code>, and the like — so
+<code class="docutils literal notranslate"><span class="pre">make</span></code> always runs them and never confuses them with a real file of the same name:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>maketab<span class="w"> </span>Makefile<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">OUT = summary.txt</span>
+
+<span class="s">$(OUT): data.txt</span>
+<span class="s">    wc -l &lt; data.txt &gt; $@</span>
+
+<span class="s">.PHONY: clean</span>
+<span class="s">clean:</span>
+<span class="s">    rm -f $(OUT)</span>
+<span class="s">EOF</span>
+make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; data.txt &gt; summary.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>The recipe wrote to <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code> (which is <code class="docutils literal notranslate"><span class="pre">summary.txt</span></code>), and a variable named the output in
+one place. Now <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> — a phony target — removes it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>clean
+ls<span class="w"> </span>summary.txt<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;summary.txt is gone — clean did its job&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>rm -f summary.txt
+ls: cannot access &#39;summary.txt&#39;: No such file or directory
+summary.txt is gone — clean did its job
+</pre></div>
+</div>
+</div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Why <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code> matters</p>
+<p>If a file named <code class="docutils literal notranslate"><span class="pre">clean</span></code> ever appeared in the directory, then without <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> would see that the “target” <code class="docutils literal notranslate"><span class="pre">clean</span></code> already exists, decide it is up to date,
+and <strong>do nothing</strong>. <code class="docutils literal notranslate"><span class="pre">.PHONY:</span> <span class="pre">clean</span></code> tells <code class="docutils literal notranslate"><span class="pre">make</span></code> “this is an action, not a file” — so
+it always runs. Same for <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">install</span></code>.</p>
+</div>
+</section>
+<section id="e-pattern-rules">
+<h2>E. Pattern rules<a class="headerlink" href="#e-pattern-rules" title="Link to this heading">#</a></h2>
+<p>You rarely want one rule per file. A <strong>pattern rule</strong> uses <code class="docutils literal notranslate"><span class="pre">%</span></code> as a wildcard to say
+“to make any <code class="docutils literal notranslate"><span class="pre">X.energy</span></code> from the matching <code class="docutils literal notranslate"><span class="pre">X.xyz</span></code>, do this” — one rule for <em>every</em>
+trajectory. It is the Notebook-5 goal (“do X to all my files”), now <strong>incremental and
+declarative</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>%.energy: %.xyz
+    grep &#39;E =&#39; $&lt; | awk &#39;{print $$NF}&#39; | sort -n | head -1 &gt; $@
+</pre></div>
+</div>
+<p>Read it as: for any target ending <code class="docutils literal notranslate"><span class="pre">.energy</span></code>, the prerequisite is the same name ending
+<code class="docutils literal notranslate"><span class="pre">.xyz</span></code>; the recipe extracts the energies (the Notebook-6/8 idiom) and writes the
+smallest to <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code>. Write <em>that</em> rule once and <code class="docutils literal notranslate"><span class="pre">make</span></code> applies it to every file.</p>
+<p>One detail in that recipe: <strong><code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">'{print</span> <span class="pre">$$NF}'</span></code>, with a double dollar.</strong> <code class="docutils literal notranslate"><span class="pre">make</span></code>
+claims a single <code class="docutils literal notranslate"><span class="pre">$</span></code> for its own variables, so to pass a literal <code class="docutils literal notranslate"><span class="pre">$</span></code> through to the
+shell (here, awk’s <code class="docutils literal notranslate"><span class="pre">$NF</span></code> last-field) you double it: <code class="docutils literal notranslate"><span class="pre">$$</span></code> in the Makefile becomes <code class="docutils literal notranslate"><span class="pre">$</span></code>
+by the time the recipe runs. A single <code class="docutils literal notranslate"><span class="pre">$NF</span></code> would be eaten by <code class="docutils literal notranslate"><span class="pre">make</span></code> — a quiet
+cousin of the TAB gotcha.</p>
+</section>
+<section id="f-the-synthesis-makefile">
+<h2>F. The synthesis Makefile<a class="headerlink" href="#f-the-synthesis-makefile" title="Link to this heading">#</a></h2>
+<p>Here is where the whole course converges. We have a set of trajectories; for <strong>each</strong>
+we extract energies (<code class="docutils literal notranslate"><span class="pre">grep</span></code>/<code class="docutils literal notranslate"><span class="pre">awk</span></code>, Part II), reduce to a per-file result, then
+<strong>aggregate</strong> into one table — and <code class="docutils literal notranslate"><span class="pre">make</span></code> runs it all, in order, rebuilding only what
+changed. Set up three trajectories and the Makefile:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>maketab<span class="w"> </span>Makefile<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">FILES    = $(wildcard *.xyz)</span>
+<span class="s">ENERGIES = $(FILES:.xyz=.energy)</span>
+
+<span class="s">all: results.txt</span>
+
+<span class="s"># pattern rule: each trajectory -&gt; its minimum energy (Part II extraction)</span>
+<span class="s">%.energy: %.xyz</span>
+<span class="s">    grep &#39;E =&#39; $&lt; | awk &#39;{print $$NF}&#39; | sort -n | head -1 &gt; $@</span>
+
+<span class="s"># aggregate every per-file result into one labelled table</span>
+<span class="s">results.txt: $(ENERGIES)</span>
+<span class="s">    for f in $^; do printf &#39;%s\t%s\n&#39; &quot;$${f%.energy}&quot; &quot;$$(cat $$f)&quot;; done &gt; $@</span>
+
+<span class="s">.PHONY: clean</span>
+<span class="s">clean:</span>
+<span class="s">    rm -f *.energy results.txt</span>
+<span class="s">EOF</span>
+make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grep &#39;E =&#39; alpha.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; alpha.energy
+grep &#39;E =&#39; beta.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; beta.energy
+grep &#39;E =&#39; gamma.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; gamma.energy
+for f in alpha.energy beta.energy gamma.energy; do printf &#39;%s\t%s\n&#39; &quot;${f%.energy}&quot; &quot;$(cat $f)&quot;; done &gt; results.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>One <code class="docutils literal notranslate"><span class="pre">make</span></code> extracted all three energies and aggregated them. There is the table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>results.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>alpha	-12.3
+beta	-22.4
+gamma	-7.7
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the payoff. Change <strong>one</strong> trajectory and re-run — <code class="docutils literal notranslate"><span class="pre">make</span></code> rebuilds only that
+file’s energy (and the table that depends on it), leaving the other two untouched:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;1\nE = -30.0\nC 0 0 0\n&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>beta.xyz
+make
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grep &#39;E =&#39; beta.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; beta.energy
+for f in alpha.energy beta.energy gamma.energy; do printf &#39;%s\t%s\n&#39; &quot;${f%.energy}&quot; &quot;$(cat $f)&quot;; done &gt; results.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>Only <code class="docutils literal notranslate"><span class="pre">beta.energy</span></code> and <code class="docutils literal notranslate"><span class="pre">results.txt</span></code> rebuilt — <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">gamma</span></code> were already up to
+date, so <code class="docutils literal notranslate"><span class="pre">make</span></code> skipped them. On a real analysis of hundreds of trajectories, that
+incremental rebuild is the difference between seconds and hours. And <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span></code> would
+run the independent per-file extractions in parallel (Notebook 17). One declarative
+file; the entire course pipeline.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<p>Every Makefile and its outputs live in a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>; <code class="docutils literal notranslate"><span class="pre">data/</span></code> stays read-only.
+<code class="docutils literal notranslate"><span class="pre">make</span></code> is timestamp-based, so the incremental demos use a controlled <code class="docutils literal notranslate"><span class="pre">touch</span></code>, and the
+checks look at <strong>which targets built or rebuilt</strong> — not at exact times.</p>
+<section id="warm-up-1-worked-a-first-makefile-felt">
+<h3>Warm-up 1 (worked) — A first Makefile, felt<a class="headerlink" href="#warm-up-1-worked-a-first-makefile-felt" title="Link to this heading">#</a></h3>
+<p>Build an output from an input, re-run (up to date), change the input, re-run
+(rebuilds). Mind the <strong>TAB</strong>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; input.txt &gt; count.txt
+make: &#39;count.txt&#39; is up to date.
+wc -l &lt; input.txt &gt; count.txt
+--- count.txt ---
+4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> make skipped the build when fresh and re-ran the recipe after the input changed
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="warm-up-2-your-turn-a-variable-and-a-phony-clean">
+<h3>Warm-up 2 (your turn) — A variable and a <code class="docutils literal notranslate"><span class="pre">.PHONY</span> <span class="pre">clean</span></code><a class="headerlink" href="#warm-up-2-your-turn-a-variable-and-a-phony-clean" title="Link to this heading">#</a></h3>
+<p>Rewrite the rule to name the output via a <strong>variable</strong>, and add a <code class="docutils literal notranslate"><span class="pre">.PHONY</span> <span class="pre">clean</span></code>
+target that deletes it. Run <code class="docutils literal notranslate"><span class="pre">make</span></code>, then <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wc -l &lt; input.txt &gt; count.txt
+built:
+count.txt
+rm -f count.txt
+after clean:
+ls: cannot access &#39;count.txt&#39;: No such file or directory
+count.txt removed
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the variable named the output, make built it, and .PHONY clean removed it
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-1-your-turn-automatic-variables-and-a-dry-run">
+<h3>Applied 1 (your turn) — Automatic variables and a dry run<a class="headerlink" href="#applied-1-your-turn-automatic-variables-and-a-dry-run" title="Link to this heading">#</a></h3>
+<p>Write a rule that uses <code class="docutils literal notranslate"><span class="pre">$&#64;</span></code> and <code class="docutils literal notranslate"><span class="pre">$&lt;</span></code> instead of repeating filenames, then preview it
+with <strong><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-n</span></code></strong> before building.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sort names.txt &gt; sorted.txt
+sort names.txt &gt; sorted.txt
+--- sorted.txt ---
+alpha
+beta
+gamma
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> make -n previewed the resolved recipe (sort names.txt) without building, then make sorted correctly
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applied-2-worked-a-pattern-rule-incremental">
+<h3>Applied 2 (worked) — A pattern rule, incremental<a class="headerlink" href="#applied-2-worked-a-pattern-rule-incremental" title="Link to this heading">#</a></h3>
+<p>One <code class="docutils literal notranslate"><span class="pre">%.upper:</span> <span class="pre">%.txt</span></code> rule uppercases every <code class="docutils literal notranslate"><span class="pre">.txt</span></code>. Build all, then change one input
+and watch only that one rebuild.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tr a-z A-Z &lt; a.txt &gt; a.upper
+tr a-z A-Z &lt; b.txt &gt; b.upper
+tr a-z A-Z &lt; c.txt &gt; c.upper
+--- first build done ---
+tr a-z A-Z &lt; b.txt &gt; b.upper
+--- b.upper ---
+BETA2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the pattern rule rebuilt only the changed file (b), leaving a and c untouched
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="composite-putting-it-together-the-course-pipeline">
+<h3>Composite — putting it together (the course pipeline)<a class="headerlink" href="#composite-putting-it-together-the-course-pipeline" title="Link to this heading">#</a></h3>
+<p>The grand synthesis. Build the Makefile that, for every trajectory, extracts its
+minimum energy and aggregates the results into a table — composing globs (Notebook 5),
+extraction (Notebooks 6/8), automatic vars and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code> (Notebook 12-ish), incremental
+rebuilds, and a parallel-capable build. Then exercise it: <code class="docutils literal notranslate"><span class="pre">make</span></code>, change one file and
+re-<code class="docutils literal notranslate"><span class="pre">make</span></code>, and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grep &#39;E =&#39; run1.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; run1.energy
+grep &#39;E =&#39; run2.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; run2.energy
+grep &#39;E =&#39; run3.xyz | awk &#39;{print $NF}&#39; | sort -n | head -1 &gt; run3.energy
+for f in run1.energy run2.energy run3.energy; do printf &#39;%s\t%s\n&#39; &quot;${f%.energy}&quot; &quot;$(cat $f)&quot;; done &gt; results.txt
+--- results.txt ---
+run1	-12.3
+run2	-22.4
+run3	-7.7
+rm -f *.energy results.txt
+--- after clean ---
+ls: cannot access &#39;*.energy&#39;: No such file or directory
+ls: cannot access &#39;results.txt&#39;: No such file or directory
+all build products removed
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the pipeline built the 3-row table, rebuilt only the changed trajectory, and clean reset it
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-stretch-parallel-timing-or-the-per-line-shell-gotcha">
+<h3>Optional stretch — Parallel timing, or the per-line-shell gotcha<a class="headerlink" href="#optional-stretch-parallel-timing-or-the-per-line-shell-gotcha" title="Link to this heading">#</a></h3>
+<p>No grade. Two directions. <strong>(a)</strong> Time a full rebuild serially versus in parallel —
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-j</span></code> runs independent recipes at once (Notebook 17’s speedup, now for builds):</p>
+<div class="cell tag_solution tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>serial:
+real	0m0.020s
+user	0m0.008s
+sys	0m0.021s
+parallel:
+real	0m0.019s
+user	0m0.011s
+sys	0m0.018s
+(on this tiny pipeline the times are dominated by noise — the point is -j runs them at once)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>(b)</strong> Or feel the “each recipe line is its own shell” gotcha: a <code class="docutils literal notranslate"><span class="pre">cd</span></code> on one line does
+<strong>not</strong> persist to the next, so chain with <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>. Try writing a two-line recipe where
+the second line assumes the first’s <code class="docutils literal notranslate"><span class="pre">cd</span></code> — and watch it not work — then fix it with
+<code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code>.</p>
+</section>
+</section>
+<section id="outlook-the-end-of-the-course">
+<h2>Outlook — the end of the course<a class="headerlink" href="#outlook-the-end-of-the-course" title="Link to this heading">#</a></h2>
+<p>That is the whole course. You began perhaps having never opened a terminal; you can
+now move through a filesystem, find and pull what you need out of files, edit and write
+robust scripts, take work to a cluster and reason about its resources, and tie the
+whole pipeline together with a single <code class="docutils literal notranslate"><span class="pre">make</span></code>. The very tool in this last notebook is
+the one that builds the website these lessons live on — you have, quite literally,
+learned how the course is made.</p>
+<p>From here the path is the work this was always a preparation for: the <strong>Molecular and
+Materials Modelling</strong> course, and the real research that lives on the command line.
+Keep the <strong>Compendium Scriptorum</strong> close — it is the map of every command you have met,
+and where to find each again. You are ready. Go build something.</p>
+<div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-make"><code class="bp-cmd-name">make</code></a> &mdash; run a Makefile — build each target from its prerequisites, rebuilding only what is out of date.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
+<div class="bp-banner" style="margin-top:30px;">
+  <div class="bp-series">Take this notebook with you</div>
+  <div style="font-size:14.5px;line-height:1.55;max-width:66ch;">
+    Open a <b>live terminal</b> from the &ldquo;Practice here&rdquo; box to write your
+    own Makefiles and watch incremental rebuilds for real. The published notebooks ship
+    <b>without worked solutions</b>; if you would like the reference solutions — to
+    teach from or to check your own work — get in touch:
+    <a href="mailto:hello@ramador.me">hello@ramador.me</a>.
+  </div>
+</div></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "bash"
+        },
+        kernelOptions: {
+            name: "bash",
+            path: "./notebooks/05-automation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'bash'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../04-cluster/17-speedup-vs-resources.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">17 Speedup vs resources</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/compendium.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Compendium Scriptorum</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-this-notebook-is-about">What this notebook is about</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-problem-make-solves">A. The problem <code class="docutils literal notranslate"><span class="pre">make</span></code> solves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-anatomy-of-a-rule">B. Anatomy of a rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-variables-automatic-variables-and-phony">D. Variables, automatic variables, and <code class="docutils literal notranslate"><span class="pre">.PHONY</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-pattern-rules">E. Pattern rules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f-the-synthesis-makefile">F. The synthesis Makefile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-1-worked-a-first-makefile-felt">Warm-up 1 (worked) — A first Makefile, felt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#warm-up-2-your-turn-a-variable-and-a-phony-clean">Warm-up 2 (your turn) — A variable and a <code class="docutils literal notranslate"><span class="pre">.PHONY</span> <span class="pre">clean</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-1-your-turn-automatic-variables-and-a-dry-run">Applied 1 (your turn) — Automatic variables and a dry run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applied-2-worked-a-pattern-rule-incremental">Applied 2 (worked) — A pattern rule, incremental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-putting-it-together-the-course-pipeline">Composite — putting it together (the course pipeline)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-stretch-parallel-timing-or-the-per-line-shell-gotcha">Optional stretch — Parallel timing, or the per-line-shell gotcha</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlook-the-end-of-the-course">Outlook — the end of the course</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Raymond Amador
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026 · CC BY 4.0 (text) / MIT (code).
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

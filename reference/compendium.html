@@ -74,7 +74,7 @@
     <link rel="canonical" href="https://ramador.me/bash-primer-public/reference/compendium.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="17 Speedup vs resources" href="../notebooks/04-cluster/17-speedup-vs-resources.html" />
+    <link rel="prev" title="18 make and Makefiles" href="../notebooks/05-automation/18-make-and-makefiles.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -198,6 +198,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/15-remote-work-and-moving-data.html">15 Remote work and moving data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/16-slurm-submission-scripts.html">16 SLURM submission scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/04-cluster/17-speedup-vs-resources.html">17 Speedup vs resources</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Part V — Automation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/05-automation/18-make-and-makefiles.html">18 make and Makefiles</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -1053,6 +1057,30 @@ each command links back to the notebook where it was introduced.</p>
 </tbody>
 </table>
 </div>
+<p class="rubric">Part V</p>
+<div class="pst-scrollable-table-container"><table class="bp-compendium table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Job</p></th>
+<th class="head"><p>Workhorse flags</p></th>
+<th class="head"><p>Introduced in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../notebooks/05-automation/18-make-and-makefiles.html#cmd-make"><span class="std std-ref">make</span></a></p></td>
+<td><p>run a Makefile — build each target from its prerequisites, rebuilding only what is out of date.</p></td>
+<td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">make</span></code>  build the first (default) target in `Makefile`</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">TARGET</span></code>  build a specific target by name (e.g. `make clean`, `make results.txt`)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-n</span></code>  dry-run — PRINT the commands it would run, without running them (the `–dry-run` habit, Notebook 15)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">N</span></code>  run independent recipes in parallel across N jobs (the `xargs -P` idea, Notebooks 5 &amp; 17)</div>
+</div>
+</td>
+<td><p><a class="reference internal" href="../notebooks/05-automation/18-make-and-makefiles.html#cmd-make"><span class="std std-ref">18 make and Makefiles</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1086,12 +1114,12 @@ each command links back to the notebook where it was introduced.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/04-cluster/17-speedup-vs-resources.html"
+       href="../notebooks/05-automation/18-make-and-makefiles.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">17 Speedup vs resources</p>
+        <p class="prev-next-title">18 make and Makefiles</p>
       </div>
     </a>
 </div>
