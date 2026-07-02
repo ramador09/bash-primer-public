@@ -71,6 +71,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-cluster/16-slurm-submission-scripts';</script>
     <script src="../../_static/home-button.js?v=6d5ef4fc"></script>
+    <script src="../../_static/goatcounter.js?v=ce435452"></script>
     <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/16-slurm-submission-scripts.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -564,7 +565,7 @@ ID</strong>: the number you will use to track it:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4535
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4500
 Submitted batch job 1000
 </pre></div>
 </div>
@@ -654,7 +655,7 @@ loading it inside the script:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4574
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4540
 Submitted batch job 1001
 </pre></div>
 </div>
@@ -699,7 +700,7 @@ login shell happened to have:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4605
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4571
 Submitted batch job 1002
 </pre></div>
 </div>
@@ -856,7 +857,7 @@ traj_03.xyz
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4715
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4682
 Submitted batch job 1004
 </pre></div>
 </div>
@@ -934,7 +935,7 @@ for “poll <code class="docutils literal notranslate"><span class="pre">squeue<
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4771
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4738
 Submitted batch job 1005
 --- output file: ---
 slurm-1005.out
@@ -989,11 +990,11 @@ one that <code class="docutils literal notranslate"><span class="pre">module</sp
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4887
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4853
 Submitted batch job 1007
 --- without module load: ---
 bare.sh: line 3: democode: command not found
-[1] 4919
+[1] 4884
 Submitted batch job 1008
 --- with module load inside: ---
 democode 1.0 — stand-in simulation code (loaded via the module system)
@@ -1003,9 +1004,9 @@ democode 1.0 — stand-in simulation code (loaded via the module system)
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4950
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4915
 Submitted batch job 1009
-[1] 4980
+[1] 4945
 Submitted batch job 1010
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the job failed without the module load and succeeded with it loaded inside
 </pre></div>
@@ -1030,7 +1031,7 @@ submit it. Then “lint” it: confirm the directives are present.</p>
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output=run-%j.out
-[1] 5024
+[1] 4989
 Submitted batch job 1011
 --- output (note the custom --output name): ---
 running production job 1011 on 1 core(s)
@@ -1058,7 +1059,7 @@ inside, writes each task’s result, then collect the results into a table.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5069
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 5036
 Submitted batch job 1012
 --- per-task outputs: ---
 slurm-1012_1.out  slurm-1012_2.out  slurm-1012_3.out  slurm-1012_4.out

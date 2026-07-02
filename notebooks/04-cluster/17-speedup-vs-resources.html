@@ -71,6 +71,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04-cluster/17-speedup-vs-resources';</script>
     <script src="../../_static/home-button.js?v=6d5ef4fc"></script>
+    <script src="../../_static/goatcounter.js?v=ce435452"></script>
     <link rel="canonical" href="https://ramador.me/bash-primer-public/notebooks/04-cluster/17-speedup-vs-resources.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -658,7 +659,7 @@ bench<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
-      1     0.99     0.99
+      1     0.98     1.00
       2     0.85     1.16
       4     0.85     1.16
 </pre></div>
@@ -785,9 +786,9 @@ vary, so only the structure is graded.</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
-      1     0.99     1.00
-      2     0.85     1.16
-      4     0.85     1.16
+      1     0.99     1.01
+      2     0.85     1.18
+      4     0.85     1.17
 </pre></div>
 </div>
 </div>
