@@ -603,7 +603,8 @@ the wall <code class="docutils literal notranslate"><span class="pre">cut</span>
 line. That single fact retires <code class="docutils literal notranslate"><span class="pre">cut</span></code> for anything real. The structure of an <code class="docutils literal notranslate"><span class="pre">awk</span></code>
 program is <code class="docutils literal notranslate"><span class="pre">pattern</span> <span class="pre">{</span> <span class="pre">action</span> <span class="pre">}</span></code>: for every line matching <code class="docutils literal notranslate"><span class="pre">pattern</span></code>, run <code class="docutils literal notranslate"><span class="pre">action</span></code>.
 Either part is optional. A bare condition filters; a bare action runs on every
-line. <code class="docutils literal notranslate"><span class="pre">NR</span></code> is the current line number, so <code class="docutils literal notranslate"><span class="pre">NR==1</span></code> selects the first line:</p>
+line. <code class="docutils literal notranslate"><span class="pre">NR</span></code> is the current line number, so <code class="docutils literal notranslate"><span class="pre">NR==1</span></code> selects the first line; a
+field condition works the same way, so <code class="docutils literal notranslate"><span class="pre">$1==&quot;Kr&quot;</span></code> selects the krypton row:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;Ar 1.5 2.5\nAr 3.5 4.5\nKr 5.5 6.5\n&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$1==&quot;Kr&quot; {print $2, $3}&#39;</span>
@@ -696,13 +697,16 @@ beta 2
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>keep one
 keep two
 keep three
+keep two
+# mid comment
+keep three
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the two comment lines are gone, leaving the three keep lines
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the two comment lines are gone, and 1,2d left exactly the last three lines
 </pre></div>
 </div>
 </div>

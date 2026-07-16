@@ -527,23 +527,26 @@ lines are conveniently <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <p>There is a wall here, though, and it matters because it points straight at the next
-notebook. <code class="docutils literal notranslate"><span class="pre">cut</span></code>’s delimiter is a <strong>single character</strong>. The energy lines are padded
-with <em>runs</em> of spaces, so splitting on a single space gives empty fields and
-nonsense:</p>
+notebook. <code class="docutils literal notranslate"><span class="pre">cut</span></code>’s delimiter is a <strong>single character</strong>, and it counts <em>every</em> space
+as a field separator. The energy value is padded away from its label by a <em>run</em> of
+spaces, so those spaces become a dozen empty fields and the value is marooned out at
+field 22. Reach for it at any smaller, predictable field and you land on the wrong
+column — here, the unit label:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-m1<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f2-4
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-m1<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f9
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ENERGY| Total FORCE_EVAL
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(a.u.):
 </pre></div>
 </div>
 </div>
 </div>
-<p>That is <code class="docutils literal notranslate"><span class="pre">cut</span></code> reaching its limit. The moment columns are separated by <em>variable</em>
-whitespace, you want <code class="docutils literal notranslate"><span class="pre">awk</span></code>, which is the first half of Notebook 8.</p>
+<p>That is the label <code class="docutils literal notranslate"><span class="pre">(a.u.):</span></code>, not the energy — <code class="docutils literal notranslate"><span class="pre">cut</span></code> reaching its limit. The moment
+columns are separated by <em>variable</em> whitespace, you want <code class="docutils literal notranslate"><span class="pre">awk</span></code>, which is the first
+half of Notebook 8.</p>
 </section>
 <section id="c-sort-put-it-in-order">
 <h2>C. <code class="docutils literal notranslate"><span class="pre">sort</span></code> — put it in order<a class="headerlink" href="#c-sort-put-it-in-order" title="Link to this heading">#</a></h2>
@@ -597,7 +600,7 @@ Counting how often each section appears in the log is a natural fit, but watch
 what happens if we forget one thing:</p>
 <div class="bp-card" id="cmd-uniq"><span class="bp-card-cmd">uniq</span> &mdash; <span class="bp-card-job">collapse adjacent duplicate lines, and optionally count them.</span><table><tr><td>-c</td><td>prefix each line with the number of times it occurred</td></tr><tr><td>-d</td><td>print only the lines that were duplicated</td></tr><tr><td>-u</td><td>print only the lines that were never repeated</td></tr></table><div class="bp-card-more">more: <code>man uniq</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> <code>uniq</code> only compares *adjacent* lines, so duplicates scattered through the file are missed — almost always run <code>sort | uniq</code></div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c
 </pre></div>
 </div>
 </div>
@@ -608,17 +611,23 @@ what happens if we forget one thing:</p>
       9 MEMORY
       5 EWALD
      14 MD
+      8 ROT
+      9 THERMOSTAT
+      1 ENERGY
+      1 MD_ENERGIES
+      5 ENERGY
 </pre></div>
 </div>
 </div>
 </div>
-<p>Those counts are wrong, and this is the number-one <code class="docutils literal notranslate"><span class="pre">uniq</span></code> confusion: <strong>it only
-looks at <em>adjacent</em> lines.</strong> A section that appears in two different places in the
-log shows up as two separate runs, each counted on its own. The fix is to <code class="docutils literal notranslate"><span class="pre">sort</span></code>
-first, so all the identical lines are brought together:</p>
+<p>Look closely: <code class="docutils literal notranslate"><span class="pre">ENERGY</span></code> is counted twice, as <code class="docutils literal notranslate"><span class="pre">1</span></code> and then <code class="docutils literal notranslate"><span class="pre">5</span></code>. That is the
+number-one <code class="docutils literal notranslate"><span class="pre">uniq</span></code> confusion: <strong>it only looks at <em>adjacent</em> lines.</strong> A section that
+appears in two different places in the log shows up as two separate runs, each
+counted on its own. The fix is to <code class="docutils literal notranslate"><span class="pre">sort</span></code> first, so all the identical lines are
+brought together:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39;|&#39;</span><span class="w"> </span>-f1<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c
 </pre></div>
 </div>
 </div>
@@ -629,6 +638,10 @@ first, so all the identical lines are brought together:</p>
       5 EWALD
      19 GLOBAL
      14 MD
+      1 MD_ENERGIES
+      9 MEMORY
+      8 ROT
+      9 THERMOSTAT
 </pre></div>
 </div>
 </div>
@@ -877,7 +890,7 @@ for <code class="docutils literal notranslate"><span class="pre">awk</span></cod
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the three lowest energies were selected in numeric order
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the three lowest energies came out in numeric order, lowest (-145.72…) first
 </pre></div>
 </div>
 </div>

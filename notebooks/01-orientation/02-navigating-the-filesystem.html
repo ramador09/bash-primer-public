@@ -723,9 +723,13 @@ within folders), use <code class="docutils literal notranslate"><span class="pre
 </div>
 </div>
 </div>
-<p>That is exactly the schematic from the top of the notebook, drawn by the machine
-from the real folders. <code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">2</span></code> kept it to two levels deep; drop it on a big tree
-and you may get more than you bargained for.</p>
+<p>That is the same patch of tree from the top of the notebook, now drawn by the
+machine from the real folders. The machine’s version differs from the hand-drawn
+sketch in a few small ways: <code class="docutils literal notranslate"><span class="pre">tree</span></code> lists names alphabetically, it shows the
+<code class="docutils literal notranslate"><span class="pre">README.md</span></code> and <code class="docutils literal notranslate"><span class="pre">generate.py</span></code> files the sketch left out, and without <code class="docutils literal notranslate"><span class="pre">-a</span></code> it
+hides the <code class="docutils literal notranslate"><span class="pre">.dataset-notes</span></code> the sketch called out. Same tree, drawn honestly.
+<code class="docutils literal notranslate"><span class="pre">-L</span> <span class="pre">2</span></code> kept it to two levels deep; drop it on a big tree and you may get more than
+you bargained for.</p>
 </section>
 <section id="tab-completion-the-navigation-superpower">
 <h2>Tab completion — the navigation superpower<a class="headerlink" href="#tab-completion-the-navigation-superpower" title="Link to this heading">#</a></h2>
@@ -766,11 +770,11 @@ NOTEBOOK_STYLE.md  apt.txt	 notebooks		   templates
 README.md	   commands.yml  opt			   tools
 SERIES_VERSION	   data		 postBuild
 total 80
-drwxr-x---  15 runner runner 4096 Jul  3 06:23 .
-drwxr-xr-x+  5 root   root   4096 Jun 28 22:20 ..
--rw-------   1 runner runner 1549 Jul  3 06:23 .bash_history
+drwxr-x---  15 runner runner 4096 Jul 16 22:30 .
+drwxr-xr-x+  5 root   root   4096 Jul 14 09:17 ..
+-rw-------   1 runner runner 1549 Jul 16 22:30 .bash_history
 -rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
--rw-r--r--   1 runner runner   67 Jun 28 21:43 .bash_profile
+-rw-r--r--   1 runner runner   67 Jul 14 08:29 .bash_profile
 </pre></div>
 </div>
 </div>
@@ -796,7 +800,7 @@ form with <code class="docutils literal notranslate"><span class="pre">ls</span>
 drwxr-xr-x 2 runner runner 4.0K Mar  1  2023 inputs
 drwxr-xr-x 2 runner runner 4.0K Feb  1  2023 logs
 drwxr-xr-x 2 runner runner 4.0K May  1  2023 results
-drwxr-xr-x 2 runner runner 4.0K Jul  3 06:22 scaling
+drwxr-xr-x 2 runner runner 4.0K May 15  2023 scaling
 drwxr-xr-x 2 runner runner 4.0K Apr  1  2023 trajectories
 </pre></div>
 </div>
@@ -882,11 +886,11 @@ is newest? (The flags <code class="docutils literal notranslate"><span class="pr
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>total 36K
-drwxr-xr-x 13 runner runner 4.0K Jul  3 06:23 ..
-drwxr-xr-x  7 runner runner 4.0K Jul  3 06:22 .
-drwxr-xr-x  2 runner runner 4.0K Jul  3 06:22 scaling
 -rw-r--r--  1 runner runner  460 Jun 15  2023 .dataset-notes
 -rw-r--r--  1 runner runner 2.9K Jun  1  2023 README.md
+drwxr-xr-x  7 runner runner 4.0K May 15  2023 .
+drwxr-xr-x 13 runner runner 4.0K May 15  2023 ..
+drwxr-xr-x  2 runner runner 4.0K May 15  2023 scaling
 drwxr-xr-x  2 runner runner 4.0K May  1  2023 results
 drwxr-xr-x  2 runner runner 4.0K Apr  1  2023 trajectories
 drwxr-xr-x  2 runner runner 4.0K Mar  1  2023 inputs
@@ -897,7 +901,7 @@ drwxr-xr-x  2 runner runner 4.0K Feb  1  2023 logs
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the listing reveals the hidden .dataset-notes (and -t puts the newest first)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> sorted newest-first, the hidden .dataset-notes is the top entry
 </pre></div>
 </div>
 </div>

@@ -436,8 +436,9 @@ may ignore.</p>
 real, full-screen bash session in your browser, opened from the “Practice here”
 box in each notebook, with the course data already sitting in its filesystem. The
 page itself is for reading; the terminal is where you type. Prefer your own
-machine? A native terminal works just as well — macOS Terminal, any Linux
-terminal, or Windows via WSL.</p>
+machine? A native terminal works just as well — any Linux terminal, or Windows
+via WSL. On macOS a couple of lessons reach for GNU tools it does not ship
+(<code class="docutils literal notranslate"><span class="pre">tree</span></code>, GNU <code class="docutils literal notranslate"><span class="pre">date</span></code>), so the browser terminal is the smoother path there.</p>
 </section>
 <section id="how-the-course-is-built">
 <h2>How the course is built<a class="headerlink" href="#how-the-course-is-built" title="Link to this heading">#</a></h2>
@@ -454,10 +455,10 @@ at the foot of each notebook tells you how to get them.</p>
 <li><p><strong>Orientation</strong> — the terminal, the filesystem, and looking at files.</p></li>
 <li><p><strong>Pipelines and text extraction</strong> — redirection, pipes, globbing, <code class="docutils literal notranslate"><span class="pre">grep</span></code>, the
 stream toolkit, <code class="docutils literal notranslate"><span class="pre">awk</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code>. The heart of the course.</p></li>
-<li><p><strong>From commands to scripts</strong> — quoting, permissions, writing scripts, control
-flow.</p></li>
+<li><p><strong>From commands to scripts</strong> — editing in the terminal, quoting, permissions,
+writing scripts, control flow.</p></li>
 <li><p><strong>Working on a cluster</strong> — environment and modules, remote work, SLURM, and
-reading real scaling data.</p></li>
+reading realistic scaling data.</p></li>
 <li><p><strong>Automation</strong> — <code class="docutils literal notranslate"><span class="pre">make</span></code> and Makefiles, wiring it all together.</p></li>
 </ol>
 <p>Start at the top of Part I and work down. Each notebook assumes only the ones

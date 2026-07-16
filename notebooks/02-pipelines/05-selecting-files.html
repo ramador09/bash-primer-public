@@ -684,9 +684,9 @@ underneath <code class="docutils literal notranslate"><span class="pre">data/</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/results/pt-slab.xyz
-data/trajectories/lj38-optimization.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/trajectories/lj38-optimization.xyz
 data/trajectories/lj38-relaxed.xyz
+data/results/pt-slab.xyz
 </pre></div>
 </div>
 </div>
@@ -706,9 +706,9 @@ wrong thing. Quoting hands the pattern to <code class="docutils literal notransl
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data
 data/inputs
 data/logs
-data/results
-data/trajectories
 data/scaling
+data/trajectories
+data/results
 </pre></div>
 </div>
 </div>
@@ -767,12 +767,12 @@ trajectory <code class="docutils literal notranslate"><span class="pre">find</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
-180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
+==&gt; data/results/pt-slab.xyz &lt;==
+180
 </pre></div>
 </div>
 </div>
@@ -790,12 +790,12 @@ The <code class="docutils literal notranslate"><span class="pre">{}</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
-180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
+==&gt; data/results/pt-slab.xyz &lt;==
+180
 </pre></div>
 </div>
 </div>
@@ -864,22 +864,22 @@ inside <code class="docutils literal notranslate"><span class="pre">data/</span>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/production-md.inp
-data/inputs/geo-opt.inp
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data/inputs/geo-opt.inp
+data/inputs/production-md.inp
 data
 data/inputs
 data/logs
-data/results
-data/trajectories
 data/scaling
+data/trajectories
+data/results
 data
-data/inputs
 data/README.md
-data/logs
-data/results
-data/trajectories
-data/scaling
 data/.dataset-notes
+data/inputs
+data/logs
+data/scaling
+data/trajectories
+data/results
 </pre></div>
 </div>
 </div>
@@ -900,24 +900,24 @@ data/.dataset-notes
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
-180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
+==&gt; data/results/pt-slab.xyz &lt;==
+180
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/results/pt-slab.xyz &lt;==
-180
-==&gt; data/trajectories/lj38-optimization.xyz &lt;==
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; data/trajectories/lj38-optimization.xyz &lt;==
       38
 ==&gt; data/trajectories/lj38-relaxed.xyz &lt;==
       38
+==&gt; data/results/pt-slab.xyz &lt;==
+180
 </pre></div>
 </div>
 </div>
@@ -939,8 +939,8 @@ to copy every <code class="docutils literal notranslate"><span class="pre">.xyz<
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/lj38-optimization.xyz
-scratch/sorted/R/pt-slab.xyz
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scratch/sorted/R/pt-slab.xyz
+scratch/sorted/R/lj38-optimization.xyz
 scratch/sorted/R/lj38-relaxed.xyz
 </pre></div>
 </div>
@@ -985,7 +985,7 @@ pick up in Part IV.)</p>
 tree) and act on the whole set at once. Next (Notebook 6): instead of finding
 <em>files</em>, you will find matching <strong>text inside</strong> them with <code class="docutils literal notranslate"><span class="pre">grep</span></code>, and meet
 <strong>regular expressions</strong>: the pattern language that <code class="docutils literal notranslate"><span class="pre">sed</span></code>, and the Vim
-search-and-replace you saw in Notebook 9, all share.</p>
+search-and-replace from Notebook 9, all share.</p>
 <div class="bp-compendium-new"><div class="bp-compendium-new-title">New in the Compendium</div><ul><li><a href="#cmd-find"><code class="bp-cmd-name">find</code></a> &mdash; search a directory tree for files matching criteria — name, type, size, time — and optionally act on each one.</li><li><a href="#cmd-xargs"><code class="bp-cmd-name">xargs</code></a> &mdash; read a list of items on standard input and turn them into arguments for a command — the bridge from a pipeline that produces names to a command that acts on them.</li></ul></div><p>See the full <a class="reference internal" href="../../reference/compendium.html"><span class="doc">Compendium Scriptorum</span></a> for every command met so far, and where to find it again.</p>
 <div class="bp-banner" style="margin-top:30px;">
   <div class="bp-series">Take this notebook with you</div>

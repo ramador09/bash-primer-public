@@ -456,7 +456,8 @@ expressions are <em>the</em> most reusable text skill in this whole course: the 
 patterns drive <code class="docutils literal notranslate"><span class="pre">sed</span></code> in Notebook 8 and the Vim search-and-replace from Notebook 9.
 Learn them once here and they pay off everywhere. So we teach both: the tool, and
 the language behind it.</p>
-<p>The files are real CP2K run logs now living in <code class="docutils literal notranslate"><span class="pre">data/logs/</span></code>. Matching <code class="docutils literal notranslate"><span class="pre">Total</span> <span class="pre">energy</span></code> or a warning in one of them needs <strong>no physics</strong>: it is just pattern on
+<p>The files are real CP2K run logs now living in <code class="docutils literal notranslate"><span class="pre">data/logs/</span></code>. Matching total
+energy or a warning in one of them needs <strong>no physics</strong>: it is just pattern on
 text.</p>
 </section>
 <section id="a-grep-with-literal-patterns">
@@ -503,14 +504,14 @@ the moment your patterns contain regex characters.</p>
 capitals; <code class="docutils literal notranslate"><span class="pre">-i</span></code> catches it however it is spelled):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;warning&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grep<span class="w"> </span>-in<span class="w"> </span><span class="s1">&#39;warning&#39;</span><span class="w"> </span>data/logs/gr2hno3-nvt.log
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> *** WARNING in motion/simpar_methods.F:223 :: A temperature tolerance ***
- *** WARNING in dbcsr_mm.F:295 :: Using a non-square number of MPI ranks ***
- The number of warnings for this run is : 2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>168: *** WARNING in motion/simpar_methods.F:223 :: A temperature tolerance ***
+704: *** WARNING in dbcsr_mm.F:295 :: Using a non-square number of MPI ranks ***
+714: The number of warnings for this run is : 2
 </pre></div>
 </div>
 </div>
@@ -705,7 +706,7 @@ any spaces, end).</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the inverted count is exactly the non-blank lines
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the inverted count is exactly the 571 non-blank lines
 </pre></div>
 </div>
 </div>

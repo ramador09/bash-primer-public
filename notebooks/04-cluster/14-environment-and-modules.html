@@ -574,19 +574,19 @@ depends on the kind of shell, and this is the linchpin of the whole notebook.</p
 </div>
 <p>The common convention is that <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code> simply <code class="docutils literal notranslate"><span class="pre">source</span></code>s <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>, so a
 login shell ends up with your interactive setup too. But look at that last row,
-because it is the trap. The shell running <em>these very cells</em> is non-interactive,
-exactly like a batch job; ask it:</p>
+because it is the trap. A batch job runs your script in a fresh non-interactive
+shell — so let us start exactly that kind of shell and ask <em>it</em>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="nv">$-</span><span class="w"> </span><span class="k">in</span>
-<span class="w">  </span>*i*<span class="o">)</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;this shell is INTERACTIVE — it reads ~/.bashrc&quot;</span><span class="w"> </span><span class="p">;;</span>
-<span class="w">  </span>*<span class="o">)</span><span class="w">   </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;this shell is NON-interactive — like a script or a batch job, it reads NO rc file&quot;</span><span class="w"> </span><span class="p">;;</span>
-<span class="k">esac</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;case $- in</span>
+<span class="s1">  *i*) echo &quot;this shell is INTERACTIVE — it reads ~/.bashrc&quot; ;;</span>
+<span class="s1">  *)   echo &quot;this shell is NON-interactive — like a script or a batch job, it reads NO rc file&quot; ;;</span>
+<span class="s1">esac&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>this shell is INTERACTIVE — it reads ~/.bashrc
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>this shell is NON-interactive — like a script or a batch job, it reads NO rc file
 </pre></div>
 </div>
 </div>

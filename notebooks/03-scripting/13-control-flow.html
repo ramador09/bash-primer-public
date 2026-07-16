@@ -629,7 +629,7 @@ It works everywhere, but it is fussier: you <em>must</em> quote your variables i
 <p class="admonition-title">⚠ Inside a test, the spaces are not optional</p>
 <p><code class="docutils literal notranslate"><span class="pre">[[</span></code> and <code class="docutils literal notranslate"><span class="pre">]]</span></code> (and <code class="docutils literal notranslate"><span class="pre">[</span></code> <code class="docutils literal notranslate"><span class="pre">]</span></code>) are <em>commands</em>, so they need spaces around them and
 around every operator: <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">&quot;$n&quot;</span> <span class="pre">-gt</span> <span class="pre">1000</span> <span class="pre">]]</span></code>, never <code class="docutils literal notranslate"><span class="pre">[[&quot;$n&quot;-gt1000]]</span></code>. And mind the
-two equals: <strong><code class="docutils literal notranslate"><span class="pre">=</span></code></strong> compares <em>strings</em>, <strong><code class="docutils literal notranslate"><span class="pre">-eq</span></code></strong> compares <em>numbers</em>: <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">&quot;08&quot;</span> <span class="pre">=</span> <span class="pre">&quot;8&quot;</span> <span class="pre">]]</span></code> is false (different text) while <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">&quot;08&quot;</span> <span class="pre">-eq</span> <span class="pre">&quot;8&quot;</span> <span class="pre">]]</span></code> is true (same value).
+two equals: <strong><code class="docutils literal notranslate"><span class="pre">=</span></code></strong> compares <em>strings</em>, <strong><code class="docutils literal notranslate"><span class="pre">-eq</span></code></strong> compares <em>numbers</em>: <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">&quot;1+1&quot;</span> <span class="pre">=</span> <span class="pre">&quot;2&quot;</span> <span class="pre">]]</span></code> is false (different text) while <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">&quot;1+1&quot;</span> <span class="pre">-eq</span> <span class="pre">&quot;2&quot;</span> <span class="pre">]]</span></code> is true (same value).
 In the portable <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">…</span> <span class="pre">]</span></code>, an unquoted empty variable can even break the test’s
 syntax, which is exactly why <code class="docutils literal notranslate"><span class="pre">[[</span> <span class="pre">…</span> <span class="pre">]]</span></code> is the safer default in bash.</p>
 </div>
@@ -849,9 +849,9 @@ reports the wall-clock <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>real	0m0.203s
-user	0m0.002s
-sys	0m0.000s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>real	0m0.202s
+user	0m0.000s
+sys	0m0.002s
 </pre></div>
 </div>
 </div>
@@ -1040,7 +1040,7 @@ to level off. (Exact times vary; the shape is the point. Notebook 17 develops it
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 worker(s): 1.62s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 worker(s): 1.61s
 2 worker(s): 0.81s
 4 worker(s): 0.41s
 </pre></div>

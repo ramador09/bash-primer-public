@@ -450,7 +450,7 @@
 <h2>What this notebook is about<a class="headerlink" href="#what-this-notebook-is-about" title="Link to this heading">#</a></h2>
 <p>You have met this idea three times already and never named it. In Notebook 5 the
 shell expanded <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> before <code class="docutils literal notranslate"><span class="pre">ls</span></code> ran. In Notebooks 6 and 8 you single-quoted
-your <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs so the shell would leave the <code class="docutils literal notranslate"><span class="pre">$1</span></code> alone. Both are
+your <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">awk</span></code> programs so the shell would leave the <code class="docutils literal notranslate"><span class="pre">$</span></code> alone. Both are
 the same fact: <strong>before any command runs, the shell rewrites your command line.</strong></p>
 <p>This notebook names that fact, lays out the full rewriting, and, most usefully,
 shows how <strong>quoting</strong> lets you control it. Getting this wrong is the single most
@@ -828,7 +828,7 @@ float mean: -143.4444
 <h3>Composite — putting it together (build commands safely)<a class="headerlink" href="#composite-putting-it-together-build-commands-safely" title="Link to this heading">#</a></h3>
 <p>Build output filenames from a set of trajectory files (<strong>one with a space in its
 name</strong>) using trimming and properly quoted expansions. (The <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">…</span> <span class="pre">in</span> <span class="pre">…;</span> <span class="pre">do</span> <span class="pre">…</span> <span class="pre">done</span></code>
-loop here just means “for each file”; it gets its full introduction in Notebook 12.
+loop here just means “for each file”; it gets its full introduction in Notebook 13.
 The lesson now is that <em>quoting</em> makes the loop space-safe.)</p>
 <div class="cell tag_remove-input docutils container">
 </div>
