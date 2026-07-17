@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# A stand-in "simulation code" for the Bash primer (Notebook 14). It does no real
+# science — it exists so that `module load democode/2.0` puts a runnable command
+# on your PATH, the way loading a real code does.
+echo "democode 2.0 — stand-in simulation code (loaded via the module system)"

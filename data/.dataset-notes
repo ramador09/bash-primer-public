@@ -1,0 +1,9 @@
+# .dataset-notes — a hidden file (its name starts with a dot, so `ls` skips it
+# unless you ask with `ls -a`). Nothing secret; just a marker you can practise
+# finding.
+#
+# These files are real Molecular & Materials Modelling (ETH Zürich) outputs,
+# republished as a navigation playground. You never need to understand the
+# physics to practise the shell on them.
+provenance: MMM FS2023
+scrubbed: usernames and cluster hostnames removed (none were present)

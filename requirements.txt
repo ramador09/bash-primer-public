@@ -1,0 +1,11 @@
+# pip alternative to environment.yml (e.g. for CI). The GNU userland (coreutils,
+# gawk, sed, grep, findutils, tree) is assumed present — it is on the ubuntu CI
+# runner and is pinned via conda for Binder. This file installs only the Python
+# tooling needed to build and validate the book.
+bash_kernel
+jupyter-book>=1.0,<2
+jupytext
+nbconvert
+nbformat
+sphinx-sitemap            # builds sitemap.xml at the site root (SEO discoverability)
+sphinxext-opengraph       # per-page <meta name=description> + OpenGraph/Twitter cards

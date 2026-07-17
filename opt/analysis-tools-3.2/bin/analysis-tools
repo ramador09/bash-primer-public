@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# A stand-in "analysis toolkit" for the Bash primer (Notebook 14). It does no real
+# science — it exists so that `module load analysis-tools/3.2` puts a runnable
+# command on your PATH, the way loading a real toolkit does.
+echo "analysis-tools 3.2 — stand-in analysis toolkit (loaded via the module system)"

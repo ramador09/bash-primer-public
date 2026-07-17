@@ -1,0 +1,20 @@
+#%Module1.0
+##
+## democode 1.0 — a stand-in simulation code for the Bash primer (Notebook 14).
+## Physics-optional: "loading software" without needing to know what it computes.
+##
+proc ModulesHelp { } {
+    puts stderr "democode 1.0 — a stand-in simulation code (a demo, computes nothing real)."
+}
+module-whatis "democode 1.0 (demo simulation code for the Bash primer)"
+
+# Two versions of the same code conflict — you load one or the other.
+conflict democode
+
+# The repo root is three directories up from this modulefile
+# (modulefiles/democode/1.0 -> modulefiles/democode -> modulefiles -> <root>).
+set root [file dirname [file dirname [file dirname $ModulesCurrentModulefile]]]
+
+# Loading the module is exactly: put this version's bin on PATH and set a var.
+prepend-path PATH $root/opt/democode-1.0/bin
+setenv DEMOCODE_VERSION 1.0

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Runs (as the unprivileged user) after Binder/repo2docker builds the conda env.
+set -euo pipefail
+
+# Register the bash kernel — used by the JupyterLab fallback and any notebook.
+python -m bash_kernel.install --sys-prefix
+
+# Install the jupyter-server-proxy config that registers ttyd as the /shell/
+# terminal, so `?urlpath=shell/` lands the student on a full-page bash terminal.
+# Kept at the repo ROOT (no binder/ dir) so repo2docker still reads the root
+# environment.yml / postBuild.
+mkdir -p "$HOME/.jupyter"
+cp jupyter_server_config.py "$HOME/.jupyter/jupyter_server_config.py"
+
+# ttyd comes from conda-forge (environment.yml); confirm it is on PATH so a
+# broken image fails the build here rather than silently at launch.
+command -v ttyd >/dev/null || { echo "ERROR: ttyd not found on PATH" >&2; exit 1; }

@@ -1,0 +1,19 @@
+#%Module1.0
+##
+## analysis-tools 3.2 — a stand-in analysis toolkit for the Bash primer (Notebook 14).
+## A SECOND module family alongside democode, so `module avail` shows a realistic,
+## multi-tool listing (the way a real cluster's module tree does).
+## Physics-optional: "loading software" without needing to know what it computes.
+##
+proc ModulesHelp { } {
+    puts stderr "analysis-tools 3.2 — a stand-in analysis toolkit (a demo, computes nothing real)."
+}
+module-whatis "analysis-tools 3.2 (demo analysis toolkit for the Bash primer)"
+
+# The repo root is three directories up from this modulefile
+# (modulefiles/analysis-tools/3.2 -> modulefiles/analysis-tools -> modulefiles -> <root>).
+set root [file dirname [file dirname [file dirname $ModulesCurrentModulefile]]]
+
+# Loading the module puts this toolkit's bin on PATH and sets a version variable.
+prepend-path PATH $root/opt/analysis-tools-3.2/bin
+setenv ANALYSIS_TOOLS_VERSION 3.2

@@ -1,0 +1,31 @@
+name: bash-primer
+# Binder runtime spec (the CI book build uses requirements.txt, not this file).
+# repo2docker reads this from the repo ROOT — we deliberately keep NO binder/
+# directory, because its presence makes repo2docker ignore root-level config.
+channels:
+  - conda-forge
+dependencies:
+  # GNU userland pinned so the commands behave identically for every student
+  # (macOS ships BSD variants; this guarantees the GNU flags the course teaches).
+  - coreutils
+  - findutils
+  - grep
+  - sed
+  - gawk
+  - bash
+  - tree
+  - vim
+  - nano
+  - python=3.12
+  - pip
+  # Binder UX: students launch straight onto a full-page browser terminal (ttyd)
+  # proxied by jupyter-server-proxy. JupyterLab is the documented fallback (it has
+  # a built-in Terminal). ttyd and the proxy both resolve from conda-forge, so no
+  # static-binary download is needed.
+  - jupyterlab
+  - jupyter-server-proxy
+  - ttyd
+  - pip:
+      - bash_kernel   # real bash for the Lab fallback / any notebook cell
+# After conda resolves this, postBuild registers the bash kernel and installs the
+# ttyd proxy config (jupyter_server_config.py).
