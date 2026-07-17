@@ -1,0 +1,12 @@
+{
+  "title": "Introduction to the Bash Shell",
+  "upload_type": "lesson",
+  "description": "<p>A complete shell-fluency course: 18 lessons (Parts I–V, orientation → automation on a cluster), each executed for real under the bash kernel in CI (GNU/bash-5, Ubuntu target) — a failing check cell blocks the site. Carries a 65-command registry with per-lesson command cards and the Compendium Scriptorum.</p><p>Read the course at <a href=\"https://ramador.me/bash-primer-public/\">ramador.me/bash-primer-public</a>. This archive captures the runnable, solution-stripped public mirror. Text is licensed CC BY 4.0; code cells are MIT.</p>",
+  "creators": [{"name": "Amador, Raymond"}],
+  "license": "cc-by-4.0",
+  "keywords": ["bash", "shell", "command line", "scientific computing"],
+  "related_identifiers": [
+    {"relation": "isSupplementTo", "identifier": "https://ramador.me/bash-primer-public/", "scheme": "url"}
+  ],
+  "version": "1.0.0"
+}
