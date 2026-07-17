@@ -521,18 +521,18 @@ identity with them automatically. Generating the pair is real, so run it here:</
 Your identification has been saved in scratch/demo_key
 Your public key has been saved in scratch/demo_key.pub
 The key fingerprint is:
-SHA256:wdJYo443EwlQAx0oL09wa3tP0dO08hvDVDj607JGrUI you@laptop
+SHA256:ThQB0ExcwjUFObWDw+CxI23NtiBk/yTKXzVdHU5Paj0 you@laptop
 The key&#39;s randomart image is:
 +--[ED25519 256]--+
-|  o*=.  o  .     |
-|o o .o B .+ .    |
-| = .  *.++ +     |
-|. =  o.o=.+      |
-| = .. =.SB o     |
-|  o ...oE X o    |
-|   . o . . O     |
-|      . . =      |
-|         o       |
+|    +B*+B*o   .+o|
+|   o +=Oo+ o .o+o|
+|    o X X.= . oEo|
+|   . = O + o .  .|
+|    o   S        |
+|     . +         |
+|      . .        |
+|                 |
+|                 |
 +----[SHA256]-----+
 </pre></div>
 </div>
@@ -547,8 +547,8 @@ done the Notebook-11 chmod for you:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jul 17 08:42 scratch/demo_key
--rw-r--r-- 1 runner runner  92 Jul 17 08:42 scratch/demo_key.pub
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jul 17 09:17 scratch/demo_key
+-rw-r--r-- 1 runner runner  92 Jul 17 09:17 scratch/demo_key.pub
 </pre></div>
 </div>
 </div>
@@ -651,7 +651,7 @@ the <em>same tool</em> you use for the cluster, so we practise it for real:</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 a.txt
 b.txt
-sent 187 bytes  received 54 bytes  482.00 bytes/sec
+sent 184 bytes  received 54 bytes  476.00 bytes/sec
 total size is 4  speedup is 0.02
 </pre></div>
 </div>
@@ -668,8 +668,8 @@ whole set:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 a.txt
-sent 157 bytes  received 35 bytes  384.00 bytes/sec
-total size is 12  speedup is 0.06
+sent 148 bytes  received 35 bytes  366.00 bytes/sec
+total size is 12  speedup is 0.07
 </pre></div>
 </div>
 </div>
@@ -684,10 +684,9 @@ total size is 12  speedup is 0.06
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
-./
 c.txt
-sent 116 bytes  received 22 bytes  276.00 bytes/sec
-total size is 14  speedup is 0.10 (DRY RUN)
+sent 111 bytes  received 19 bytes  260.00 bytes/sec
+total size is 14  speedup is 0.11 (DRY RUN)
 </pre></div>
 </div>
 </div>
@@ -757,8 +756,8 @@ it for real: start a long <code class="docutils literal notranslate"><span class
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4529
-backgrounded as PID 4529
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4432
+backgrounded as PID 4432
 </pre></div>
 </div>
 </div>
@@ -797,8 +796,8 @@ even without tmux:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4530
-nohup PID 4530 — still running after logout; output in nohup.out
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4433
+nohup PID 4433 — still running after logout; output in nohup.out
 </pre></div>
 </div>
 </div>
@@ -820,8 +819,8 @@ running: pair it with <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4529  0.0  0.0   6124  1972 pts/0    S+   08:42   0:00 sleep 300
-runner      4530  0.0  0.0   6124  1968 pts/0    S+   08:42   0:00 sleep 300
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4432  0.0  0.0   6124  1972 pts/0    S+   09:17   0:00 sleep 300
+runner      4433  0.0  0.0   6124  1972 pts/0    S+   09:17   0:00 sleep 300
 </pre></div>
 </div>
 </div>
@@ -882,7 +881,7 @@ commands keep you ahead of it. <strong><code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   15G  80% /
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   16G  80% /
 </pre></div>
 </div>
 </div>
@@ -904,7 +903,7 @@ by a short name from where you work:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jul 17 08:42 scratch/link-to-realdir -&gt; realdir
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jul 17 09:17 scratch/link-to-realdir -&gt; realdir
 </pre></div>
 </div>
 </div>
@@ -967,12 +966,11 @@ change.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 one.txt
-sent 157 bytes  received 35 bytes  384.00 bytes/sec
+sent 148 bytes  received 35 bytes  366.00 bytes/sec
 total size is 8  speedup is 0.04
 sending incremental file list
-./
 three.txt
-sent 124 bytes  received 22 bytes  292.00 bytes/sec
+sent 119 bytes  received 19 bytes  276.00 bytes/sec
 total size is 10  speedup is 0.07 (DRY RUN)
 dst still holds:
 one.txt  two.txt
@@ -998,7 +996,7 @@ identify the larger.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>496K	scratch/heavy
 8.0K	scratch/light
-/dev/root        72G   57G   15G  80% /
+/dev/root        72G   57G   16G  80% /
 largest: scratch/heavy
 </pre></div>
 </div>
@@ -1020,7 +1018,7 @@ to reach a file inside the target.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jul 17 08:42 scratch/shortcut -&gt; store
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jul 17 09:17 scratch/shortcut -&gt; store
 payload
 </pre></div>
 </div>
@@ -1042,11 +1040,11 @@ confirm it is gone.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4595
-running in background as PID 4595
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4498
+running in background as PID 4498
 [1]+  Running                 sleep 300 &amp;
     PID COMMAND
-   4595 sleep
+   4498 sleep
 after kill, still alive? no
 </pre></div>
 </div>
@@ -1054,7 +1052,7 @@ after kill, still alive? no
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4599
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4502
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command backgrounded, appeared in the process table, then was killed
 </pre></div>
 </div>
@@ -1087,7 +1085,7 @@ directory standing in for the remote), and verify it arrived intact.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 job-results.tar.gz
-sent 343 bytes  received 35 bytes  756.00 bytes/sec
+sent 344 bytes  received 35 bytes  758.00 bytes/sec
 total size is 223  speedup is 0.59
 4.0K	scratch/job-results.tar.gz
 --- arrived, contents: ---
