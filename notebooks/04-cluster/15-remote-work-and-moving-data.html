@@ -521,18 +521,18 @@ identity with them automatically. Generating the pair is real, so run it here:</
 Your identification has been saved in scratch/demo_key
 Your public key has been saved in scratch/demo_key.pub
 The key fingerprint is:
-SHA256:C7paFoSyfclZq6IBN4q1Stypm9eB24Pf6U850QTKEE4 you@laptop
+SHA256:Uo3EsNbxRu114LZy4IXzgv4TSeEbv6jmcjhHOVANJfQ you@laptop
 The key&#39;s randomart image is:
 +--[ED25519 256]--+
-|     E.  .       |
-|   .o o . .      |
-|. . ...o   .     |
-| + o + .  o      |
-|o = B o S. .     |
-|++.=.= . .o      |
-|+oooX . .+       |
-|.+oB =. o .      |
-|o++.o.o+..       |
+|      .oo.==. .. |
+|       +.*.o+o. .|
+|      o +.+oEo+. |
+|     . ... o=* . |
+|      . S..o+=+  |
+|       . .+ ++.  |
+|         o.. o . |
+|        + +.o .  |
+|         Bo...   |
 +----[SHA256]-----+
 </pre></div>
 </div>
@@ -547,8 +547,8 @@ done the Notebook-11 chmod for you:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jul 17 19:01 scratch/demo_key
--rw-r--r-- 1 runner runner  92 Jul 17 19:01 scratch/demo_key.pub
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-rw------- 1 runner runner 399 Jul 18 04:38 scratch/demo_key
+-rw-r--r-- 1 runner runner  92 Jul 18 04:38 scratch/demo_key.pub
 </pre></div>
 </div>
 </div>
@@ -756,8 +756,8 @@ it for real: start a long <code class="docutils literal notranslate"><span class
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4478
-backgrounded as PID 4478
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4438
+backgrounded as PID 4438
 </pre></div>
 </div>
 </div>
@@ -796,8 +796,8 @@ even without tmux:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4479
-nohup PID 4479 — still running after logout; output in nohup.out
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2] 4440
+nohup PID 4440 — still running after logout; output in nohup.out
 </pre></div>
 </div>
 </div>
@@ -819,8 +819,8 @@ running: pair it with <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4478  0.0  0.0   6124  2104 pts/0    S+   19:01   0:00 sleep 300
-runner      4479  0.0  0.0   6124  2104 pts/0    S+   19:01   0:00 sleep 300
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runner      4438  0.0  0.0   6124  2104 pts/0    S+   04:38   0:00 sleep 300
+runner      4440  0.0  0.0   6124  2100 pts/0    S+   04:38   0:00 sleep 300
 </pre></div>
 </div>
 </div>
@@ -881,7 +881,7 @@ commands keep you ahead of it. <strong><code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   15G  80% /
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dev/root        72G   57G   16G  80% /
 </pre></div>
 </div>
 </div>
@@ -903,7 +903,7 @@ by a short name from where you work:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jul 17 19:01 scratch/link-to-realdir -&gt; realdir
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 7 Jul 18 04:38 scratch/link-to-realdir -&gt; realdir
 </pre></div>
 </div>
 </div>
@@ -970,7 +970,7 @@ sent 150 bytes  received 35 bytes  370.00 bytes/sec
 total size is 8  speedup is 0.04
 sending incremental file list
 three.txt
-sent 120 bytes  received 19 bytes  278.00 bytes/sec
+sent 124 bytes  received 19 bytes  286.00 bytes/sec
 total size is 10  speedup is 0.07 (DRY RUN)
 dst still holds:
 one.txt  two.txt
@@ -996,7 +996,7 @@ identify the larger.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>496K	scratch/heavy
 8.0K	scratch/light
-/dev/root        72G   57G   15G  80% /
+/dev/root        72G   57G   16G  80% /
 largest: scratch/heavy
 </pre></div>
 </div>
@@ -1018,7 +1018,7 @@ to reach a file inside the target.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jul 17 19:01 scratch/shortcut -&gt; store
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lrwxrwxrwx 1 runner runner 5 Jul 18 04:38 scratch/shortcut -&gt; store
 payload
 </pre></div>
 </div>
@@ -1040,11 +1040,11 @@ confirm it is gone.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4544
-running in background as PID 4544
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4505
+running in background as PID 4505
 [1]+  Running                 sleep 300 &amp;
     PID COMMAND
-   4544 sleep
+   4505 sleep
 after kill, still alive? no
 </pre></div>
 </div>
@@ -1052,7 +1052,7 @@ after kill, still alive? no
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4553
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 4509
 <span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the command backgrounded, appeared in the process table, then was killed
 </pre></div>
 </div>
@@ -1085,8 +1085,8 @@ directory standing in for the remote), and verify it arrived intact.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sending incremental file list
 job-results.tar.gz
-sent 344 bytes  received 35 bytes  758.00 bytes/sec
-total size is 223  speedup is 0.59
+sent 343 bytes  received 35 bytes  756.00 bytes/sec
+total size is 222  speedup is 0.59
 4.0K	scratch/job-results.tar.gz
 --- arrived, contents: ---
 output/
