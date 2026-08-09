@@ -726,8 +726,13 @@ through <code class="docutils literal notranslate"><span class="pre">less</span>
 <section id="g-search-and-replace-the-power-tool">
 <h2>G. Search and replace — the power tool<a class="headerlink" href="#g-search-and-replace-the-power-tool" title="Link to this heading">#</a></h2>
 <p>This is the move that justifies the whole notebook, and it carries a gift from
-Part II: <strong>the regular expressions you learned for <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code> are the same
-regexes Vim searches and replaces with.</strong> The command lives in command-line mode:</p>
+Part II: <strong>the regular expressions you learned for <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">sed</span></code> are close
+cousins of the ones Vim searches with</strong> — close, but not identical. In Vim’s
+default <em>magic</em> level the characters <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">?</span> <span class="pre">|</span> <span class="pre">(</span> <span class="pre">)</span></code> are <strong>literal</strong>, so an
+Extended pattern like <code class="docutils literal notranslate"><span class="pre">warning|error</span></code> has to be written <code class="docutils literal notranslate"><span class="pre">warning\|error</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">[0-9]+</span></code> becomes <code class="docutils literal notranslate"><span class="pre">[0-9]\+</span></code>. The shortcut is <code class="docutils literal notranslate"><span class="pre">\v</span></code> (“very magic”) at the front of
+the pattern, which makes Vim read the rest exactly as <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span></code> would:
+<code class="docutils literal notranslate"><span class="pre">:%s/\v(warning|error)/ALERT/g</span></code>. The command lives in command-line mode:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">:s/old/new/</span></code>: replace the first <code class="docutils literal notranslate"><span class="pre">old</span></code> on the <strong>current line</strong>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">:s/old/new/g</span></code>: replace <strong>g</strong>lobally on the current line (every match).</p></li>
@@ -916,7 +921,7 @@ everything (open, insert, new lines with <code class="docutils literal notransla
 echo &quot;written in Vim&quot;
 echo &quot;the date is $(date +%F)&quot;
 written in Vim
-the date is 2026-07-20
+the date is 2026-08-09
 </pre></div>
 </div>
 </div>

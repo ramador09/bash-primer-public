@@ -737,6 +737,19 @@ earlier (a workaround, not a replacement for <code class="docutils literal notra
 Windows leaves on line ends (<code class="docutils literal notranslate"><span class="pre">\r</span></code>):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;a line\r\n&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cat<span class="w"> </span>-A
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a line^M$
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is the intruder: <code class="docutils literal notranslate"><span class="pre">^M</span></code> before the <code class="docutils literal notranslate"><span class="pre">$</span></code>. Now delete it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;a line\r\n&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;\r&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cat<span class="w"> </span>-A
 </pre></div>
 </div>

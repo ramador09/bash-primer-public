@@ -539,8 +539,10 @@ MAX_STEPS 1000
 <p>The <code class="docutils literal notranslate"><span class="pre">g</span></code> made it global (every match on each line, not just the first). The regular
 expression is the <strong>same language as Notebook 6</strong> — reach for <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">-E</span></code> to get the
 Extended syntax, since <code class="docutils literal notranslate"><span class="pre">sed</span></code>, like <code class="docutils literal notranslate"><span class="pre">grep</span></code>, defaults to the quirkier Basic regex.
-With <code class="docutils literal notranslate"><span class="pre">-E</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in the replacement stands for the whole matched text, handy for
-wrapping or annotating a match:</p>
+Two separate things, worth not conflating: <code class="docutils literal notranslate"><span class="pre">-E</span></code> buys the Extended <em>pattern</em>
+syntax, while <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in the <em>replacement</em> stands for the whole matched text in
+both dialects — <code class="docutils literal notranslate"><span class="pre">sed</span> <span class="pre">'s/[0-9][0-9]*/&lt;&amp;&gt;/'</span></code> works with no <code class="docutils literal notranslate"><span class="pre">-E</span></code> at all. It is
+handy for wrapping or annotating a match:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;s/[0-9]+/&lt;&amp;&gt;/g&#39;</span><span class="w"> </span>scratch/run.in
@@ -771,7 +773,7 @@ column. Show that, then pull the energy (the <strong>last</strong> field) with <
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ENERGY| Total FORCE_EVAL
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(a.u.):
 -142.246533543175843
 </pre></div>
 </div>
