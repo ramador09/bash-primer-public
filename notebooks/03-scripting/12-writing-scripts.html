@@ -612,7 +612,7 @@ script’s name arrive as the <strong>positional parameters</strong> <code class
     <tr><td>$1&nbsp;&nbsp;$2&nbsp;…</td><td>the first, second, … argument</td></tr>
     <tr><td>$#</td><td>how many arguments were passed</td></tr>
     <tr><td>"$@"</td><td><b>all</b> arguments, each kept as a separate word: quote it (Notebook 10)</td></tr>
-    <tr><td>$*</td><td>all arguments mashed into <b>one</b> word: rarely what you want</td></tr>
+    <tr><td>"$*"</td><td>all arguments joined into <b>one</b> word (by the first character of <code>IFS</code>): rarely what you want. Note <i>unquoted</i> <code>$*</code> word-splits exactly like <code>$@</code> — the quotes are the whole difference (Notebook 10)</td></tr>
     <tr><td>shift</td><td>drop <code>$1</code>; <code>$2</code> becomes <code>$1</code>, and so on</td></tr>
   </table>
 </div>
@@ -736,12 +736,12 @@ and 8) and returns the number:</p>
 <span class="w">  </span>grep<span class="w"> </span><span class="s1">&#39;Total FORCE_EVAL&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-oE<span class="w"> </span><span class="s1">&#39;\-[0-9]+\.[0-9]+&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ s += $1; n++ } END { printf &quot;%.4f\n&quot;, s/n }&#39;</span>
 <span class="o">}</span>
 <span class="nv">m</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>energy_mean<span class="w"> </span>data/logs/gr2hno3-nvt.log<span class="k">)</span><span class="s2">&quot;</span>
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;captured mean = </span><span class="nv">$m</span><span class="s2"> eV&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;captured mean = </span><span class="nv">$m</span><span class="s2"> a.u.&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>captured mean = -143.4444 eV
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>captured mean = -143.4444 a.u.
 </pre></div>
 </div>
 </div>
@@ -756,12 +756,12 @@ string</strong> with placeholders, then the values to drop in, so columns line u
 numbers carry the precision you choose.</p>
 <div class="bp-card" id="cmd-printf"><span class="bp-card-cmd">printf</span> &mdash; <span class="bp-card-job">print formatted output from a template — the dependable, portable way a script reports its results.</span><table><tr><td>%s</td><td>insert a string argument as-is (e.g. a name or a path)</td></tr><tr><td>%d  /  %.3f</td><td>an integer / a float to 3 decimals — <code>%.Nf</code> sets the precision, <code>%-8s</code> / <code>%8.3f</code> set a field width</td></tr><tr><td>\n  /  \t</td><td>a newline / a tab in the template — printf adds NO trailing newline of its own (unlike echo), so you write <code>\n</code> yourself</td></tr></table><div class="bp-card-more">more: <code>help printf</code> (bash has its own builtin) · <code>man printf</code></div></div><div class="bp-watchout"><strong>Watch out:</strong> the format string is REUSED for any leftover arguments — <code>printf &#x27;%s\n&#x27; a b c</code> prints three lines, not one; surprising until you expect it, then handy. Prefer <code>printf</code> over <code>echo</code> in scripts: no <code>-e</code>/<code>-n</code> portability ambiguity</div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;%-8s %8.3f eV\n&#39;</span><span class="w"> </span><span class="s2">&quot;lj38&quot;</span><span class="w"> </span><span class="m">3</span>.14159
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">printf</span><span class="w"> </span><span class="s1">&#39;%-8s %8.3f a.u.\n&#39;</span><span class="w"> </span><span class="s2">&quot;lj38&quot;</span><span class="w"> </span><span class="m">3</span>.14159
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38        3.142 eV
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38        3.142 a.u.
 </pre></div>
 </div>
 </div>
@@ -1059,7 +1059,7 @@ file).</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38     mean = -143.4444 eV
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lj38     mean = -143.4444 a.u.
 </pre></div>
 </div>
 </div>
@@ -1072,7 +1072,7 @@ file).</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>system: lj38
-mean energy: -143.4444 eV
+mean energy: -143.4444 a.u.
 </pre></div>
 </div>
 </div>
@@ -1098,7 +1098,7 @@ the next notebook.</p>
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>verbose result mean energy = -143.4444 eV
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>verbose result mean energy = -143.4444 a.u.
 </pre></div>
 </div>
 </div>
@@ -1111,7 +1111,7 @@ the next notebook.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>file: run.log
-mean energy (eV): -143.4444
+mean energy (a.u.): -143.4444
 </pre></div>
 </div>
 </div>

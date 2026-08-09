@@ -711,8 +711,8 @@ bench<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
       1     1.12     1.00
-      2     0.95     1.18
-      4     0.95     1.18
+      2     0.95     1.19
+      4     0.95     1.19
 </pre></div>
 </div>
 </div>
@@ -744,8 +744,9 @@ efficiency table writes the paragraph for you:</p>
 parallel efficiency holding at <strong>77%</strong> through 16 cores, then falling steadily
 to <strong>61%</strong> at 32 cores and below half by 64, as the job’s fixed serial fraction
 (≈2%) comes to dominate. Running at 16 cores therefore uses our allocation
-efficiently; larger jobs would burn roughly double the core-hours for well under
-double the speed.</em></p>
+efficiently; moving to 32 cores costs about 25% more core-hours (9,344 -&gt; 11,776
+core-seconds) for only 1.6x the speed, and 256 cores costs 4.7x the core-hours
+for 3.4x the speed.</em></p>
 </div></blockquote>
 <p>Numbers in, a defensible decision out. That is the entire point of the exercise, and
 the reason the shell work mattered: it turned a raw timing table into the one sentence
@@ -755,7 +756,8 @@ that gets the allocation approved.</p>
 <h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <p>The dataset analysis is read-only and deterministic: graded on the numbers. The live
 micro-benchmark’s times vary with the machine, so it is graded on <strong>structure</strong> (the
-right rows, a rolloff), not exact seconds. Saved results go to a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
+right rows, a speedup column), not exact seconds — whether a rolloff appears at all
+depends on how many real cores the machine has spare. Saved results go to a fresh <code class="docutils literal notranslate"><span class="pre">scratch/</span></code>.</p>
 <section id="warm-up-1-worked-speedup-and-efficiency">
 <h3>Warm-up 1 (worked) — Speedup and efficiency<a class="headerlink" href="#warm-up-1-worked-speedup-and-efficiency" title="Link to this heading">#</a></h3>
 <p>Compute the full <code class="docutils literal notranslate"><span class="pre">S</span></code> and <code class="docutils literal notranslate"><span class="pre">E</span></code> table from the dataset with <code class="docutils literal notranslate"><span class="pre">awk</span></code>, and read off the
@@ -780,7 +782,7 @@ efficiency at 16 cores.</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> awk computed the speedup/efficiency table correctly (S=12.3x, E=77% at 16 cores)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the table you wrote has a header and 9 rows, with S=12.3x, E=77% at 16 cores
 </pre></div>
 </div>
 </div>
@@ -821,7 +823,7 @@ efficiency at 16 cores.</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the estimated serial fraction s (0.0192) is small and in the expected range (~0.02)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> your Amdahl estimate reports a serial fraction near 0.02 and its S_max
 </pre></div>
 </div>
 </div>
@@ -837,9 +839,9 @@ vary, so only the structure is graded.</p>
 <div class="cell tag_solution tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>workers   time_s  speedup
-      1     1.12     1.00
-      2     0.95     1.18
-      4     0.95     1.18
+      1     1.13     1.05
+      2     0.95     1.25
+      4     0.95     1.25
 </pre></div>
 </div>
 </div>

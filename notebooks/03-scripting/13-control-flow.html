@@ -900,9 +900,9 @@ reports the wall-clock <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>real	0m0.202s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>real	0m0.203s
 user	0m0.000s
-sys	0m0.001s
+sys	0m0.002s
 </pre></div>
 </div>
 </div>
@@ -958,7 +958,7 @@ that one does not
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> true returned 0 (success) and false returned non-zero (failure)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> your cell shows 0 after true, non-zero after false, and both &amp;&amp; / || branches
 </pre></div>
 </div>
 </div>
@@ -1085,8 +1085,10 @@ run-03.log   -140.5000
 <h3>Optional stretch (your turn) — Speedup table<a class="headerlink" href="#optional-stretch-your-turn-speedup-table" title="Link to this heading">#</a></h3>
 <p>Build the speedup teaser into a small table: run a batch of short tasks at <strong>1, 2,
 and 4</strong> workers (a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop over the worker counts, <code class="docutils literal notranslate"><span class="pre">xargs</span> <span class="pre">-P&quot;$w&quot;</span></code>), timing each
-with <code class="docutils literal notranslate"><span class="pre">date</span></code>, and print a row per worker count. Watch the wall time fall, then start
-to level off. (Exact times vary; the shape is the point. Notebook 17 develops it.)</p>
+with <code class="docutils literal notranslate"><span class="pre">date</span></code>, and print a row per worker count. Watch the wall time fall roughly in
+proportion to the worker count — these tasks <code class="docutils literal notranslate"><span class="pre">sleep</span></code>, which costs no CPU, so there
+is nothing for the cores to contend over and the scaling stays clean. Notebook 17
+swaps in real arithmetic and shows where that proportionality breaks.</p>
 <div class="cell tag_remove-input docutils container">
 </div>
 <div class="cell tag_solution tag_remove-input docutils container">
@@ -1100,7 +1102,7 @@ to level off. (Exact times vary; the shape is the point. Notebook 17 develops it
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> the table has a timed row for each of the 1, 2, and 4 worker counts
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">✓</span> your table has one timed row for each of the 1, 2 and 4 worker counts
 </pre></div>
 </div>
 </div>
