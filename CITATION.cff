@@ -7,7 +7,7 @@ title: Introduction to the Bash Shell
 authors:
   - family-names: Amador
     given-names: Raymond
-version: 1.0.0
+version: 1.0.1
 doi: 10.5281/zenodo.21418788
 date-released: "2026-07-17"
 url: "https://ramador.me/bash-primer-public/"
